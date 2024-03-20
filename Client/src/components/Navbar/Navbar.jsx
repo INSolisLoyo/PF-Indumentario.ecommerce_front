@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [showLogin, setShowLogin] = useState(false);
+  const [showLinks, setShowLinks] = useState(false);
 
-  const [isMenuOpen, setIsMenuOpen ] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  const handleMenuClick = () => {
+    setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
+  };
 
   const handleProfileClick = () => {
     setShowLogin(!showLogin);
@@ -22,8 +22,8 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white fixed font-RedHat  ">
-      <button onClick={toggleMenu} className="xl:hidden " >
+    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/50 fixed font-RedHat  ">
+      <button className="xl:hidden " onClick={handleMenuClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -40,8 +40,27 @@ export default function NavBar() {
         </svg>
       </button>
       <div className="logo pl-5 ">
+        <NavLink to="/" >
         <img className="w-[240px]" src={Logo} alt="BeeComfree" />
+        </NavLink>
       </div>
+
+      {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
+      <div className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${showLinks ? "absolute" : "hidden"}  `}>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
+          Women
+        </a>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
+          Men
+        </a>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+          Accesories
+        </a>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+          About
+        </a>
+      </div>
+
       <div className="links text-lg hidden lg:flex ">
         <a className="pl-6 pr-6" href="#">
           Women
@@ -121,8 +140,6 @@ export default function NavBar() {
           </svg>
         </div>
       </div>
-
-      
 
       {showLogin && <Login onClose={handleCloseLogin} />}
     </div>

@@ -6,7 +6,7 @@ export default function Title() {
   return (
     <div className='w-full h-screen lg:flex items-center justify-around ' >
       <div className="texts text-center   ">
-        <h3 className='text-sm lg:text-xl font-semibold tracking-[.25em] max-lg:pt-[100px]' >NOTE TO SELF</h3>
+        <h3 className='text-sm lg:text-xl font-semibold tracking-[.25em] max-lg:pt-[140px]' >NOTE TO SELF</h3>
         <div className="subtitle  ">
           <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>TODAY WILL BE</h1>
           <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>A GOOD DAY</h1>
