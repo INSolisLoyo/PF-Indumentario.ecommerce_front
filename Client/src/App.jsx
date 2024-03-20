@@ -1,11 +1,15 @@
+import Men from "./Components/Men/Men"
+import Women from "./Components/Women/Women"
+
 
 function App() {
 
   return (
     <>
 
-      <div className='bg-primary/20 font-RedHat'>
-        Hola Front 💜
+      <div className=' font-RedHat'>
+      <Women />
+      <Men />
       </div>
     
     </>
