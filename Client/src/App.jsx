@@ -1,15 +1,9 @@
+import Landing from "./components/Landing/Landing";
 
 function App() {
-
-  return (
-    <>
-
-      <div className='bg-primary/20 font-RedHat'>
-        Hola Front 💜
-      </div>
-    
-    </>
-  )
+  return <div>
+    <Landing />
+  </div>;
 }
 
-export default App
+export default App;
