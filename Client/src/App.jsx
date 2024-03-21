@@ -8,27 +8,27 @@ import Footer from "./components/Footer/Footer"; // Conflict resolution: Added F
 import Create from "./components/Create/Create";
 
 function App() {
+
   return (
     <>
-      <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
 
         <NavBar />
 
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
-          {/* Conflict resolution: Added routes for Detail and MyAccount */}
           <Route path="/detail" element={<Detail />} />
           <Route path="/myaccount" element={<MyAccount />} />
           <Route path="/create" element={ <Create /> } />
         </Routes>
 
-        {/* Conflict resolution: Added Footer */}
+        
         <Footer />
         
-      </div>
+  
+    
     </>
-  );
+  )
 }
 
 export default App;

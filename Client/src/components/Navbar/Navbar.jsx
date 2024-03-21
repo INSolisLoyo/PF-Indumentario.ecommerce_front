@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import MenuWomen from "../Menu/menuWomen/MenuWomen";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/50 fixed font-RedHat  ">
+    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/60 fixed font-RedHat z-50  ">
       <button className="xl:hidden " onClick={handleMenuClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +49,7 @@ export default function NavBar() {
       {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
       <div className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${showLinks ? "absolute" : "hidden"}  `}>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
-          Women
+          <MenuWomen />
         </a>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
           Men
@@ -62,9 +63,9 @@ export default function NavBar() {
       </div>
 
       <div className="links text-lg hidden lg:flex ">
-        <a className="pl-6 pr-6" href="#">
-          Women
-        </a>
+        <div>
+          <MenuWomen />
+        </div>
         <a className="pl-6  pr-6" href="#">
           Men
         </a>

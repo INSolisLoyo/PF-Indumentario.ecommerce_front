@@ -2,10 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login({ onClose }) {
-  // Estilo en línea para el color de fondo con opacidad
-  const backgroundStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.8)", // bg-slate-400 con opacidad 50%
-  };
+
 
   const navigate = useNavigate();
 

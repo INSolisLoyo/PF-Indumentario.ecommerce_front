@@ -1,0 +1,94 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "name": "Trench Coat",
+      "price": "$120",
+      "brand": "Burberry",
+      "description": "This Burberry trench coat is a timeless and iconic piece that will never go out of style. Made with high-quality cotton gabardine, it offers durability and water resistance for rainy days. Its classic design with double-breasted closure and belt gives it a sophisticated and elegant look. Whether you're heading to work or going for a stroll in the city, this trench coat will keep you stylish and dry.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710603741/woman/lqrlzcxx40zfvvtwfmki.jpg",
+      "gender": "female"
+    },
+    {
+      "id": "2",
+      "name": "Silk Scarf",
+      "price": "$60",
+      "brand": "Hermès",
+      "description": "This Hermès silk scarf is a luxurious and versatile accessory that will add a touch of elegance to any outfit. Made with pure silk and hand-rolled edges, it offers a soft and luxurious feel against the skin. Its classic design with vibrant colors and intricate patterns gives it a timeless and sophisticated look. Whether you wear it around your neck, on your bag, or as a headscarf, this silk scarf will elevate your style.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710603741/woman/z1vveqkqivrs9ljgzmpm.jpg",
+      "gender": "female"
+    },
+    {
+      "id": "3",
+      "name": "Leather Boots",
+      "price": "$180",
+      "brand": "Dr. Martens",
+      "description": "These Dr. Martens leather boots are a durable and stylish choice for your everyday adventures. Made with high-quality leather and iconic stitching details, they offer durability and style for years to come. Their classic design with lace-up closure and chunky sole gives them a timeless and edgy look. Whether you're exploring the city streets or going to a concert, these boots will keep you comfortable and stylish.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710603740/woman/ebjpf7xcprk18jvgg6mz.jpg",
+      "gender": "female"
+    },
+    {
+      "id": "4",
+      "name": "Turtleneck Dress",
+      "price": "$70",
+      "brand": "Zara",
+      "description": "This Zara turtleneck dress is a versatile and stylish option for your fall and winter wardrobe. Made with soft and stretchy fabric, it offers comfort and style all day long. Its classic design with a turtleneck and ribbed cuffs gives it a timeless and elegant look. Pair it with knee-high boots and a coat for a chic and sophisticated ensemble.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710603741/woman/fvc1rmttl7sq0ydsk7ii.jpg",
+      "gender": "female"
+    },
+    {
+      "id": "5",
+      "name": "Puffer Jacket",
+      "price": "$100",
+      "brand": "The North Face",
+      "description": "This North Face puffer jacket is a functional and stylish choice for cold winter days. Made with water-resistant fabric and warm insulation, it offers protection against the elements and warmth for outdoor activities. Its classic design with a zip closure and hood gives it a sporty and modern look. Whether you're skiing on the slopes or running errands in the city, this puffer jacket will keep you comfortable and stylish.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710603740/woman/reg3ygrkdnnvvjd6esib.jpg",
+      "gender": "female"
+    },
+    {
+      "id": "6",
+      "name": "Crewneck Sweater",
+      "price": "$80",
+      "brand": "Ralph Lauren",
+      "description": "This Ralph Lauren crewneck sweater is a classic and versatile piece for your wardrobe. Made with soft cotton and ribbed trims, it offers comfort and style for casual occasions. Its simple design makes it easy to pair with jeans or chinos for a timeless and effortless look.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710602882/men/rhxpwuhopdwrzaxzgozd.jpg",
+      "gender": "male"
+    },
+    {
+      "id": "7",
+      "name": "Leather Jacket",
+      "price": "$250",
+      "brand": "Schott NYC",
+      "description": "This Schott NYC leather jacket is a rugged and stylish choice for any man's wardrobe. Made with high-quality leather and sturdy hardware, it offers durability and timeless style. Its classic design with zip closure and multiple pockets makes it perfect for everyday wear or special occasions.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710602882/men/jvevcakrgnsobzsickdq.jpg",
+      "gender": "male"
+    },
+    {
+      "id": "8",
+      "name": "Chinos",
+      "price": "$50",
+      "brand": "Dockers",
+      "description": "These Dockers chinos are a versatile and essential piece for any man's closet. Made with durable cotton twill, they offer comfort and style for casual or semi-formal occasions. Their classic design with flat front and straight leg makes them easy to pair with a variety of tops for a polished and timeless look.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710602881/men/ohjz8ljbjpbnceugcpam.jpg",
+      "gender": "male"
+    },
+    {
+      "id": "9",
+      "name": "Button-Down Shirt",
+      "price": "$60",
+      "brand": "Brooks Brothers",
+      "description": "This Brooks Brothers button-down shirt is a wardrobe staple for any man. Made with soft cotton and a classic fit, it offers comfort and style for both casual and formal occasions. Its timeless design with a button-down collar and single chest pocket makes it easy to dress up or down for any event.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710602882/men/rzjhkshmzsnpjlc7tx06.jpg",
+      "gender": "male"
+    },
+    {
+      "id": "10",
+      "name": "Oxford Shoes",
+      "price": "$120",
+      "brand": "Allen Edmonds",
+      "description": "These Allen Edmonds oxford shoes are a classic and sophisticated choice for any man's footwear collection. Made with premium leather and Goodyear welt construction, they offer durability and timeless style. Their versatile design makes them suitable for both formal occasions and everyday wear.",
+      "image": "https://res.cloudinary.com/dtarklm7p/image/upload/v1710602882/men/qsero6wpspr2ah3a6s7q.jpg",
+      "gender": "male"
+    }
+  ]
+}
