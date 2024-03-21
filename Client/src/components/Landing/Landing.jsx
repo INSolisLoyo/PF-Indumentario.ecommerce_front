@@ -5,14 +5,10 @@ import Men from "./Men";
 
 export default function Landing() {
   return (
-    
-   <div>
+    <div>
       <Title />
-      <div className="flex-col justify-center content-center">
-        <Women />
-        <Men />
-      </div>
-   </div>
-   
+      <Women />
+      <Men />
+    </div>
   );
 }
