@@ -1,13 +1,18 @@
 import React from "react";
-import NavBar from "../Navbar/Navbar"
 import Title from "./title";
-import Register from "../Register/Register";
-
+import Women from "./Women";
+import Men from "./Men";
 
 export default function Landing() {
   return (
-    <div>
+    
+   <div>
       <Title />
-    </div>
+      <div className="flex-col justify-center content-center">
+        <Women />
+        <Men />
+      </div>
+   </div>
+   
   );
 }

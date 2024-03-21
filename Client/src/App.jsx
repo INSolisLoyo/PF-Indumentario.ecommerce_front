@@ -7,26 +7,16 @@ import MyAccount from "./components/MyAccount/MyAccount"; // Conflict resolution
 import Footer from "./components/Footer/Footer"; // Conflict resolution: Added Footer import
 
 function App() {
+
   return (
     <>
-      <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
 
-        <NavBar />
-
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/register" element={<Register />} />
-          {/* Conflict resolution: Added routes for Detail and MyAccount */}
-          <Route path="/detail" element={<Detail />} />
-          <Route path="/myaccount" element={<MyAccount />} />
-        </Routes>
-
-        {/* Conflict resolution: Added Footer */}
-        <Footer />
-        
+      <div className='bg-primary/20 font-RedHat'>
+        Hola Front 💜
       </div>
+    
     </>
-  );
+  )
 }
 
 export default App;
