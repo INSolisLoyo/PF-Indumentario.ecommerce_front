@@ -1,14 +1,10 @@
+import Sale from "./components/sale/Sale";
+import Orders from "./components/orders/Orders";
 
 function App() {
 
   return (
-    <>
-
-      <div className='bg-primary/20 font-RedHat'>
-        Hola Front 💜
-      </div>
-    
-    </>
+    <> </>
   )
 }
 
