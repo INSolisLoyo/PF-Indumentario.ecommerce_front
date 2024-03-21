@@ -1,19 +1,5 @@
-import Men from "./Components/Men/Men"
-import Women from "./Components/Women/Women"
-
-
 function App() {
-
-  return (
-    <>
-
-      <div className=' font-RedHat'>
-      <Women />
-      <Men />
-      </div>
-    
-    </>
-  )
+  return <></>;
 }
 
-export default App
+export default App;
