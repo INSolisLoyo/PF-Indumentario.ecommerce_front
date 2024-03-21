@@ -5,6 +5,7 @@ import NavBar from "./components/Navbar/Navbar";
 import Detail from "./components/Detail/Detail"; // Conflict resolution: Added Detail import
 import MyAccount from "./components/MyAccount/MyAccount"; // Conflict resolution: Added MyAccount import
 import Footer from "./components/Footer/Footer"; // Conflict resolution: Added Footer import
+import Create from "./components/Create/Create";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           {/* Conflict resolution: Added routes for Detail and MyAccount */}
           <Route path="/detail" element={<Detail />} />
           <Route path="/myaccount" element={<MyAccount />} />
+          <Route path="/create" element={ <Create /> } />
         </Routes>
 
         {/* Conflict resolution: Added Footer */}
