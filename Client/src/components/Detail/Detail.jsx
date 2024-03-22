@@ -1,3 +1,4 @@
+import chroma from 'chroma-js';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
@@ -8,6 +9,8 @@ const Detail = () => {
 
     const { id } = useParams();
     const ENDPOINT = `http://localhost:3001/products/${id}`;
+    const [showedImage, setShowedImage] = useState('');
+    const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
         name: '',
         price: '',
@@ -17,11 +20,12 @@ const Detail = () => {
         material: ''
     });
 
+
     const cleaner = ({name, price, images, colour, material}) => {
 
         const arr = name.split(' ');
         const itemName = arr.slice(-3).join(' ');
-        const colours = colour.split(", ").map(color => color.toLowerCase() === 'black' ? 'slate' : color);  
+        const colours = colour.split(", ");
 
         setItem(
             {
@@ -36,6 +40,20 @@ const Detail = () => {
         
     }
 
+    const handleImage = (image) => {
+        setShowedImage(image)
+    }
+
+    const handleCounter = (op) => {
+
+        if(op === '-'){
+            counter > 1 && setCounter(counter - 1)
+        }
+        else{
+            setCounter( counter + 1)
+        }
+    }
+
     
 
     useEffect( () => {
@@ -46,15 +64,17 @@ const Detail = () => {
                 
                 if(data){
                     cleaner(data);  
+                    setShowedImage(data.images[0])
                 }
                 else{
-                    alert(`No existe conductor con el ID: ${id}`);
+                    alert(`Doesn't exist any product with this id: ${id}`);
                 }   
             } catch (error) {
                 console.log(error)
             }
         }
         fetchData();
+        
         
     }, [id])
 
@@ -66,7 +86,7 @@ const Detail = () => {
             <div className="bg-primary/10 rounded-2xl flex flex-col items-center md:gap-4 md:px-4 lg:flex-row lg:justify-around  lg:items-center">
 
                 <picture>
-                    <img src={item.images[0]} alt="item"
+                    <img src={showedImage} alt="item"
                         className="max-w-64 mt-4 lg:mt-0 rounded-2xl"
                     />
                 </picture>
@@ -84,9 +104,12 @@ const Detail = () => {
                     <div className="mt-5 flex justify-between">
                         <p className="font-semibold text-2xl tracking-widest">${item.price}</p>
                         <div className="flex gap-4 text-lg">
-                            <span className="bg-primary/50 hover:bg-primary rounded-2xl py-0.5 px-4">-</span>
-                            <span>1</span>
-                            <span className="bg-primary/50 hover:bg-primary rounded-2xl py-0.5 px-4">+</span>
+                            <span className="bg-primary/50 hover:bg-primary rounded-2xl py-0.5 px-4" 
+                            onClick={() => handleCounter('-')}>-</span>
+                            <span>{counter}</span>
+                            <span className="bg-primary/50 hover:bg-primary rounded-2xl py-0.5 px-4" 
+                                onClick={() => handleCounter('+')}
+                            >+</span>
                         </div>
                     </div>
 
@@ -95,23 +118,26 @@ const Detail = () => {
 
                     <div className="mt-2 flex flex-col gap-2 md:flex-row">
 
-                        <div className="flex flex-col gap-2 mx-auto ">
+                        <div className="flex flex-col gap-2 mx-auto" id='colors'>
                             
                             <p className="text-center font-semibold text-lg">Color</p>
                             <div className="flex gap-2 mx-auto justify-center">
 
                                 {
-                                    item.colours?.map( (color, index) => {
-                                        
-                                        console.log(color.toLowerCase());
-                            
-                                        return (
-                                            <span 
-                                                key={index}
-                                                className={`bg-${color.toLowerCase()}-900 w-4 h-4 rounded-full`}
-                                            ></span>
-                                        )
-                                    })
+                                    
+                                     item.colours?.map(  (color, index) => {
+                                  
+                                         const hexColor =  chroma(color.toLowerCase()).hex();
+                                         console.log(hexColor);
+                                         const clas = `w-4 h-4 bg-[${hexColor}] rounded-full`
+                                         console.log(clas);
+                                         return (
+                                             <span 
+                                                 key={index}
+                                                 className={clas}
+                                             ></span>
+                                         )
+                                     })
                                 }
                             
                             </div>
@@ -135,10 +161,21 @@ const Detail = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center lg:flex-row lg:justify-around pr-8">
+            <div className="flex flex-col items-center lg:flex-row lg:flex-wrap lg:justify-around pr-8">
 
-                <div className="mt-5 flex justify-center gap-4">
-                            <img src="https://images.pexels.com/photos/1502216/pexels-photo-1502216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="item" 
+                <div className="mt-5 flex flex-wrap justify-center gap-4">
+
+                    {
+                        item.images?.map( (image) => {
+                            return (
+                                <img src={image} alt="item" 
+                                className="max-w-20 rounded-2xl"    
+                                onClick={ () => handleImage(image)}
+                            />
+                            )
+                        })
+                    }
+                            {/* <img src="https://images.pexels.com/photos/1502216/pexels-photo-1502216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="item" 
                                 className="max-w-20 rounded-2xl"    
                             />
                             <img src="https://images.pexels.com/photos/1502216/pexels-photo-1502216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="item" 
@@ -146,10 +183,10 @@ const Detail = () => {
                             />
                             <img src="https://images.pexels.com/photos/1502216/pexels-photo-1502216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="item" 
                                 className="max-w-20 rounded-2xl"
-                            />
+                            /> */}
                 </div>
 
-                <div className="w-2/5 flex">
+                <div className="w-1/5 flex">
                     <button 
                     className="mt-10 w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black">Go</button>
                 </div>
