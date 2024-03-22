@@ -1,4 +1,4 @@
-import OneSlider from "../Oneslider/OneSlider";
+import OneSlider from "../oneslider/OneSlider";
 // import nube from "../../img/nube4.png";
 
 const Women = () => {

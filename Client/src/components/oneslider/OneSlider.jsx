@@ -1,82 +1,126 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import data from "/src/api/db.json";
 
-const OneSlider = () => {
+const OneSlider = ({ gender }) => {
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 2,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: true,
-    arrows: false,
+    autoplay: false,
+    arrows: true,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 1536,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   };
 
-  const descuentoAleatorio = Math.floor(Math.random() * 41) + 10;
+  const femaleItems = data.items.filter((item) => item.gender === "female");
+  const maleItems = data.items.filter((item) => item.gender === "male");
 
   return (
-    <Slider {...settings} className="w-[750px] c flex justify-center">
-      {data.items.map((card) => (
-        <div key={card.id} className="p-14 drop-shadow-md rounded-md relative">
-          <img
-            src={card.image}
-            alt={card.name}
-            className="w-[370px] h-[450px] rounded-md"
-          />
-          <p className=" text-xl tracking-wide italic flex justify-center items-center">
-            <strong className="text-center ">Name:</strong> {card.name}
-          </p>
+    <Slider
+      {...settings}
+      className=" w-[280px] sm:w-[560px] md:w-[560px] lg:w-[840px] xl:w-[840px] 2xl:w-[1120px]"
+    >
+      {femaleItems.map((card) =>
+        gender === "female" ? (
+          <div key={card.id} className="p-4">
+            <img
+              src={card.image}
+              alt={card.name}
+              className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
+            />
+          </div>
+        ) : null
+      )}
 
-          <div className="absolute top-0 left-0 bg-[#c17b60] text-white font-bold text-sm px-4 py-3 rounded-bl-md">
-          -{descuentoAleatorio}% OFF
-        </div>
-
-        </div>
-      ))}
+      {maleItems.map((card) =>
+        gender === "male" ? (
+          <div key={card.id} className="p-4">
+            <img
+              src={card.image}
+              alt={card.name}
+              className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
+            />
+          </div>
+        ) : null
+      )}
     </Slider>
   );
 };
 
+const CustomPrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div
+      className="slick-arrow"
+      style={{
+        left: "-20px",
+        zIndex: "10",
+        top: "50%",
+        transform: "translateY(-50%)",
+        position: "absolute",
+        cursor: "pointer",
+      }}
+      onClick={onClick}
+    >
+      <div className="text-primary text-3xl font-extrabold">{"<"}</div>
+    </div>
+  );
+};
+
+const CustomNextArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div
+      className="slick-arrow"
+      style={{
+        right: "-20px",
+        zIndex: "10",
+        top: "50%",
+        transform: "translateY(-50%)",
+        position: "absolute",
+        cursor: "pointer",
+      }}
+      onClick={onClick}
+    >
+      <div className="text-primary text-3xl font-extrabold">{">"}</div>
+    </div>
+  );
+};
+
 export default OneSlider;
-
-
-
-
-
-
-// import React from "react";
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import data from "/src/api/db.json";
-
-// const OneSlider = () => {
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 2,
-//     slidesToScroll: 1,
-//     arrows: true,
-//   };
-
-//   return (
-//     <Slider {...settings} className="w-[600px]">
-//       {data.items.map((card) => (
-//         <div key={card.id} className="p-2 shadow">
-//           <img
-//             src={card.image}
-//             alt={card.name}
-//             className="w-[300px] h-[450px]"
-//           />
-//         </div>
-//       ))}
-//     </Slider>
-//   );
-// }
-
-// export default OneSlider;

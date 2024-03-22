@@ -6,6 +6,8 @@ import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuAccesories from "../Menu/menuAccesories/MenuAccesories";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
+import SearchBar from '../SearchBar/SearchBar';
+import SearchResults from '../SearchBar/SearchResults';
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ export default function NavBar() {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke="currentColor"
           className="w-6 h-6"
         >
@@ -79,33 +81,17 @@ export default function NavBar() {
           <MenuAbout />
         </div>
       </div>
-      <div className="searchbar hidden lg:flex ">
-        <form className="flex items-center space-x-6">
-          <div className="shrink-0"></div>
-          <label className="block">
-            <input
-              type="text"
-              className="block w-full text-sm bg-purple-200 rounded-xl"
-            />
-          </label>
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-          </button>
-        </form>
-      </div>
+
+
+
+
+
+      {/* ------------    SEARCH BAR   -------------------------------------- */}
+      <div>
+      <SearchBar />     
+    </div>
+      
+          {/* ----------------------------------------- */}
       <div className="car flex ">
         <div className="car-shop pr-6 cursor-pointer ">
           <svg
