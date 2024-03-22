@@ -3,7 +3,7 @@ import OneSlider from "../Oneslider/OneSlider";
 
 const Men = () => {
   return (
-    <div className="relative flex flex-col-reverse justify-center gap-x-20 w-screen h-[70vh] content-center items-center 2xl:flex-row font-RedHat">
+    <div className="relative flex flex-col-reverse justify-center gap-x-20 w-screen h-[70vh] content-center items-center 2xl:flex-row font-RedHat mt-[100px] lg:mt-[5px] ">
       <div className="relative z-10">
         <OneSlider gender={"male"} />
       </div>

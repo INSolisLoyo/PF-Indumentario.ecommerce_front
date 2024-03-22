@@ -12,7 +12,7 @@ const MenuAbout = () => {
     <div>
       <div
         onClick={toggleMenuAbout}
-        className="block uppercase font-extrabold cursor-pointer focus:outline-none"
+        className="block font-RedHat cursor-pointer focus:outline-none"
       >
         About
       </div>
