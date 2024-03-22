@@ -3,6 +3,9 @@ import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
+import MenuMen from "../Menu/menuMen/MenuMen";
+import MenuAccesories from "../Menu/menuAccesories/MenuAccesories";
+import MenuAbout from "../Menu/menuAbout/MenuAbout";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -23,7 +26,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/60 fixed font-RedHat z-50  ">
+    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/50 fixed font-RedHat z-[100] ">
       <button className="xl:hidden " onClick={handleMenuClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,14 +45,14 @@ export default function NavBar() {
       </button>
       <div className="logo pl-5 ">
         <NavLink to="/" >
-        <img className="w-[240px]" src={Logo} alt="BeeComfree" />
+        <img className="w-[160px]" src={Logo} alt="BeeComfree" />
         </NavLink>
       </div>
 
       {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
       <div className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${showLinks ? "absolute" : "hidden"}  `}>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
-          <MenuWomen />
+          Women
         </a>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
           Men
@@ -63,18 +66,18 @@ export default function NavBar() {
       </div>
 
       <div className="links text-lg hidden lg:flex ">
-        <div>
+        <div className="pl-6 pr-6" href="#">
           <MenuWomen />
         </div>
-        <a className="pl-6  pr-6" href="#">
-          Men
-        </a>
-        <a className="pl-6  pr-6  " href="#">
-          Accesories
-        </a>
-        <a className="pl-6  pr-6  " href="#">
-          About
-        </a>
+        <div className="pl-6  pr-6" href="#">
+          <MenuMen />
+        </div>
+        <div className="pl-6  pr-6  " href="#">
+          <MenuAccesories />
+        </div>
+        <div className="pl-6  pr-6  " href="#">
+          <MenuAbout />
+        </div>
       </div>
       <div className="searchbar hidden lg:flex ">
         <form className="flex items-center space-x-6">

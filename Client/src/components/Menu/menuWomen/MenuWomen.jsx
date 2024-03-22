@@ -12,7 +12,7 @@ const MenuWomen = () => {
     <div>
       <div
         onClick={toggleMenuWomen}
-        className="block uppercase font-extrabold cursor-pointer focus:outline-none "
+        className="block font-RedHat cursor-pointer focus:outline-none "
       >
         Women
       </div>
@@ -20,7 +20,7 @@ const MenuWomen = () => {
       {isOpen && (
         <div
           style={backgroundStyle}
-          className="absolute flex gap-[50px] p-11 z-10 top-[82px] h-[350px] left-0 mt-1 w-full bg-white shadow-lg "
+          className="absolute flex gap-[50px] p-11 z-10 top-[52px] h-[350px] left-0 mt-1 w-full bg-white shadow-lg "
         >
           <ul>
             <li className="mb-3">

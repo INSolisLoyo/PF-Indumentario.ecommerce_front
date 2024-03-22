@@ -11,12 +11,12 @@ const MenuMen = () => {
   return (
     <div>
       
-        <div onClick={toggleMenuMen} className="block uppercase font-extrabold cursor-pointer focus:outline-none">
+        <div onClick={toggleMenuMen} className="block  font-RedHat cursor-pointer focus:outline-none">
           Men
         </div>
 
         {isOpen && (
-          <div style={backgroundStyle} className="absolute p-11 z-10 top-[82px] h-[350px] left-0 mt-1 w-full bg-white shadow-lg ">
+          <div style={backgroundStyle} className="absolute p-11 z-10 top-[52px] h-[350px] left-0 mt-1 w-full bg-white shadow-lg ">
             <ul>
               <li>
                 <a href="/co/men/novedades-n3283.html">Ellos</a>
