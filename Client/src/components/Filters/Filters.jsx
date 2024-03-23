@@ -1,5 +1,5 @@
 import React from "react";
-import useStore from "../store/store";
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 
 const Filters = () => {
   const {
@@ -140,14 +140,6 @@ const Filters = () => {
 };
 
 export default Filters;
-
-
-
-
-
-
-
-
 
 // import React from "react";
 // import useStore from "../store/store";
