@@ -1,5 +1,4 @@
 import OneSlider from "../Oneslider/OneSlider";
-// import nube from "../../img/nube4.png";
 
 const Women = () => {
   return (
@@ -16,14 +15,8 @@ const Women = () => {
         </p>
       </div>
       <div className="relative z-10">
-        <OneSlider gender={"female"} />
+        <OneSlider category={"Women"} />
       </div>
-      {/* <img
-        className="absolute top-1/2 transform -translate-y-1/2 z-1"
-        src={nube}
-        alt=""
-        style={{ left: "-5px", maxWidth: "100vw", maxHeight: "100%" }}
-      /> */}
     </div>
   );
 };

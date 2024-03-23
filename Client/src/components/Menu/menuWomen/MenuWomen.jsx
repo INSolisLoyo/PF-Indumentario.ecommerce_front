@@ -5,14 +5,14 @@ const MenuWomen = () => {
   const { isOpen, toggleMenuWomen } = useMenuWomenStore();
 
   const backgroundStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.85)", // bg-slate-400 con opacidad 50%
+    backgroundColor: "rgba(255, 255, 255, 0.85)",
   };
 
   return (
     <div>
       <div
         onClick={toggleMenuWomen}
-        className="block font-RedHat cursor-pointer focus:outline-none "
+        className="block uppercase font-extrabold cursor-pointer focus:outline-none "
       >
         Women
       </div>

@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
+import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import data from "/src/api/db.json";
 
-const OneSlider = ({ gender }) => {
+const OneSlider = ({ category }) => {
+  const [data, setData] = useState([]);
+  const URL = "http://localhost:3001/products";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(URL);
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const settings = {
     dots: false,
     infinite: true,
@@ -48,37 +64,22 @@ const OneSlider = ({ gender }) => {
     ],
   };
 
-  const femaleItems = data.items.filter((item) => item.gender === "female");
-  const maleItems = data.items.filter((item) => item.gender === "male");
+  const filteredItems = data.filter((item) => item.category === category);
 
   return (
     <Slider
       {...settings}
       className=" w-[280px] sm:w-[560px] md:w-[560px] lg:w-[840px] xl:w-[840px] 2xl:w-[1120px]"
     >
-      {femaleItems.map((card) =>
-        gender === "female" ? (
-          <div key={card.id} className="p-4">
-            <img
-              src={card.image}
-              alt={card.name}
-              className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
-            />
-          </div>
-        ) : null
-      )}
-
-      {maleItems.map((card) =>
-        gender === "male" ? (
-          <div key={card.id} className="p-4">
-            <img
-              src={card.image}
-              alt={card.name}
-              className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
-            />
-          </div>
-        ) : null
-      )}
+      {filteredItems.map((card) => (
+        <div key={card.id} className="p-4">
+          <img
+            src={card.images}
+            alt={card.name}
+            className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
+          />
+        </div>
+      ))}
     </Slider>
   );
 };

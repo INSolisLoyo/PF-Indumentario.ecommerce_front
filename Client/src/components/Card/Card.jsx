@@ -8,7 +8,7 @@ const Card = ({ res }) => {
   return (
     <div className="font-RedHat">
       <img
-        src={res.image}
+        src={res.images[0]}
         alt=""
         className="h-[390px] w-[280px] rounded-[12px]"
       />
@@ -27,10 +27,10 @@ const Card = ({ res }) => {
         </span>{" "}
       </div>
       <div className="flex justify-between">
-        <div className="text-xl font-extrabold">{res.name}</div>
-        <div className="text-xl font-extrabold">{res.price}</div>
+        <div className="text-xl font-extrabold">{res.category}</div>
+        <div className="text-xl font-extrabold">${res.price}</div>
       </div>
-      <div>{res.brand}</div>
+      <div>{res.category}</div>
     </div>
   );
 };

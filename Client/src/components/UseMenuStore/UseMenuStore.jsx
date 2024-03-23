@@ -10,9 +10,9 @@ const useMenuWomenStore = create((set) => ({
   toggleMenuWomen: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
-const useMenuAccesoriesStore = create((set) => ({
+const useMenuStoreStore = create((set) => ({
   isOpen: false,
-  toggleMenuAccesories: () => set((state) => ({ isOpen: !state.isOpen })),
+  toggleMenuStore: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
 const useMenuAboutStore = create((set) => ({
@@ -20,4 +20,4 @@ const useMenuAboutStore = create((set) => ({
   toggleMenuAbout: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
-export {useMenuMenStore, useMenuWomenStore, useMenuAccesoriesStore, useMenuAboutStore};
+export {useMenuMenStore, useMenuWomenStore, useMenuStoreStore, useMenuAboutStore};

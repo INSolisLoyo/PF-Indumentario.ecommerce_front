@@ -5,7 +5,8 @@ import NavBar from "./components/Navbar/Navbar";
 import Detail from "./components/Detail/Detail";
 import MyAccount from "./components/MyAccount/MyAccount";
 import Footer from "./components/Footer/Footer";
-import Create from "./components/Create/Create";
+import Cards from "./components/Cards/Cards";
+// import Create from "./components/Create/Create";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/myaccount" element={<MyAccount />} />
-        <Route path="/create" element={<Create />} />
+        <Route path="/cards" element={<Cards />} />
+
+        {/* <Route path="/create" element={<Create />} /> */}
       </Routes>
 
       <Footer />
