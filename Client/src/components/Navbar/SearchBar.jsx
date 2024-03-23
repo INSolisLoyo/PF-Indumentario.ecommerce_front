@@ -1,5 +1,5 @@
 import React from "react";
-import useStore from "../../components/store/store";
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 
 const SearchBar = () => {
   const { name, setName } = useStore();

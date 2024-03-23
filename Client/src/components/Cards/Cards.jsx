@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import axios from "axios";
-import useStore from "../store/store";
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 
 const URL = "http://localhost:3001/products";
 
@@ -36,7 +36,17 @@ const Cards = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, name, category, minPrice, maxPrice, material, colour, orderType, order]);
+  }, [
+    currentPage,
+    name,
+    category,
+    minPrice,
+    maxPrice,
+    material,
+    colour,
+    orderType,
+    order,
+  ]);
 
   const fetchData = async () => {
     try {
@@ -105,35 +115,26 @@ const Cards = () => {
       </div>
 
       <div className="flex justify-center mt-4">
-  {Array.from({ length: Math.ceil(items.length / productLimit) }, (_, i) => (
-    <button
-      key={i}
-      className={`mx-2 px-3 py-1 border ${
-        currentPage === i + 1 ? "bg-gray-400" : "bg-gray-200"
-      }`}
-      onClick={() => handlePageChange(i + 1)}
-    >
-      {i + 1}
-    </button>
-  ))}
-</div>
-
-
+        {Array.from(
+          { length: Math.ceil(items.length / productLimit) },
+          (_, i) => (
+            <button
+              key={i}
+              className={`mx-2 px-3 py-1 border ${
+                currentPage === i + 1 ? "bg-gray-400" : "bg-gray-200"
+              }`}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };
 
 export default Cards;
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import Card from "../Card/Card";
@@ -228,11 +229,6 @@ export default Cards;
 // };
 
 // export default Cards;
-
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import Card from "../Card/Card";
