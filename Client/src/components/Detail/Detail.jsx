@@ -138,7 +138,7 @@ const Detail = () => {
                                         
                                         item.colours?.map(  (color, index) => {
                                     
-                                            const hexColor =  chroma(color.toLowerCase()).hex();
+                                            const hexColor =  chroma(color.toLowerCase()).hex('rgb');
                                             
                                             return (
                                                 <span 
