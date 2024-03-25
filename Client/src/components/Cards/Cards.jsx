@@ -4,7 +4,7 @@ import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
-import CustomPagination from "../CustomPagination/CustonPagination"; // Corregir la importación del componente CustomPagination
+import CustomPagination from "../CustomPagination/CustonPagination";
 
 const URL = "http://localhost:3001/products";
 const PRODUCTS_PER_PAGE = 10;
@@ -129,18 +129,9 @@ const Cards = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           onChangePage={handlePageChange}
-          handlePrevPage={handlePrevPage} // Corregir el nombre de la función
-          handleNextPage={handleNextPage} // Corregir el nombre de la función
+          handlePrevPage={handlePrevPage}
+          handleNextPage={handleNextPage}
         />
-      </div>
-
-      <div className="flex justify-center mt-4">Total paginas: {totalPages}</div>
-      <div className="flex justify-center mt-4">
-        Total items por pagina: {PRODUCTS_PER_PAGE}
-      </div>
-      <div className="flex justify-center mt-4">Pagina actual: {currentPage}</div>
-      <div className="flex justify-center mt-4">
-        Total productos: {items.length}
       </div>
     </div>
   );

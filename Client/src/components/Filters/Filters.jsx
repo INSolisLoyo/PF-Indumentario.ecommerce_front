@@ -18,52 +18,55 @@ const Filters = () => {
     setOrderType,
     setOrder,
     setShowFilters,
-    fetchData,
+    setFetchData,
   } = useStore();
 
   const handleReset = () => {
     setCategory("");
-    setMaterial([]); // Reiniciar material como un arreglo vacío
-    setColour([]); // Reiniciar colour como un arreglo vacío
+    setMaterial([]);
+    setColour([]);
     setMinPrice("");
     setMaxPrice("");
     setOrderType("");
     setOrder("");
-    fetchData();
+    setFetchData(() => {});
   };
 
-  const handleCloseFilters = () => {
+  const toggleFilters = () => {
     setShowFilters(false);
   };
 
-  const handleChangeCategory = (e) => {
-    setCategory(e.target.value);
+  const handleToggleCategory = (value) => {
+    setCategory(category === value ? "" : value);
   };
 
-  const handleChangeMaterial = (e) => {
-    const value = e.target.value.split(",");
-    setMaterial(value.length > 0 ? value : []); // Reiniciar material como un arreglo vacío si no hay selección
+  const handleToggleMaterial = (value) => {
+    if (material.includes(value)) {
+      setMaterial(material.filter((item) => item !== value));
+    } else {
+      setMaterial([...material, value]);
+    }
   };
 
-  const handleChangeColour = (e) => {
-    const value = e.target.value.split(",");
-    setColour(value.length > 0 ? value : []); // Reiniciar colour como un arreglo vacío si no hay selección
+  const handleToggleColour = (value) => {
+    if (colour.includes(value)) {
+      setColour(colour.filter((item) => item !== value));
+    } else {
+      setColour([...colour, value]);
+    }
   };
 
-  const handleChangeMinPrice = (e) => {
-    setMinPrice(e.target.value);
+  const handlePriceRangeChange = (newValues) => {
+    setMinPrice(newValues[0]);
+    setMaxPrice(newValues[1]);
   };
 
-  const handleChangeMaxPrice = (e) => {
-    setMaxPrice(e.target.value);
+  const handleToggleOrderType = (value) => {
+    setOrderType(orderType === value ? "" : value);
   };
 
-  const handleChangeOrderType = (e) => {
-    setOrderType(e.target.value);
-  };
-
-  const handleChangeOrder = (e) => {
-    setOrder(e.target.value);
+  const handleToggleOrder = (value) => {
+    setOrder(order === value ? "" : value);
   };
 
   return (
@@ -73,83 +76,139 @@ const Filters = () => {
       </div>
       <form className="text-lg">
         <div className="mt-4 ml-1">
-          <div>Category:</div>
-          <select
-            className="mb-4"
-            value={category}
-            onChange={handleChangeCategory}
-          >
-            <option value="">Select category</option>
-            <option value="Women">Women</option>
-            <option value="Men">Men</option>
-          </select>
-
-          <div>Material:</div>
-          <select
-            className="mb-4"
-            value={material ? material.join(",") : ""}
-            onChange={handleChangeMaterial}
-          >
-            <option value="">Select material</option>
-            <option value="Cotton">Cotton</option>
-            <option value="Polyester">Polyester</option>
-          </select>
-          <div>Color:</div>
-          <select
-            className="mb-4"
-            value={colour ? colour.join(",") : ""}
-            onChange={handleChangeColour}
-          >
-            <option value="">Select color</option>
-            <option value="Red">Red</option>
-            <option value="Blue">Blue</option>
-            <option value="Green">Green</option>
-            <option value="Gray">Gray</option>
-            <option value="Black">Black</option>
-          </select>
-
-          <div className="flex justify-between gap-5 mb-6">
-            <div>
-              Min price:
-              <input
-                className="w-[110px]"
-                type="number"
-                value={minPrice}
-                onChange={handleChangeMinPrice}
-              />
-            </div>
-            <div>
-              Max price:
-              <input
-                className="w-[110px]"
-                type="number"
-                value={maxPrice}
-                onChange={handleChangeMaxPrice}
-              />
+          <div className="mb-2">
+            <div className="font-bold">Category:</div>
+            <div className="flex gap-3">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={category === "Women"}
+                  onChange={() => handleToggleCategory("Women")}
+                />{" "}
+                Women
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={category === "Men"}
+                  onChange={() => handleToggleCategory("Men")}
+                />{" "}
+                Men
+              </label>
             </div>
           </div>
 
-          <div>Order by:</div>
-          <select
-            className="mb-4"
-            value={orderType}
-            onChange={handleChangeOrderType}
-          >
-            <option value="">Select order type</option>
-            <option value="name">Name</option>
-            <option value="price">Price</option>
-          </select>
+          <div className="mb-2">
+            <div className="font-bold">Material:</div>
+            <div className="flex gap-3">
+              {["Cotton", "Polyester"].map((materialType) => (
+                <label key={materialType}>
+                  <input
+                    type="checkbox"
+                    value={materialType}
+                    checked={material.includes(materialType)}
+                    onChange={() => handleToggleMaterial(materialType)}
+                  />{" "}
+                  {materialType}
+                </label>
+              ))}
+            </div>
+          </div>
 
-          <div>Order:</div>
-          <select
-            className="mb-4"
-            value={order}
-            onChange={handleChangeOrder}
-          >
-            <option value="">Select order</option>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
+          <div className="mb-2">
+            <div className="font-bold">Color:</div>
+            <div className="flex flex-wrap gap-2">
+              {["Red", "Blue", "Green", "Gray", "Black"].map((color) => (
+                <label key={color}>
+                  <input
+                    type="checkbox"
+                    value={color}
+                    checked={colour.includes(color)}
+                    onChange={() => handleToggleColour(color)}
+                  />{" "}
+                  {color}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-col justify-between gap-1 mb-2">
+            <div>
+              <div className="font-bold">Price Range:</div>
+              <div className="flex gap-3">
+              <div>Min:</div>
+              <input
+                type="range"
+                min="0"
+                max="600"
+                value={minPrice}
+                onChange={(e) =>
+                  handlePriceRangeChange([e.target.value, maxPrice])
+                }
+                style={{ width: "160px" }}
+              />
+              <span>{minPrice}</span>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div>Max:</div>
+              <input
+                type="range"
+                min="0"
+                max="600"
+                value={maxPrice}
+                onChange={(e) =>
+                  handlePriceRangeChange([minPrice, e.target.value])
+                }
+                style={{ width: "160px" }}
+              />
+              <span>{maxPrice}</span>
+            </div>
+          </div>
+
+          <div className="mb-2">
+            <div className="font-bold">Order by:</div>
+            <div className="flex gap-3">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={orderType === "name"}
+                  onChange={() => handleToggleOrderType("name")}
+                />{" "}
+                Name
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={orderType === "price"}
+                  onChange={() => handleToggleOrderType("price")}
+                />{" "}
+                Price
+              </label>
+            </div>
+          </div>
+
+          <div className="mb-2">
+            <div className="font-bold">Order:</div>
+            <div className="flex gap-3">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={order === "asc"}
+                  onChange={() => handleToggleOrder("asc")}
+                />{" "}
+                Ascending
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={order === "desc"}
+                  onChange={() => handleToggleOrder("desc")}
+                />{" "}
+                Descending
+              </label>
+            </div>
+          </div>
         </div>
       </form>
       <button
@@ -162,7 +221,7 @@ const Filters = () => {
       <button
         type="button"
         className="bg-red-500 text-white font-bold py-2 px-4 rounded mt-4 block mx-auto"
-        onClick={handleCloseFilters}
+        onClick={toggleFilters}
       >
         Close
       </button>
@@ -171,182 +230,3 @@ const Filters = () => {
 };
 
 export default Filters;
-
-
-
-
-
-
-
-
-// import React from "react";
-// import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
-
-// const Filters = () => {
-//   const {
-//     category,
-//     material,
-//     colour,
-//     minPrice,
-//     maxPrice,
-//     orderType,
-//     order,
-//     setCategory,
-//     setMaterial,
-//     setColour,
-//     setMinPrice,
-//     setMaxPrice,
-//     setOrderType,
-//     setOrder,
-//     setShowFilters,
-//     fetchData, // Agregamos la función fetchData
-//   } = useStore();
-
-//   const handleReset = () => {
-//     setCategory("");
-//     setMaterial("");
-//     setColour("");
-//     setMinPrice("");
-//     setMaxPrice("");
-//     setOrderType("");
-//     setOrder("");
-//     fetchData(); // Llamamos a fetchData para refrescar los datos
-//   };
-
-//   const toggleFilters = () => {
-//     setShowFilters(false); // Solo cerramos los filtros sin modificar currentPage
-//   };
-
-//   const handleChangeCategory = (e) => {
-//     setCategory(e.target.value);
-//   };
-
-//   const handleChangeMaterial = (e) => {
-//     setMaterial(e.target.value.split(","));
-//   };
-
-//   const handleChangeColour = (e) => {
-//     setColour(e.target.value.split(","));
-//   };
-
-//   const handleChangeMinPrice = (e) => {
-//     setMinPrice(e.target.value);
-//   };
-
-//   const handleChangeMaxPrice = (e) => {
-//     setMaxPrice(e.target.value);
-//   };
-
-//   const handleChangeOrderType = (e) => {
-//     setOrderType(e.target.value);
-//   };
-
-//   const handleChangeOrder = (e) => {
-//     setOrder(e.target.value);
-//   };
-
-//   return (
-//     <div className="absolute text-black flex-col justify-center right-[176px] mt-[40px] w-[281px] p-3 h-[650px] bg-[#E9CFC6] z-[50] rounded-[12px] font-RedHat shadow-md border border-primary ">
-//       <div className="border-b-[#C17B60] border-b-[1px]  pb-1 text-center text-2xl font-bold ">
-//         Search filters
-//       </div>
-//       <form className="text-lg">
-//         <div className="mt-4 ml-1">
-//           <div>Category:</div>
-//           <select
-//             className="mb-4"
-//             value={category}
-//             onChange={handleChangeCategory}
-//           >
-//             <option value="">Select category</option>
-//             <option value="Women">Women</option>
-//             <option value="Men">Men</option>
-//           </select>
-
-//           <div>Material:</div>
-//           <select
-//             className="mb-4"
-//             value={material ? material.join(",") : ""}
-//             onChange={handleChangeMaterial}
-//           >
-//             <option value="">Select material</option>
-//             <option value="Cotton">Cotton</option>
-//             <option value="Polyester">Polyester</option>
-//           </select>
-//           <div>Color:</div>
-//           <select
-//             className="mb-4"
-//             value={colour ? colour.join(",") : ""}
-//             onChange={handleChangeColour}
-//           >
-//             <option value="">Select color</option>
-//             <option value="Red">Red</option>
-//             <option value="Blue">Blue</option>
-//             <option value="Green">Green</option>
-//             <option value="Gray">Gray</option>
-//             <option value="Black">Black</option>
-//           </select>
-
-//           <div className="flex justify-between gap-5 mb-6">
-//             <div>
-//               Min price:
-//               <input
-//                 className="w-[110px]"
-//                 type="number"
-//                 value={minPrice}
-//                 onChange={handleChangeMinPrice}
-//               />
-//             </div>
-//             <div>
-//               Max price:
-//               <input
-//                 className="w-[110px]"
-//                 type="number"
-//                 value={maxPrice}
-//                 onChange={handleChangeMaxPrice}
-//               />
-//             </div>
-//           </div>
-
-//           <div>Order by:</div>
-//           <select
-//             className="mb-4"
-//             value={orderType}
-//             onChange={handleChangeOrderType}
-//           >
-//             <option value="">Select order type</option>
-//             <option value="name">Name</option>
-//             <option value="price">Price</option>
-//           </select>
-
-//           <div>Order:</div>
-//           <select
-//             className="mb-4"
-//             value={order}
-//             onChange={handleChangeOrder}
-//           >
-//             <option value="">Select order</option>
-//             <option value="asc">Ascending</option>
-//             <option value="desc">Descending</option>
-//           </select>
-//         </div>
-//       </form>
-//       <button
-//         type="button"
-//         className="bg-red-500 text-white font-bold py-2 px-4 rounded mt-4 block mx-auto"
-//         onClick={handleReset}
-//       >
-//         Clear Filters
-//       </button>
-//       <button
-//         type="button"
-//         className="bg-red-500 text-white font-bold py-2 px-4 rounded mt-4 block mx-auto"
-//         onClick={toggleFilters}
-//       >
-//         Close
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Filters;

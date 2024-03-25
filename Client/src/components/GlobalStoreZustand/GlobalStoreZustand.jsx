@@ -14,6 +14,12 @@ const useStore = create((set) => ({
   orderType: "",
   order: "",
 
+  // Agregar la función fetchData al estado del store
+  fetchData: () => {},
+
+  // Definir una función para actualizar fetchData
+  setFetchData: (fetchDataFunc) => set({ fetchData: fetchDataFunc }),
+
   setItems: (newItems) => set({ items: newItems }),
   setTotalItems: (count) => set({ totalItems: count }),
   setShowFilters: (value) => set({ showFilters: value }),
