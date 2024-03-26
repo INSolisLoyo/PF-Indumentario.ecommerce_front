@@ -58,9 +58,9 @@ export default function NavBar() {
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
           Men
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/cards">
           Store
-        </a>
+        </a>{" "}
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
           About
         </a>
