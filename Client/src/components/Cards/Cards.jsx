@@ -90,9 +90,9 @@ const Cards = () => {
   };
 
   return (
-    <div className="flex-col pt-[120px] justify-center">
-      <div className="flex justify-around">
-        <div className="pl-[180px] w-full">
+    <div className="w-full flex-col pt-20 justify-center">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex justify-end items-center w-full md:justify-start md:pl-16">
           <select
             className="border-solid p-2 bg-primary hover:bg-secondary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-left"
             onChange={(e) => setProductLimit(parseInt(e.target.value))}
@@ -105,7 +105,7 @@ const Cards = () => {
           </select>
         </div>
 
-        <div className="flex justify-end pr-[180px] w-full">
+        <div className="flex justify-start items-center w-full md:justify-end md:pr-16">
           <div
             className="border-solid p-2 bg-primary hover:bg-secondary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
             onClick={toggleFilters}
