@@ -70,7 +70,7 @@ const Filters = () => {
   };
 
   return (
-    <div className="absolute text-black flex-col justify-center right-[176px] mt-[40px] w-[281px] p-3 h-[650px] bg-[#E9CFC6] z-[50] rounded-[12px] font-RedHat shadow-md border border-primary ">
+    <div className="absolute text-black p-4 flex-col justify-center md:top-0 md:right-32 bg-primary/70 z-[50] rounded-[12px] font-RedHat shadow-md border border-primary ">
       <div className="border-b-[#C17B60] border-b-[1px]  pb-1 text-center text-2xl font-bold ">
         Search filters
       </div>
@@ -213,14 +213,14 @@ const Filters = () => {
       </form>
       <button
         type="button"
-        className="bg-red-500 text-white font-bold py-2 px-4 rounded mt-4 block mx-auto"
+        className="bg-white/70 hover:bg-white text-slate-900 font-bold py-2 px-4 rounded-2xl mt-4 block mx-auto"
         onClick={handleReset}
       >
         Clear Filters
       </button>
       <button
         type="button"
-        className="bg-red-500 text-white font-bold py-2 px-4 rounded mt-4 block mx-auto"
+        className="bg-white/70 hover:bg-white text-slate-900 font-bold py-2 px-4 rounded-2xl mt-4 block mx-auto"
         onClick={toggleFilters}
       >
         Close

@@ -100,18 +100,18 @@ const Cards = () => {
 
   return (
     
-    <div className="flex-col pt-[120px] justify-center">
-      <div className="flex justify-around">
-        <div className="flex justify-end pr-[180px] w-full">
+    <div className="flex-col pt-[120px] justify-center font-RedHat">
+      <div className="flex justify-around relative">
+        <div className="flex justify-center w-full md:justify-end md:px-12">
           <div
-            className="border-solid p-2 bg-primary hover:bg-secondary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
+            className="border-solid px-4 py-2  bg-primary/20 hover:bg-primary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
             onClick={() => setShowFilters(!showFilters)}
           >
-            Filter
+            Filters
           </div>
         </div>
+        {showFilters && <Filters />}
       </div>
-      {showFilters && <Filters />}
       <div className="flex pt-[40px] justify-center w-full">
         <div
           className="flex flex-wrap gap-10 justify-center"
