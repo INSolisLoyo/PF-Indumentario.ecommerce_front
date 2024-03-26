@@ -9,14 +9,14 @@ const SearchBar = () => {
   };
 
   return (
-    <div className=" searchbar hidden lg:flex ">
-      <form className="flex items-center gap-1">
+    <div className=" flex searchbar w-5/6">
+      <form className="w-full flex justify-center items-center gap-1">
         <div className="shrink-0"></div>
 
-        <label className="block">
+        <label className="w-full inline-block">
           <input
             type="text"
-            className="block w-full text-sm bg-purple-200 rounded-xl p-1"
+            className="inline-block w-full text-sm bg-primary/10 rounded-xl p-2"
             placeholder="Search product..."
             onChange={(e) => setName(e.target.value)}
           />

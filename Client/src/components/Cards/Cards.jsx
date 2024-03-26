@@ -1,7 +1,9 @@
 // En el componente Cards
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
+import SearchBar from "../Navbar/SearchBar";
 import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
@@ -10,6 +12,8 @@ const URL = "http://localhost:3001/products";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
+  const location = useLocation();
+
   const {
     items,
     totalItems,
@@ -75,6 +79,7 @@ const Cards = () => {
   ]);
 
   useEffect(() => {
+    console.log(location.pathname);
     const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
     const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, items.length);
     setDisplayedItems(items.slice(startIndex, endIndex));
@@ -102,7 +107,14 @@ const Cards = () => {
     
     <div className="flex-col pt-[120px] justify-center font-RedHat">
       <div className="flex justify-around relative">
-        <div className="flex justify-center w-full md:justify-end md:px-12">
+        <div className="flex flex-col gap-4 items-center justify-center w-full h-auto lg:flex-row lg:justify-end md:px-12">
+          <div className=" w-full h-12 flex justify-center lg:hidden">
+          {
+            location.pathname === '/cards' && (
+              <SearchBar />           
+            )
+          }
+          </div>
           <div
             className="border-solid px-4 py-2  bg-primary/20 hover:bg-primary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
             onClick={() => setShowFilters(!showFilters)}
