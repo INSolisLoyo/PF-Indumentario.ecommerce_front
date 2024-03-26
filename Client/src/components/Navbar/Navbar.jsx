@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
@@ -10,6 +10,7 @@ import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
@@ -81,8 +82,13 @@ export default function NavBar() {
         </div>
       </div>
 
+
       <div className="searchbar hidden lg:flex ">
-        <SearchBar />
+        {
+          location.pathname === '/cards' && (
+            <SearchBar />           
+          )
+        }
       </div>
 
       <div className="car flex ">
