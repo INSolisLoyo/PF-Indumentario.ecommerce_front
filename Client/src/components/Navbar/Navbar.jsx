@@ -27,7 +27,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/50 fixed font-RedHat z-[100] ">
+    <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
       <button className="xl:hidden " onClick={handleMenuClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"

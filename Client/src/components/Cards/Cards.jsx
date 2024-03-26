@@ -99,6 +99,7 @@ const Cards = () => {
   const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
   return (
+    
     <div className="flex-col pt-[120px] justify-center">
       <div className="flex justify-around">
         <div className="flex justify-end pr-[180px] w-full">
