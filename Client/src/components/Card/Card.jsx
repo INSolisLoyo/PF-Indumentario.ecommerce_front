@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Card = ({ res }) => {
   const handlerClick = () => {
     return alert("Hola");
   };
+
+  const [itemName, setItemName] = useState('');
+
+  useEffect(() => {
+
+    const arr = res.name.split(' ');
+    const newItemName = arr.slice(-3).join(' ');
+    setItemName(newItemName)
+
+  }, [])
 
   return (
     <Link to={`/detail/${res.id}`} >
@@ -28,9 +38,9 @@ const Card = ({ res }) => {
             🤎
           </span>{" "}
         </div>
-        <div className="flex justify-between">
-          <div className="text-xl font-extrabold">{res.category}</div>
-          <div className="text-xl font-extrabold">${res.price}</div>
+        <div className="flex flex-wrap justify-between">
+          <div className="text-md font-bold">{itemName}</div>
+          <div className="text-md ">${res.price}</div>
         </div>
         <div>{res.category}</div>
       </div>
