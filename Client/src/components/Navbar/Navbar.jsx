@@ -7,6 +7,7 @@ import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
+import MyOrder from "../MyOrder/MyOrder";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ export default function NavBar() {
 
   const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
+
+  const [showOrder, setShowOrder] = useState(false);
+
+  const toggleOrder = () => {
+    setShowOrder(!showOrder);
+  };
 
   const handleMenuClick = () => {
     setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
@@ -91,7 +98,7 @@ export default function NavBar() {
         }
       </div>
 
-      <div className="car flex ">
+      <div className="car flex " onClick={toggleOrder}>
         <div className="car-shop pr-6 cursor-pointer ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -130,6 +137,12 @@ export default function NavBar() {
           </svg>
         </div>
       </div>
+
+      {showOrder && (
+        <div className="absolute  mt-2 w-full top-10 flex justify-end lg:pr-52 ">
+          <MyOrder />
+        </div>
+      )}
 
       {showLogin && <Login onClose={handleCloseLogin} />}
     </div>
