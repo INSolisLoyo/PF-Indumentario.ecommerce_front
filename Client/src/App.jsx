@@ -6,7 +6,7 @@ import Detail from "./components/Detail/Detail";
 import MyAccount from "./components/MyAccount/MyAccount";
 import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
-// import Create from "./components/Create/Create";
+import Create from "./components/Create/Create";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path="/myaccount" element={<MyAccount />} />
         <Route path="/cards" element={<Cards />} />
 
-        {/* <Route path="/create" element={<Create />} /> */}
+        <Route path="/create" element={<Create />} /> 
       </Routes>
 
       <Footer />
