@@ -14,7 +14,7 @@ const Women = () => {
           Nuptials
         </p>
       </div>
-      <div className="relative z-10">
+      <div className="relative z-10 px-8">
         <OneSlider category={"Women"} />
       </div>
     </div>
