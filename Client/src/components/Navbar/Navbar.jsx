@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
-import { NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
@@ -65,6 +65,9 @@ export default function NavBar() {
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
           About
         </a>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/create">
+          Create
+        </a>
       </div>
 
       <div className="links text-lg hidden lg:flex ">
@@ -79,6 +82,11 @@ export default function NavBar() {
         </div>
         <div className="pl-6  pr-6  " href="#">
           <MenuAbout />
+        </div>
+        <div className="block uppercase font-extrabold cursor-pointer focus:outline-none">
+          <Link to='/create'>
+            Create
+          </Link>
         </div>
       </div>
 

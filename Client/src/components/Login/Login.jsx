@@ -21,7 +21,7 @@ export default function Login({ onClose }) {
           Username
         </label>
         <input
-          className="border-none rounded-lg bg-primary mb-5 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/50 mb-5 text-white outline-none p-1 w-[220px] "
           type="text"
         />
 
@@ -32,12 +32,12 @@ export default function Login({ onClose }) {
           Password
         </label>
         <input
-          className="border-none rounded-lg bg-primary mb-2 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/50 mb-2 text-white outline-none p-1 w-[220px] "
           type="password"
         />
       </form>
       <button
-        className="bg-primary p-2 w-[80px] rounded-xl mb-4 uppercase "
+        className="bg-primary/50 p-2 w-[80px] rounded-xl mb-4 uppercase "
         onClick={onClose}
       >
         GO
