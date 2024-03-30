@@ -139,7 +139,7 @@ export default function NavBar() {
       </div>
 
       {showOrder && (
-        <div className="absolute  mt-2 w-full top-10 flex justify-end lg:pr-52 ">
+        <div className="absolute  mt-2 w-full top-10 flex justify-end   lg:pr-52 ">
           <MyOrder />
         </div>
       )}

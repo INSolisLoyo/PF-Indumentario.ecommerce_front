@@ -5,7 +5,7 @@ const MyOrder = () => {
 
     return (
 
-        <div className="font-RedHat w-full h-auto bg-primary/50 relative py-8 px-4 flex flex-col items-center md:max-w-96 justify-center">
+        <div className="font-RedHat w-full h-auto bg-primary/50 relative py-8 px-4 flex flex-col items-center md:max-w-96 justify-center ">
 
             <span className="absolute right-2 top-2 size-4xl font-semibold">x</span>
 
