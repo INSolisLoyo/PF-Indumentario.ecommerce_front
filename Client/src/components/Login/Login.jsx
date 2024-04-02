@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import google from "../../assets/google.png";
 
 export default function Login({ onClose }) {
   // Estilo en línea para el color de fondo con opacidad
@@ -21,7 +22,7 @@ export default function Login({ onClose }) {
           Username
         </label>
         <input
-          className="border-none rounded-lg bg-primary mb-5 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/50 mb-5 text-white outline-none p-1 w-[220px] "
           type="text"
         />
 
@@ -32,16 +33,39 @@ export default function Login({ onClose }) {
           Password
         </label>
         <input
-          className="border-none rounded-lg bg-primary mb-2 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/50 mb-2 text-white outline-none p-1 w-[220px] "
           type="password"
         />
       </form>
       <button
-        className="bg-primary p-2 w-[80px] rounded-xl mb-4 uppercase "
+        className="bg-primary/50 p-2 w-[80px] rounded-xl mb-4 uppercase "
         onClick={onClose}
       >
         GO
       </button>
+
+      <div className="login-socials items-center mb-[8px]  ">
+        <a href="http://localhost:3001/auth/facebook">
+          <button className="w-[60px] mr-[5px] shadow-lg shadow-gray-300 p-1 rounded-lg bg-blue-700  ">
+            <img
+              className=" w-[20px] m-auto "
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/768px-Facebook_Logo_%282019%29.png"
+              alt=""
+            />
+          </button>
+        </a>
+
+        <a href="http://localhost:3001/google/callback">
+          <button className="w-[60px] ml-[5px] shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200  ">
+            <img
+              className="w-[20px] m-auto "
+              src="https://cdn-icons-png.flaticon.com/512/300/300221.png"
+              alt="Google Icon"
+            />
+          </button>
+        </a>
+      </div>
+
       <div className="need-acount">
         <p className="uppercase text-[12px]">
           Do u need an acount?{" "}
