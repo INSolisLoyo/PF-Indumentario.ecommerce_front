@@ -1,7 +1,8 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
 const useStore = create((set) => ({
   items: [],
+  totalItems: 10,
   showFilters: false,
   name: "",
   category: "",
@@ -9,23 +10,28 @@ const useStore = create((set) => ({
   maxPrice: "",
   material: [],
   colour: [],
-  productLimit: 10, // Por defecto, puedes cambiarlo si es necesario
   currentPage: 1,
   orderType: "",
   order: "",
 
+  // Agregar la función fetchData al estado del store
+  fetchData: () => {},
+
+  // Definir una función para actualizar fetchData
+  setFetchData: (fetchDataFunc) => set({ fetchData: fetchDataFunc }),
+
   setItems: (newItems) => set({ items: newItems }),
+  setTotalItems: (count) => set({ totalItems: count }),
   setShowFilters: (value) => set({ showFilters: value }),
-  setName: (value) => set({ name: value }),
-  setCategory: (value) => set({ category: value }),
-  setMinPrice: (value) => set({ minPrice: value }),
-  setMaxPrice: (value) => set({ maxPrice: value }),
-  setMaterial: (value) => set({ material: value }),
-  setColour: (value) => set({ colour: value }),
-  setProductLimit: (value) => set({ productLimit: value }),
+  setName: (value) => set({ name: value, currentPage: 1 }),
+  setCategory: (value) => set({ category: value, currentPage: 1 }),
+  setMinPrice: (value) => set({ minPrice: value, currentPage: 1 }),
+  setMaxPrice: (value) => set({ maxPrice: value, currentPage: 1 }),
+  setMaterial: (value) => set({ material: value, currentPage: 1 }),
+  setColour: (value) => set({ colour: value, currentPage: 1 }),
+  setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
+  setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
-  setOrderType: (value) => set({ orderType: value }),
-  setOrder: (value) => set({ order: value }),
 }));
 
 export default useStore;

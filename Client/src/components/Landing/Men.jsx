@@ -2,8 +2,8 @@ import OneSlider from "../Oneslider/OneSlider";
 
 const Men = () => {
   return (
-    <div className="relative flex flex-col-reverse justify-center gap-x-20 w-screen h-[70vh] content-center items-center 2xl:flex-row font-RedHat">
-      <div className="relative z-10">
+    <div className="relative flex flex-col gap-8 justify-center items-center w-full h-auto md:flex-row font-RedHat">
+      <div className="z-10">
         <OneSlider category={"Men"} />
       </div>
       <div className="text-center relative z-20">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
@@ -10,6 +10,7 @@ import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
@@ -27,8 +28,8 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full flex justify-between pl-5 pr-5 h-14 items-center bg-white/50 fixed font-RedHat z-[100] ">
-      <button className="xl:hidden " onClick={handleMenuClick} >
+    <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
+      <button className="lg:hidden " onClick={handleMenuClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -58,11 +59,14 @@ export default function NavBar() {
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
           Men
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/cards">
           Store
-        </a>
+        </a>{" "}
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
           About
+        </a>
+        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/create">
+          Create
         </a>
       </div>
 
@@ -79,10 +83,20 @@ export default function NavBar() {
         <div className="pl-6  pr-6  " href="#">
           <MenuAbout />
         </div>
+        <div className="block uppercase font-extrabold cursor-pointer focus:outline-none">
+          <Link to='/create'>
+            Create
+          </Link>
+        </div>
       </div>
 
+
       <div className="searchbar hidden lg:flex ">
-        <SearchBar />
+        {
+          location.pathname === '/cards' && (
+            <SearchBar />           
+          )
+        }
       </div>
 
       <div className="car flex ">
