@@ -7,6 +7,7 @@ import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
+import Cart from "../Cart/Cart";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -14,10 +15,19 @@ export default function NavBar() {
 
   const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
+  const [showCart, setShowCart] = useState(false)
 
   const handleMenuClick = () => {
     setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
   };
+
+  const handleCartClick = () => {
+    setShowCart(!showCart)
+  }
+
+  const handleCloseCart = () => {
+    setShowCart(false)
+  }
 
   const handleProfileClick = () => {
     setShowLogin(!showLogin);
@@ -83,7 +93,7 @@ export default function NavBar() {
         <div className="pl-6  pr-6  " href="#">
           <MenuAbout />
         </div>
-        <div className="block uppercase font-extrabold cursor-pointer focus:outline-none">
+        <div className="block uppercase font-medium cursor-pointer focus:outline-none">
           <Link to='/create'>
             Create
           </Link>
@@ -99,8 +109,12 @@ export default function NavBar() {
         }
       </div>
 
-      <div className="car flex ">
-        <div className="car-shop pr-6 cursor-pointer ">
+      <div className="car flex "
+      
+      >
+        <div className="car-shop pr-6 cursor-pointer "
+        onClick={handleCartClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="white"
@@ -140,6 +154,7 @@ export default function NavBar() {
       </div>
 
       {showLogin && <Login onClose={handleCloseLogin} />}
+      {showCart && <Cart onClose={handleCloseCart} /> }
     </div>
   );
 }

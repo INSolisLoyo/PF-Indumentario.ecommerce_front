@@ -12,7 +12,7 @@ const MenuStore = () => {
     <div>
       <div
         onClick={toggleMenuStore}
-        className="block uppercase font-extrabold cursor-pointer focus:outline-none"
+        className="block uppercase font-medium cursor-pointer focus:outline-none"
       >
         <a className="" href="/cards">
           STORE
