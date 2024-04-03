@@ -1,20 +1,68 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
 import google from "../../assets/google.png";
 
 export default function Login({ onClose }) {
-  // Estilo en línea para el color de fondo con opacidad
-  const backgroundStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.8)", // bg-slate-400 con opacidad 50%
-  };
 
-  const navigate = useNavigate();
+  const userRef = useRef();
+  const errRef = useRef();
+
+  const [auth, setAuth] = useState({})
+
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, [])
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [user, password])
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: user,
+          password: password
+        })
+      }).then( res => res.json()).then( (cred) => 
+        console.log(cred)
+      )
+      setUser('');
+      setPassword('');
+      setSuccess(true);
+      
+    } catch (error) {
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+          setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+          setErrMsg('Unauthorized');
+      } else {
+          setErrMsg('Login Failed');
+      }
+      errRef.current.focus();
+    }
+  }
 
   return (
     <div className="absolute top-16 right-2 p-4 border-none rounded-lg shadow w-[350px] h-[350px] text-center shadow-slate-500 font-RedHat bg-white max-lg:right-2 max-lg:w-[320px] ">
+      <p ref={errRef} aria-live="assertive">{errMsg}</p>
       <h2 className="text-black text-xl font-bold ">Login</h2>
       <div className="bg-black w-[250px] p-[0.8px] m-auto mt-2 mb-3 "></div>
-      <form className=" pb-4 " action="">
+      <form className=" pb-4 " onSubmit={handleSubmit}>
         <label
           className="block  text-left ml-12 uppercase text-[13px] tracking-[1px]  "
           htmlFor=""
@@ -22,8 +70,14 @@ export default function Login({ onClose }) {
           Username
         </label>
         <input
-          className="border-none rounded-lg bg-primary/50 mb-5 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/20 mb-5 text-black outline-none p-1 w-[220px] "
           type="text"
+          id="username"
+          ref={userRef}
+          autoComplete="off"
+          onChange={(e) => setUser(e.target.value)}
+          value={user}
+          required
         />
 
         <label
@@ -33,16 +87,19 @@ export default function Login({ onClose }) {
           Password
         </label>
         <input
-          className="border-none rounded-lg bg-primary/50 mb-2 text-white outline-none p-1 w-[220px] "
+          className="border-none rounded-lg bg-primary/20 mb-2 text-black outline-none p-1 w-[220px] "
           type="password"
+          id="password"
+          onChange={ (e) => setPassword(e.target.value)}
+          value={password}
+          required
         />
+        <button
+          className="bg-primary/50 p-2 w-[80px] rounded-xl mb-4 uppercase "
+        >
+          GO
+        </button>
       </form>
-      <button
-        className="bg-primary/50 p-2 w-[80px] rounded-xl mb-4 uppercase "
-        onClick={onClose}
-      >
-        GO
-      </button>
 
       <div className="login-socials items-center mb-[8px]  ">
         <a href="http://localhost:3001/auth/facebook">
