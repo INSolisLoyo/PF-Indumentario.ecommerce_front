@@ -10,6 +10,7 @@ const PWD_REGEX = /.+/;
 export default function Login({ onClose }) {
 
   const setCurrentUser = useStore((state) => state.setCurrentUser )
+  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,6 +74,7 @@ export default function Login({ onClose }) {
         document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`
         // console.log(jwtDecode(cred.token).userName);
         const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive } = jwtDecode(cred.token);
+        console.log(jwtDecode(cred.token).userName);
         const newUser = {
           id: userId,
           name: userName,
@@ -84,6 +86,7 @@ export default function Login({ onClose }) {
           isActive: isActive
         }
         setCurrentUser(newUser);
+        setRegisteredUser(true);
       }
       )
       

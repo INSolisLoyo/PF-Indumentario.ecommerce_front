@@ -1,11 +1,17 @@
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import { useEffect } from "react";
 
 export default function Account({ onClose }) {
 
+    
     const user = useStore((state) => state.user)
+
+    useEffect(() => {
+      console.log(user)
+    }, [])
   
     return (
-      <div className="absolute right-0 top-0 border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 md:h-svh">
+      <div className="bg-gradient-to-t from-[#dfb69f] to-white absolute right-0 top-0 border-none rounded-lg shadow shadow-slate-500 font-RedHat md:w-1/3 md:h-svh">
 
         <div className="lg:p-4 flex flex-col">
 
@@ -16,18 +22,20 @@ export default function Account({ onClose }) {
               <h2 className="block text-center">Your account</h2>
             </div>
 
-            <div>
-                <p>Hola {user.name}</p>
+            <div className="w-full text-left md:mt-12 md:px-4">
+                <p>Hola, {user.name} 💜</p>
             </div>
 
-            <ul>
-                <li>Shopping History</li>
-                <li>Account settings</li>               
+            <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
+                <li><a href="#" className="hover:text-primary">Shopping History</a></li>
+                <li><a href="#" className="hover:text-primary">Account settings</a></li>             
             </ul>
 
-            <button>
-                Log Out
-            </button>
+            <div className="w-full flex justify-center md:mt-32 md:px-4">
+              <button className="md:w-3/6 bg-primary/40 hover:bg-primary md:rounded-lg md:p-2">
+                  Log Out
+              </button>
+            </div>
           </div>
 
         </div>
