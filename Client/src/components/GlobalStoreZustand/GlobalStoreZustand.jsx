@@ -42,7 +42,7 @@ const useStore = create((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
-  setCurrentUser: (currentUser) => set({ user: {  ...state.user, ...currentUser} })
+  setCurrentUser: (currentUser) => set({ user: currentUser })
 }));
 
 export default useStore;
