@@ -15,7 +15,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@rollup/rollup-win32-x64-msvc": "^4.13.2",
+    "@rollup/rollup-linux-x64-gnu": "^4.14.0",
     "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "chroma-js": "^2.4.2",
