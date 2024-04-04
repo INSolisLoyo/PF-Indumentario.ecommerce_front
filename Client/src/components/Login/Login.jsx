@@ -1,29 +1,61 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import jwt_decode from 'jsonwebtoken';
 import google from "../../assets/google.png";
 
+const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const PWD_REGEX = /.+/;
+
 export default function Login({ onClose }) {
+
+  const [auth, setAuth] = useState({})
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const userRef = useRef();
   const errRef = useRef();
 
-  const [auth, setAuth] = useState({})
-
   const [user, setUser] = useState('');
+  const [validUser, setValidUser] = useState(false);
   const [password, setPassword] = useState('');
+  const [validPassword, setValidPassword] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
-
+  
   useEffect(() => {
     userRef.current.focus();
   }, [])
 
   useEffect(() => {
+    setValidUser(USER_REGEX.test(user));
+    if(!validUser){
+      setErrMsg('Enter a valid email')
+    }
+  }, [user])
+
+  useEffect(() => {
+      setValidPassword(PWD_REGEX.test(password));
+      if(!validPassword){
+        setErrMsg('Enter a valid password')
+      }
+  }, [password])
+
+  useEffect(() => {
     setErrMsg('');
   }, [user, password])
+
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+
+    const v1 = USER_REGEX.test(user);
+    const v2 = PWD_REGEX.test(password);
+    if (!v1 || !v2) {
+        setErrMsg("Invalid Entry");
+        return;
+    }
 
     try {
 
@@ -38,13 +70,13 @@ export default function Login({ onClose }) {
         })
       }).then( res => res.json()).then( (cred) => {
         document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`
-        console.log(document.cookie)
+        console.log(document.cookie);
       }
       )
-      setUser('');
-      setPassword('');
-      setSuccess(true);
       
+      onClose();
+      navigate(from, { replace: true });
+     
     } catch (error) {
       if (!err?.response) {
         setErrMsg('No Server Response');
@@ -59,6 +91,7 @@ export default function Login({ onClose }) {
     }
   }
 
+  
   return (
     <div className="absolute right-0 top-0 border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 md:h-svh">
 
@@ -89,6 +122,7 @@ export default function Login({ onClose }) {
             value={user}
             required
           />
+          {!validUser && <p ref={errRef} className="text-lg text-red-600 mt-4">{errMsg}</p>}
 
           <label className="text-xl md:mt-6" htmlFor="password">
             Password
@@ -101,6 +135,7 @@ export default function Login({ onClose }) {
             value={password}
             required
           />
+          {!validPassword && <p ref={errRef} className="text-lg text-red-600 mt-4">{errMsg}</p>}
           <button
             className="bg-primary/50 hover:bg-primary p-2 w-28 md:mt-6 rounded-xl mb-4"
           >
