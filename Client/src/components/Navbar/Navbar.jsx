@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
+import Account from "../Account/Account";
 import { NavLink, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
@@ -139,7 +140,7 @@ export default function NavBar() {
         </div>
       </div>
 
-      {showLogin && <Login onClose={handleCloseLogin} />}
+      {showLogin && <Account onClose={handleCloseLogin} />}
     </div>
   );
 }
