@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
 import Account from "../Account/Account";
@@ -10,23 +11,37 @@ import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
 
 export default function NavBar() {
+
+  const isRegisteredUser = useStore( (state ) => state.registeredUser )
+
+  const { name } = useStore((state) => state.user)
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showUserName, setShowUserName] = useState(false);
 
   const handleMenuClick = () => {
     setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
   };
 
   const handleProfileClick = () => {
-    setShowLogin(!showLogin);
+    setShowSidebar(true);
   };
 
-  const handleCloseLogin = () => {
-    setShowLogin(false);
+  const handleCloseSideBar = () => {
+    setShowSidebar(false);
   };
+
+  useEffect( () => {
+    if(isRegisteredUser){
+      setShowUserName(true)
+    }
+    else {
+      setShowUserName(false)
+    }
+  }, [isRegisteredUser])
 
   return (
     <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
@@ -123,6 +138,7 @@ export default function NavBar() {
           className="profile pr-4 cursor-pointer "
           onClick={handleProfileClick}
         >
+          { showUserName && <p>Hello {name}</p> }
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -140,7 +156,9 @@ export default function NavBar() {
         </div>
       </div>
 
-      {showLogin && <Account onClose={handleCloseLogin} />}
+      {showSidebar && isRegisteredUser ? <Account onClose={handleCloseSideBar}/> : null}
+      {showSidebar && !isRegisteredUser ? <Login onClose={handleCloseSideBar} /> : null}
+
     </div>
   );
 }
