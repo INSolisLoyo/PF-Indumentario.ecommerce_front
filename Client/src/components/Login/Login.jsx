@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import jwt_decode from 'jsonwebtoken';
+import {jwtDecode} from 'jwt-decode';
 import google from "../../assets/google.png";
 
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -12,7 +12,7 @@ export default function Login({ onClose }) {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const origin = location.state?.from?.pathname || "/";
 
   const userRef = useRef();
   const errRef = useRef();
@@ -70,12 +70,12 @@ export default function Login({ onClose }) {
         })
       }).then( res => res.json()).then( (cred) => {
         document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`
-        console.log(document.cookie);
+        console.log(jwtDecode(cred.token).userName);
       }
       )
       
       onClose();
-      navigate(from, { replace: true });
+      navigate(origin, { replace: true });
      
     } catch (error) {
       if (!err?.response) {
