@@ -2,7 +2,6 @@ import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import google from "../../assets/google.png";
 
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PWD_REGEX = /.+/;

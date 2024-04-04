@@ -40,6 +40,8 @@ export default function NavBar() {
     }
     else {
       setShowUserName(false)
+      setShowSidebar(false);
+      setShowUserName(false);
     }
   }, [isRegisteredUser])
 
@@ -135,7 +137,7 @@ export default function NavBar() {
 
 
         <div
-          className="profile pr-4 cursor-pointer "
+          className="profile pr-4 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 "
           onClick={handleProfileClick}
         >
           { showUserName && <p>Hello {name}</p> }
@@ -156,7 +158,7 @@ export default function NavBar() {
         </div>
       </div>
 
-      {showSidebar && isRegisteredUser ? <Account onClose={handleCloseSideBar}/> : null}
+      {showSidebar && isRegisteredUser ? <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar}/> : null}
       {showSidebar && !isRegisteredUser ? <Login onClose={handleCloseSideBar} /> : null}
 
     </div>
