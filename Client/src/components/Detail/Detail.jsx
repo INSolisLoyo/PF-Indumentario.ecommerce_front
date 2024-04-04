@@ -10,7 +10,6 @@ const Detail = () => {
     
     const { id } = useParams();
     const PRODUCT = `http://localhost:3001/products/${id}`;
-    const STOCK = `http://localhost:3001/stock/${id}`
     const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
         id: '',
