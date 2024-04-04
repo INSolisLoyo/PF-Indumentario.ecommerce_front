@@ -1,3 +1,4 @@
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
@@ -8,8 +9,8 @@ const PWD_REGEX = /.+/;
 
 export default function Login({ onClose }) {
 
-  const [auth, setAuth] = useState({})
-
+  const setCurrentUser = useStore((state) => state.setCurrentUser )
+  
   const navigate = useNavigate();
   const location = useLocation();
   const origin = location.state?.from?.pathname || "/";
@@ -17,7 +18,7 @@ export default function Login({ onClose }) {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState('')
   const [validUser, setValidUser] = useState(false);
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
@@ -70,7 +71,19 @@ export default function Login({ onClose }) {
         })
       }).then( res => res.json()).then( (cred) => {
         document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`
-        console.log(jwtDecode(cred.token).userName);
+        // console.log(jwtDecode(cred.token).userName);
+        const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive } = jwtDecode(cred.token);
+        const newUser = {
+          id: userId,
+          name: userName,
+          lastname: userLastname,
+          dob: userBirthdate,
+          email: userEmail,
+          password: userPassword,
+          isAdmin: isAdmin,
+          isActive: isActive
+        }
+        setCurrentUser(newUser);
       }
       )
       

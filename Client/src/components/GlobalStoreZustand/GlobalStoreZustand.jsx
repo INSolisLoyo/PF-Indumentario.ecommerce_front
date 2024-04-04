@@ -13,6 +13,16 @@ const useStore = create((set) => ({
   currentPage: 1,
   orderType: "",
   order: "",
+  user: {
+    id: '',
+    name: '',
+    lastname: '',
+    dob: '',
+    email: '',
+    password: '',
+    isAdmin: '',
+    isActive: ''
+  },
 
   // Agregar la función fetchData al estado del store
   fetchData: () => {},
@@ -32,6 +42,7 @@ const useStore = create((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
+  setCurrentUser: (currentUser) => set({ user: {  ...state.user, ...currentUser} })
 }));
 
 export default useStore;
