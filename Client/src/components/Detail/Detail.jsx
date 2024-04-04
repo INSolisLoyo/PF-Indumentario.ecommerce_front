@@ -1,31 +1,27 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import chroma from 'chroma-js';
 import DetailGallery from "../DetailGallery/DetailGallery";
 import heart from '../../img/heart.png'
+import { getColors } from "./Colors";
 
 
 const Detail = () => {
-
+    
     const { id } = useParams();
-    const ENDPOINT = `http://localhost:3001/products/${id}`;
+    const PRODUCT = `http://localhost:3001/products/${id}`;
     const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
+        id: '',
         name: '',
         price: '',
-        description: '',
         images: [],
         colours: [],
         material: ''
     });
 
 
-    const cleaner = ({name, price, images, colour, material}) => {
-
-        const arr = name.split(' ');
-        const itemName = arr.slice(-3).join(' ');
-        const materials = material.join(", ");
+    const cleaner =  ({id, name, price, images, colour, material}) => {
 
         const galleryImages = images?.map( (image) => {
             return {
@@ -34,24 +30,15 @@ const Detail = () => {
             }
         })
 
-        const newColors = [];
+        const materials = material?.join(', ');
 
-        colour.forEach((col) => {
-            
-            if(col.includes(' ')){
-                const colors = col.split(' ');
-                newColors.push(colors[1])
-            } else {
-                newColors.push(col)
-            }
-            
-        });
+        const newColors = colour?.map((color) => getColors(color)) 
 
         setItem(
             {
-                name: itemName,
+                id: id,
+                name: name,
                 price: price,
-                description: name,
                 images: galleryImages,
                 colours: newColors,
                 material: materials
@@ -74,7 +61,7 @@ const Detail = () => {
 
         const fetchData = async () => {
             try {
-                const {data}  = await axios.get(ENDPOINT);    
+                const {data}  = await axios.get(PRODUCT);    
                 
                 if(data){
                     cleaner(data);  
@@ -94,7 +81,7 @@ const Detail = () => {
 
     return (
 
-        <div className="w-11/12 h-auto pt-20 mx-auto lg:mt-10 font-RedHat flex flex-col gap-4 lg:flex-row">
+        <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
 
             {/* aquí va la gallery */}
             <DetailGallery images={item.images} />
@@ -124,7 +111,6 @@ const Detail = () => {
                             </div>
                         </div>
 
-                        <p className="mt-2 text-sm"><span className="font-semibold">Description:</span> {item.description}</p>
                         <p className="mt-2 text-sm"><span className="font-semibold">Material:</span> {item.material}</p>
 
                         <div className="mt-2 flex flex-col gap-2 md:flex-row">
@@ -136,14 +122,12 @@ const Detail = () => {
 
                                     {
                                         
-                                        item.colours?.map(  (color, index) => {
-                                    
-                                            const hexColor =  chroma(color.toLowerCase()).hex('rgb');
+                                        item.colours?.map( (color, index) => {
                                             
                                             return (
                                                 <span 
                                                     key={index}
-                                                    className={`w-4 h-4 bg-[${hexColor}] rounded-full`}
+                                                    className={`w-6 h-6 ${color} rounded-full hover:border cursor-pointer`}
                                                 ></span>
                                             )
                                         })
