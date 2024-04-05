@@ -9,6 +9,9 @@ import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
 
 function App() {
+
+  const environmentText = import.meta.env.ENVIRONMENT_TEST;
+  
   return (
     <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
       <NavBar />

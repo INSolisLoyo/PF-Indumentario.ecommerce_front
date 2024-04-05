@@ -42,7 +42,7 @@ const Card = ({ res }) => {
           <div className="text-md font-bold">{itemName}</div>
           <div className="text-md ">${res.price}</div>
         </div>
-        <div>{res.category}</div>
+        <div>{res.gender}</div>
       </div>
     </Link>
   );
