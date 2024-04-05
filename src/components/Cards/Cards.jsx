@@ -123,7 +123,7 @@ const Cards = () => {
             Filters
           </div>
         </div>
-        {showFilters && <Filters />}
+        {/* {showFilters && <Filters />} */}
       </div>
       <div className="flex pt-[40px] justify-center w-full">
         <div
