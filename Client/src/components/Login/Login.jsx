@@ -2,7 +2,9 @@ import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
+import axios from "../../env/axios";
 
+const LOGIN_URL = '/login';
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PWD_REGEX = /.+/;
 
@@ -60,34 +62,35 @@ export default function Login({ onClose }) {
 
     try {
 
-      fetch('http://localhost:3001/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: user,
-          password: password
-        })
-      }).then( res => res.json()).then( (cred) => {
-        document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`
-        // console.log(jwtDecode(cred.token).userName);
-        const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive } = jwtDecode(cred.token);
-        console.log(jwtDecode(cred.token).userName);
-        const newUser = {
-          id: userId,
-          name: userName,
-          lastname: userLastname,
-          dob: userBirthdate,
-          email: userEmail,
-          password: userPassword,
-          isAdmin: isAdmin,
-          isActive: isActive
-        }
-        setCurrentUser(newUser);
-        setRegisteredUser(true);
+      axios.post(LOGIN_URL, {
+      email: user,
+      password: password
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-      )
+    })
+    .then((res) => {
+      const cred = res.data;
+      document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`;
+      const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive } = jwtDecode(cred.token);
+      
+      const newUser = {
+        id: userId,
+        name: userName,
+        lastname: userLastname,
+        dob: userBirthdate,
+        email: userEmail,
+        password: userPassword,
+        isAdmin: isAdmin,
+        isActive: isActive
+      };
+      setCurrentUser(newUser);
+      setRegisteredUser(true);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
       
       onClose();
       navigate(origin, { replace: true });
