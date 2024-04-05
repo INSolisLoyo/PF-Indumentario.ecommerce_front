@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate en lugar de useHistory
+import womenImage from '../../../img/moda-women.jpg';
 
 const MenuWomen = () => {
   const {
@@ -105,7 +106,7 @@ const MenuWomen = () => {
             </ul>
             
             <ul>
-              <img className="w-[220px] rounded-full" src="src\img\moda-women\moda-women.jpg" alt="Discounts" />
+              <img className="w-[220px] rounded-full" src={womenImage} alt="Discounts" />
             </ul>
           </div>
         </div>

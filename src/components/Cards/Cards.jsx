@@ -44,7 +44,18 @@ const Cards = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post(URL);
+      const response = await axios.post(URL, {
+        name,
+        // gender,
+        minPrice,
+        maxPrice,
+        material,
+        colour,
+        productLimit: PRODUCTS_PER_PAGE,
+        pageNumber: currentPage,
+        orderType,
+        order,
+      });
       setItems(response.data);
       setTotalItems(response.data.length);
     } catch (error) {
