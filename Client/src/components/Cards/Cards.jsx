@@ -4,11 +4,11 @@ import { useLocation } from "react-router-dom";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import SearchBar from "../Navbar/SearchBar";
-import axios from "axios";
+import axios from "../../env/axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
 
-const URL = "http://localhost:3001/products";
+const URL = "/products";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
@@ -20,7 +20,7 @@ const Cards = () => {
     showFilters,
     currentPage,
     name,
-    category,
+    gender,
     minPrice,
     maxPrice,
     material,
@@ -32,7 +32,7 @@ const Cards = () => {
     setShowFilters,
     setCurrentPage,
     setName,
-    setCategory,
+    setGender,
     setMinPrice,
     setMaxPrice,
     setMaterial,
@@ -47,7 +47,7 @@ const Cards = () => {
     try {
       const response = await axios.post(URL, {
         name,
-        category,
+        gender,
         minPrice,
         maxPrice,
         material,
@@ -69,7 +69,7 @@ const Cards = () => {
   }, [
     currentPage,
     name,
-    category,
+    gender,
     minPrice,
     maxPrice,
     material,

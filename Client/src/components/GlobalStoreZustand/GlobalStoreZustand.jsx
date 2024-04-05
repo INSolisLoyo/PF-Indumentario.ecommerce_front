@@ -5,7 +5,7 @@ const useStore = create((set) => ({
   totalItems: 10,
   showFilters: false,
   name: "",
-  category: "",
+  gender: "",
   minPrice: "",
   maxPrice: "",
   material: [],
@@ -13,6 +13,17 @@ const useStore = create((set) => ({
   currentPage: 1,
   orderType: "",
   order: "",
+  registeredUser: false,
+  user: {
+    id: '',
+    name: '',
+    lastname: '',
+    dob: '',
+    email: '',
+    password: '',
+    isAdmin: '',
+    isActive: ''
+  },
 
   // Agregar la función fetchData al estado del store
   fetchData: () => {},
@@ -24,7 +35,7 @@ const useStore = create((set) => ({
   setTotalItems: (count) => set({ totalItems: count }),
   setShowFilters: (value) => set({ showFilters: value }),
   setName: (value) => set({ name: value, currentPage: 1 }),
-  setCategory: (value) => set({ category: value, currentPage: 1 }),
+  setGender: (value) => set({ gender: value, currentPage: 1 }),
   setMinPrice: (value) => set({ minPrice: value, currentPage: 1 }),
   setMaxPrice: (value) => set({ maxPrice: value, currentPage: 1 }),
   setMaterial: (value) => set({ material: value, currentPage: 1 }),
@@ -32,6 +43,8 @@ const useStore = create((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
+  setCurrentUser: (currentUser) => set({ user: currentUser }),
+  setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered})
 }));
 
 export default useStore;

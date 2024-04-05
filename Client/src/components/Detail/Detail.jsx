@@ -20,7 +20,6 @@ const Detail = () => {
         material: ''
     });
 
-
     const cleaner =  ({id, name, price, images, colour, material}) => {
 
         const galleryImages = images?.map( (image) => {
@@ -81,7 +80,7 @@ const Detail = () => {
 
     return (
 
-        <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
+        <div className="w-11/12 h-auto lg:pt-28 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
 
             {/* aquí va la gallery */}
             <DetailGallery images={item.images} />
