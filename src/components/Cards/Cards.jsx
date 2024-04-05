@@ -7,13 +7,13 @@ import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
 
-const URL = "http://localhost:3001/products";
+const URL = "http://localhost:3001/product";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
   const location = useLocation();
 
-  const {
+  let {
     items,
     totalItems,
     showFilters,
@@ -46,7 +46,7 @@ const Cards = () => {
     try {
       const response = await axios.post(URL, {
         name,
-        gender,
+        // gender,
         minPrice,
         maxPrice,
         material,
@@ -60,15 +60,17 @@ const Cards = () => {
       setTotalItems(response.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
+      // Depuración del cliente: Imprimir detalles del error de Axios
+      console.log("Error response:", error.response);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [
-    currentPage,
     name,
-    gender,
+    currentPage,
+    // gender,
     minPrice,
     maxPrice,
     material,

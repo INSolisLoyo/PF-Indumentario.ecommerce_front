@@ -44,7 +44,7 @@ const Filters = () => {
   const fetchMaterials = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/utilities/materials"
+        "http://localhost:3001/materials"
       );
       setMaterialsOptions(response.data);
     } catch (error) {
@@ -55,7 +55,7 @@ const Filters = () => {
   const fetchColours = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/utilities/colours"
+        "http://localhost:3001/colours"
       );
       setColoursOptions(response.data);
     } catch (error) {
@@ -71,14 +71,14 @@ const Filters = () => {
 
     setMaterial([]);
     setColour([]);
-    setMinPrice(null);
-    setMaxPrice(null);
+    setMinPrice(0);
+    setMaxPrice(400);
     setOrderType("");
     setOrder("");
     setFetchData(() => {});
     setSelectedMaterial([]); // Restablecer el valor seleccionado del componente Select de material
     setSelectedColour([]); // Restablecer el valor seleccionado del componente Select de color
-    setPriceRange([0, 600]); // Restablecer el rango de precios
+    setPriceRange([0, 400]); // Restablecer el rango de precios
 
     Swal.fire({
       icon: "success",

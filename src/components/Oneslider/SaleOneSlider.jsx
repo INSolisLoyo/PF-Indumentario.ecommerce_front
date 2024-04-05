@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const SaleOneSlider = () => {
   const [data, setData] = useState([]);
-  const URL = "http://localhost:3001/products";
+  const URL = "http://localhost:3001/product";
 
   useEffect(() => {
     fetchData();

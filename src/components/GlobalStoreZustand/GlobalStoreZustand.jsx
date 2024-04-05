@@ -6,8 +6,8 @@ const useStore = create((set) => ({
   showFilters: false,
   name: "",
   gender: "",
-  minPrice: "",
-  maxPrice: "",
+  minPrice: 0,
+  maxPrice: 400,
   material: [],
   colour: [],
   currentPage: 1,
@@ -37,6 +37,18 @@ const useStore = create((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
+  setCurrentUser: (currentUser) => set({ user: currentUser }),
+  setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
+  registeredUser: false,
+  user: {
+    id: '',
+    name: '',
+    lastname: '',
+    dob: '',
+    email: '',
+    password: '',
+    isAdmin: '',
+    isActive: ''}
 }));
 
 export default useStore;
