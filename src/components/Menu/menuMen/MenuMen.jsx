@@ -21,7 +21,7 @@ const MenuMen = () => {
   
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('https://ecommerce-becomfree.onrender.com/categories');
+      const response = await axios.get('/categories');
       if (response.status === 200) {
         const data = response.data;
         setCategories(data); // Almacena las categorías en el estado
