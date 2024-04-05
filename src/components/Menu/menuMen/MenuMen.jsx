@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
+import menImage from '../../../img/moda-men.jpg';
 
 const MenuMen = () => {
   const {
@@ -89,7 +90,7 @@ const MenuMen = () => {
             <ul>
               <img
                 className="w-[220px] rounded-full"
-                src="src\img\moda-men\moda-men.jpg"
+                src={menImage}
                 alt="Moda Men"
               />
             </ul>
