@@ -1,6 +1,5 @@
 import React from 'react';
-import landingImage from '../../img/landing-clothes.jpg';
-import nube from '../../img/nube1-sinfondo.png';
+
 
 export default function Title() {
   return (

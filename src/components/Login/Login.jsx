@@ -1,198 +1,79 @@
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
-import axios from "../../env/axios";
-
-const LOGIN_URL = '/login';
-const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const PWD_REGEX = /.+/;
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import google from "../../assets/google.png";
 
 export default function Login({ onClose }) {
+  // Estilo en línea para el color de fondo con opacidad
+  const backgroundStyle = {
+    backgroundColor: "rgba(255, 255, 255, 0.8)", // bg-slate-400 con opacidad 50%
+  };
 
-  const setCurrentUser = useStore((state) => state.setCurrentUser )
-  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
-  
   const navigate = useNavigate();
-  const location = useLocation();
-  const origin = location.state?.from?.pathname || "/";
 
-  const userRef = useRef();
-  const errRef = useRef();
-
-  const [user, setUser] = useState('')
-  const [validUser, setValidUser] = useState(false);
-  const [password, setPassword] = useState('');
-  const [validPassword, setValidPassword] = useState(false);
-  const [errMsg, setErrMsg] = useState('');
-  
-  useEffect(() => {
-    userRef.current.focus();
-  }, [])
-
-  useEffect(() => {
-    setValidUser(USER_REGEX.test(user));
-    if(!validUser){
-      setErrMsg('Enter a valid email')
-    }
-  }, [user])
-
-  useEffect(() => {
-      setValidPassword(PWD_REGEX.test(password));
-      if(!validPassword){
-        setErrMsg('Enter a valid password')
-      }
-  }, [password])
-
-  useEffect(() => {
-    setErrMsg('');
-  }, [user, password])
-
-
-  const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(password);
-    if (!v1 || !v2) {
-        setErrMsg("Invalid Entry");
-        return;
-    }
-
-    try {
-
-      axios.post(LOGIN_URL, {
-      email: user,
-      password: password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((res) => {
-      const cred = res.data;
-      document.cookie = `token=${cred.token}; max-age=${60 * 60}; path=/; samesite=strict`;
-      const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive } = jwtDecode(cred.token);
-      
-      const newUser = {
-        id: userId,
-        name: userName,
-        lastname: userLastname,
-        dob: userBirthdate,
-        email: userEmail,
-        password: userPassword,
-        isAdmin: isAdmin,
-        isActive: isActive
-      };
-      setCurrentUser(newUser);
-      setRegisteredUser(true);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-      
-      onClose();
-      navigate(origin, { replace: true });
-     
-    } catch (error) {
-      if (!err?.response) {
-        setErrMsg('No Server Response');
-      } else if (err.response?.status === 400) {
-          setErrMsg('Missing Username or Password');
-      } else if (err.response?.status === 401) {
-          setErrMsg('Unauthorized');
-      } else {
-          setErrMsg('Login Failed');
-      }
-      errRef.current.focus();
-    }
-  }
-
-  
   return (
-    <div className="absolute right-0 top-0 border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 md:h-svh">
+    <div className="absolute top-16 right-2 p-4 border-none rounded-lg shadow w-[350px] h-[350px] text-center shadow-slate-500 font-RedHat bg-white max-lg:right-2 max-lg:w-[320px] ">
+      <h2 className="text-black text-xl font-bold ">Login</h2>
+      <div className="bg-black w-[250px] p-[0.8px] m-auto mt-2 mb-3 "></div>
+      <form className=" pb-4 " action="">
+        <label
+          className="block  text-left ml-12 uppercase text-[13px] tracking-[1px]  "
+          htmlFor=""
+        >
+          Username
+        </label>
+        <input
+          className="border-none rounded-lg bg-primary/50 mb-5 text-white outline-none p-1 w-[220px] "
+          type="text"
+        />
 
-      <div className="lg:p-4 flex flex-col">
+        <label
+          className="block text-[13px] text-left ml-12 uppercase tracking-[1px]  "
+          htmlFor=""
+        >
+          Password
+        </label>
+        <input
+          className="border-none rounded-lg bg-primary/50 mb-2 text-white outline-none p-1 w-[220px] "
+          type="password"
+        />
+      </form>
+      <button
+        className="bg-primary/50 p-2 w-[80px] rounded-xl mb-4 uppercase "
+        onClick={onClose}
+      >
+        GO
+      </button>
 
-        <div className="text-black flex flex-col items-end text-2xl">
-          <p onClick={ () => onClose()} className="cursor-pointer">X</p>
-          <div className="w-full text-center">
-            <h2 className="block text-center">Log In</h2>
-          </div>
-        </div>
-
-        <div className="bg-black w-11/12 p-[0.4px] m-auto mt-2 mb-3"></div>
-
-        <form className=" text-center flex flex-col items-center md:mt-6" onSubmit={handleSubmit}>
-
-          <label className="text-xl" htmlFor="username">
-            Email
-          </label>
-          <input
-            className=" w-full p-2 md:mt-4 border-none rounded-lg bg-primary/20 mb-5 text-black outline-none  "
-            type="text"
-            id="username"
-            ref={userRef}
-            autoComplete="off"
-            placeholder="user@account.com"
-            onChange={(e) => setUser(e.target.value)}
-            value={user}
-            required
-          />
-          {!validUser && <p ref={errRef} className="text-lg text-red-600 mt-4">{errMsg}</p>}
-
-          <label className="text-xl md:mt-6" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="w-full p-2 md:mt-4 border-none rounded-lg bg-primary/20 mb-5 text-black outline-none "
-            type="password"
-            id="password"
-            onChange={ (e) => setPassword(e.target.value)}
-            value={password}
-            required
-          />
-          {!validPassword && <p ref={errRef} className="text-lg text-red-600 mt-4">{errMsg}</p>}
-          <button
-            className="bg-primary/50 hover:bg-primary p-2 w-28 md:mt-6 rounded-xl mb-4"
-          >
-            Log In
+      <div className="login-socials items-center mb-[8px]  ">
+        <a href="http://localhost:3001/auth/facebook">
+          <button className="w-[60px] mr-[5px] shadow-lg shadow-gray-300 p-1 rounded-lg bg-blue-700  ">
+            <img
+              className=" w-[20px] m-auto "
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/768px-Facebook_Logo_%282019%29.png"
+              alt=""
+            />
           </button>
-        </form>
+        </a>
 
-        <div className="login-socials flex justify-center md:gap-4 items-center md:mt-6">
-          <a href="http://localhost:3001/auth/facebook">
-            <button className="w-[60px] mr-[5px] shadow-lg shadow-gray-300 p-1 rounded-lg bg-blue-700  ">
-              <img
-                className=" w-[20px] m-auto "
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/768px-Facebook_Logo_%282019%29.png"
-                alt=""
-              />
-            </button>
-          </a>
-
-          <a href="http://localhost:3001/google/callback">
-            <button className="w-[60px] ml-[5px] shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200  ">
-              <img
-                className="w-[20px] m-auto "
-                src="https://cdn-icons-png.flaticon.com/512/300/300221.png"
-                alt="Google Icon"
-              />
-            </button>
-          </a>
-        </div>
-
-        <div className="md:mt-6 text-center">
-          <p className="uppercase text-[12px]">
-            Do u need an acount?{" "}
-            <a className=" text-blue-700 uppercase " href="/register">
-              Click here
-            </a>{" "}
-          </p>
-        </div>
+        <a href="http://localhost:3001/google/callback">
+          <button className="w-[60px] ml-[5px] shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200  ">
+            <img
+              className="w-[20px] m-auto "
+              src="https://cdn-icons-png.flaticon.com/512/300/300221.png"
+              alt="Google Icon"
+            />
+          </button>
+        </a>
       </div>
 
+      <div className="need-acount">
+        <p className="uppercase text-[12px]">
+          Do u need an acount?{" "}
+          <a className=" text-blue-700 uppercase " href="/register">
+            Click here
+          </a>{" "}
+        </p>
+      </div>
     </div>
   );
 }

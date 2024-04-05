@@ -1,14 +1,13 @@
-// En el componente Cards
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import SearchBar from "../Navbar/SearchBar";
-import axios from "../../env/axios";
+import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
 
-const URL = "/products";
+const URL = "http://localhost:3001/products";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
@@ -79,7 +78,7 @@ const Cards = () => {
   ]);
 
   useEffect(() => {
-    console.log(location.pathname);
+    // console.log(location.pathname);
     const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
     const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, items.length);
     setDisplayedItems(items.slice(startIndex, endIndex));

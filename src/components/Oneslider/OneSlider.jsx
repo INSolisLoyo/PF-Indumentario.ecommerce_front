@@ -4,7 +4,7 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const OneSlider = ({ category }) => {
+const OneSlider = ({ gender }) => {
   const [data, setData] = useState([]);
   const URL = "http://localhost:3001/products";
 
@@ -64,7 +64,7 @@ const OneSlider = ({ category }) => {
     ],
   };
 
-  const filteredItems = data.filter((item) => item.category === category);
+  const filteredItems = data.filter((item) => item.gender === gender);
 
   return (
     <Slider
@@ -76,7 +76,7 @@ const OneSlider = ({ category }) => {
           <img
             src={card.images}
             alt={card.name}
-            className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
+            className="w-[100%] h-[380px] rounded-md sm:h-[380px] md:h-[380px]"
           />
         </div>
       ))}

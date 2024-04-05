@@ -1,25 +1,28 @@
 import React from "react";
-import { useMenuStoreStore } from "../../UseMenuStore/UseMenuStore";
+import { Link } from "react-router-dom";
+import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 
 const MenuStore = () => {
-  const { isOpen, toggleMenuStore } = useMenuStoreStore();
+  const { storeMenuOpen, toggleStoreMenu, closeAllMenus } = useMenuStore();
 
-  const backgroundStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+  const handleStoreClick = () => {
+    toggleStoreMenu();
+    closeAllMenus();
   };
 
   return (
     <div>
-      <div
-        onClick={toggleMenuStore}
-        className="block uppercase font-medium cursor-pointer focus:outline-none"
+      <Link
+        to="/cards"
+        className="block uppercase font-extrabold cursor-pointer focus:outline-none"
+        onClick={handleStoreClick}
       >
-        <a className="" href="/cards">
-          STORE
-        </a>{" "}
-      </div>
+        Store
+      </Link>
     </div>
   );
 };
 
 export default MenuStore;
+
+

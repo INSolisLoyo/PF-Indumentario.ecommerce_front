@@ -13,24 +13,18 @@ const useStore = create((set) => ({
   currentPage: 1,
   orderType: "",
   order: "",
-  registeredUser: false,
-  user: {
-    id: '',
-    name: '',
-    lastname: '',
-    dob: '',
-    email: '',
-    password: '',
-    isAdmin: '',
-    isActive: ''
-  },
-
-  // Agregar la función fetchData al estado del store
-  fetchData: () => {},
-
-  // Definir una función para actualizar fetchData
-  setFetchData: (fetchDataFunc) => set({ fetchData: fetchDataFunc }),
-
+  materialsOptions: [],
+  coloursOptions: [],
+  setMaterialsOptions: (options) => set({ materialsOptions: options }),
+  setColoursOptions: (options) => set({ coloursOptions: options }),
+  selectedMaterial: [],
+  setSelectedMaterial: (selectedMaterial) => set({ selectedMaterial }),
+  selectedColour: [],
+  setSelectedColour: (selectedColour) => set({ selectedColour }),
+  priceRange: [0, 400],
+  setPriceRange: (priceRange) => set({ priceRange }),
+  fetchData: () => {}, // Función fetchData inicial
+  setFetchData: (fetchDataFunc) => set({ fetchData: fetchDataFunc }), // Función para actualizar fetchData
   setItems: (newItems) => set({ items: newItems }),
   setTotalItems: (count) => set({ totalItems: count }),
   setShowFilters: (value) => set({ showFilters: value }),
@@ -43,8 +37,6 @@ const useStore = create((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
-  setCurrentUser: (currentUser) => set({ user: currentUser }),
-  setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered})
 }));
 
 export default useStore;
