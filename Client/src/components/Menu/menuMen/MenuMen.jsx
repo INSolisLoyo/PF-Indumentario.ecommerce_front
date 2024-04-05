@@ -11,7 +11,7 @@ const MenuMen = () => {
   return (
     <div>
       
-        <div onClick={toggleMenuMen} className="block uppercase font-extrabold cursor-pointer focus:outline-none">
+        <div onClick={toggleMenuMen} className="block uppercase font-medium cursor-pointer focus:outline-none">
           Men
         </div>
 
