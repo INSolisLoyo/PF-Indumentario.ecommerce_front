@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import axios from "../../axios/axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -44,7 +44,7 @@ const Filters = () => {
   const fetchMaterials = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/materials"
+        "/materials"
       );
       setMaterialsOptions(response.data);
     } catch (error) {
