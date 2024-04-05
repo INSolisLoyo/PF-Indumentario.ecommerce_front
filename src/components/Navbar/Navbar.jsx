@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
-import { NavLink, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
+import {
+  NavLink,
+  Link,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
@@ -15,19 +21,19 @@ export default function NavBar() {
 
   const [showLogin, setShowLogin] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
-  const [showCart, setShowCart] = useState(false)
+  const [showCart, setShowCart] = useState(false);
 
   const handleMenuClick = () => {
     setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
   };
 
   const handleCartClick = () => {
-    setShowCart(!showCart)
-  }
+    setShowCart(!showCart);
+  };
 
   const handleCloseCart = () => {
-    setShowCart(false)
-  }
+    setShowCart(false);
+  };
 
   const handleProfileClick = () => {
     setShowLogin(!showLogin);
@@ -39,7 +45,7 @@ export default function NavBar() {
 
   return (
     <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
-      <button className="lg:hidden " onClick={handleMenuClick} >
+      <button className="lg:hidden " onClick={handleMenuClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -56,26 +62,45 @@ export default function NavBar() {
         </svg>
       </button>
       <div className="logo pl-5 ">
-        <NavLink to="/" >
-        <img className="w-[160px]" src={Logo} alt="BeeComfree" />
+        <NavLink to="/">
+          <img className="w-[160px]" src={Logo} alt="BeeComfree" />
         </NavLink>
       </div>
 
       {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
-      <div className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${showLinks ? "absolute" : "hidden"}  `}>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
+      <div
+        className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${
+          showLinks ? "absolute" : "hidden"
+        }  `}
+      >
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  "
+          href="#"
+        >
           Women
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 "
+          href="#"
+        >
           Men
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/cards">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="/cards"
+        >
           Store
         </a>{" "}
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="#"
+        >
           About
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/create">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="/create"
+        >
           Create
         </a>
       </div>
@@ -94,26 +119,18 @@ export default function NavBar() {
           <MenuAbout />
         </div>
         <div className="block uppercase font-medium cursor-pointer focus:outline-none">
-          <Link to='/create'>
-            Create
-          </Link>
+          <Link to="/create">Create</Link>
         </div>
       </div>
 
-
       <div className="searchbar hidden lg:flex ">
-        {
-          location.pathname === '/cards' && (
-            <SearchBar />           
-          )
-        }
+        {location.pathname === "/cards" && <SearchBar />}
       </div>
 
-      <div className="car flex "
-      
-      >
-        <div className="car-shop pr-6 cursor-pointer "
-        onClick={handleCartClick}
+      <div className="car flex ">
+        <div
+          className="car-shop pr-6 cursor-pointer "
+          onClick={handleCartClick}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +147,6 @@ export default function NavBar() {
             />
           </svg>
         </div>
-
 
         <div
           className="profile pr-4 cursor-pointer "
@@ -154,7 +170,7 @@ export default function NavBar() {
       </div>
 
       {showLogin && <Login onClose={handleCloseLogin} />}
-      {showCart && <Cart onClose={handleCloseCart} /> }
+      {showCart && <Cart onClose={handleCloseCart} />}
     </div>
   );
 }
