@@ -9,7 +9,7 @@ import { getColors } from "./Colors";
 const Detail = () => {
     
     const { id } = useParams();
-    const PRODUCT = `http://localhost:3001/products/${id}`;
+    const PRODUCT = `http://localhost:3001/product/${id}`;
     const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
         id: '',
