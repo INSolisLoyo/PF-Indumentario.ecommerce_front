@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import menImage from '../../../img/moda-men.jpg';
+import axios from "../../../axios/axios";
 
 const MenuMen = () => {
   const {
@@ -17,21 +18,21 @@ const MenuMen = () => {
 
   useEffect(() => {
     // Función para obtener las categorías desde la API
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3001/categories"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data); // Almacena las categorías en el estado
-        } else {
-          console.error("Failed to fetch categories");
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+  
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('https://ecommerce-becomfree.onrender.com/categories');
+      if (response.status === 200) {
+        const data = response.data;
+        setCategories(data); // Almacena las categorías en el estado
+      } else {
+        console.error("Failed to fetch categories");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
 
     // Llama a la función para obtener las categorías cuando el menú se abre
     if (menMenuOpen) {

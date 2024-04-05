@@ -3,6 +3,7 @@ import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate en lugar de useHistory
 import womenImage from '../../../img/moda-women.jpg';
+import axios from "../../../axios/axios";
 
 const MenuWomen = () => {
   const {
@@ -23,11 +24,9 @@ const MenuWomen = () => {
     // Función para obtener las categorías desde la API
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/categories"
-        );
-        if (response.ok) {
-          const data = await response.json();
+        const response = await axios.get('/categories');
+        if (response.status === 200) {
+          const data = response.data;
           setCategories(data); // Almacena las categorías en el estado
         } else {
           console.error("Failed to fetch categories");
