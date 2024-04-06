@@ -37,7 +37,7 @@ const Cards = () => {
     setMaterial,
     setColour,
     setOrderType,
-    setOrder,
+    setOrder
   } = useStore();
 
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -54,7 +54,7 @@ const Cards = () => {
         productLimit: PRODUCTS_PER_PAGE,
         pageNumber: currentPage,
         orderType,
-        order,
+        order
       });
       setItems(response.data);
       setTotalItems(response.data.length);
@@ -76,7 +76,7 @@ const Cards = () => {
     material,
     colour,
     orderType,
-    order,
+    order
   ]);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const Cards = () => {
     setDisplayedItems(items.slice(startIndex, endIndex));
   }, [items, currentPage]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
 
@@ -105,16 +105,11 @@ const Cards = () => {
   const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
   return (
-    
     <div className="flex-col pt-[120px] justify-center font-RedHat">
       <div className="flex justify-around relative">
         <div className="flex flex-col gap-4 items-center justify-center w-full h-auto lg:flex-row lg:justify-end md:px-12">
           <div className=" w-full h-12 flex justify-center lg:hidden">
-          {
-            location.pathname === '/cards' && (
-              <SearchBar />           
-            )
-          }
+            {location.pathname === "/cards" && <SearchBar />}
           </div>
           <div
             className="border-solid px-4 py-2  bg-primary/20 hover:bg-primary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
@@ -130,7 +125,7 @@ const Cards = () => {
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}
         >
-          {displayedItems.map((res) => (
+          {displayedItems.map(res => (
             <div key={res.id} className="relative">
               <Card res={res} />
             </div>
