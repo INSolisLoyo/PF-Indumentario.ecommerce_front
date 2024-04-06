@@ -18,6 +18,7 @@
     "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "chroma-js": "^2.4.2",
+    "firebase": "^10.10.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
