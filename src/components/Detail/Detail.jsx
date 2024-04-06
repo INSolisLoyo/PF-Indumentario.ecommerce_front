@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import heart from '../../img/heart.png'
 import { getColors } from "./Colors";
@@ -9,7 +9,7 @@ import { getColors } from "./Colors";
 const Detail = () => {
     
     const { id } = useParams();
-    const PRODUCT = `http://localhost:3001/product/${id}`;
+    const PRODUCT = `/product/${id}`;
     const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
         id: '',

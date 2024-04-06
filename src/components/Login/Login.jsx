@@ -2,7 +2,7 @@ import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import axios from "../../env/axios";
+import axios from "../../axios/axios";
 
 const LOGIN_URL = '/login';
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -162,7 +162,7 @@ export default function Login({ onClose }) {
         </form>
 
         <div className="login-socials flex justify-center md:gap-4 items-center md:mt-6">
-          <a href="http://localhost:3001/auth/facebook">
+          <a href={`${import.meta.env.VITE_BACKEND_URL}/auth/facebook`}>
             <button className="w-[60px] mr-[5px] shadow-lg shadow-gray-300 p-1 rounded-lg bg-blue-700  ">
               <img
                 className=" w-[20px] m-auto "
@@ -172,7 +172,7 @@ export default function Login({ onClose }) {
             </button>
           </a>
 
-          <a href="http://localhost:3001/google/callback">
+          <a href={`${import.meta.env.VITE_BACKEND_URL}/google/callback`}>
             <button className="w-[60px] ml-[5px] shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200  ">
               <img
                 className="w-[20px] m-auto "
