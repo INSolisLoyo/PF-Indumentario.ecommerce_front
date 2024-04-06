@@ -53,7 +53,7 @@ const Card = ({ res }) => {
         <div className="text-md ">${res.price}</div>
       </div>
       <div>{res.category}</div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
+
     </div>
   );
 };
