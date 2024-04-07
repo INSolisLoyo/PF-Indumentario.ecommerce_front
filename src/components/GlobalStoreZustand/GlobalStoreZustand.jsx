@@ -1,6 +1,17 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
+
+  // Estado del carrito
+  cart: [],
+  addToCart: (product) =>
+    set((state) => ({ cart: [...state.cart, product] })),
+  removeFromCart: (productId) =>
+    set((state) => ({
+      cart: state.cart.filter((product) => product.id !== productId),
+    })),
+
+  // Global
   items: [],
   totalItems: 10,
   showFilters: false,
@@ -36,6 +47,9 @@ const useStore = create((set) => ({
   setColour: (value) => set({ colour: value, currentPage: 1 }),
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
+
+
+  // Login Usuarios
   setCurrentPage: (page) => set({ currentPage: page }),
   setCurrentUser: (currentUser) => set({ user: currentUser }),
   setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
