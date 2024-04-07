@@ -162,7 +162,7 @@ export default function Login({ onClose }) {
           </button>
         </form>
 
-        <AuthTerceros/>
+        <AuthTerceros onClose={onClose}/>
 
         <div className="md:mt-6 text-center">
           <p className="uppercase text-[12px]">
