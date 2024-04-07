@@ -11,7 +11,8 @@ import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
 import CartMenu from "../Menu/CartMenu/CartMenu"; // Importa el componente del menú desplegable del carrito
-
+import AccountCircleIcon from "@material-ui/icons/AccountCircle"; // Importa el icono de login de Material-UI
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"; // Importa el icono del carrito de Material-UI
 
 export default function NavBar() {
   const isRegisteredUser = useStore((state) => state.registeredUser);
@@ -21,7 +22,7 @@ export default function NavBar() {
   const [showLinks, setShowLinks] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showUserName, setShowUserName] = useState(false);
-  const [showCartMenu, setShowCartMenu] = useState(false); 
+  const [showCartMenu, setShowCartMenu] = useState(false);
 
   const cart = useCartStore((state) => state.cart);
 
@@ -85,19 +86,34 @@ export default function NavBar() {
           showLinks ? "absolute" : "hidden"
         }  `}
       >
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  "
+          href="#"
+        >
           Women
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 " href="#">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200 "
+          href="#"
+        >
           Men
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/cards">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="/cards"
+        >
           Store
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="#"
+        >
           About
         </a>
-        <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/create">
+        <a
+          className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
+          href="/create"
+        >
           Create
         </a>
       </div>
@@ -126,56 +142,38 @@ export default function NavBar() {
 
       {/* Icono del carrito con el número de elementos */}
 
-      <div className="profile pr-4 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleProfileClick}>
-        {showUserName && <p>Hello {name}</p>}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
+      <div className="flex gap-4">
+        <div
+          className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 "
+          onClick={handleProfileClick}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-        </svg>
-      </div>
+          {showUserName && <p>Hello {name}</p>}
+          <AccountCircleIcon />
+        </div>
 
-      <div className="car flex relative" onClick={handleCartClick}>
-        <div className="car-shop pr-6 cursor-pointer relative">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="white"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-            />
-          </svg>
-          {/* Número de elementos en el carrito */}
-          {cart.length > 0 && (
-            <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-              {cart.length}
-            </span>
-          )}
+        <div className="car flex relative" onClick={handleCartClick}>
+          <div className="car-shop pr-6 cursor-pointer relative">
+            <ShoppingCartIcon />
+            {/* Número de elementos en el carrito */}
+            {cart.length > 0 && (
+              <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </div>
         </div>
       </div>
-      
+
       {/* Mostrar el menú desplegable del carrito */}
       {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />}
 
       {/* Elementos adicionales del Navbar */}
-      {showSidebar && isRegisteredUser ? <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} /> : null}
-      {showSidebar && !isRegisteredUser ? <Login onClose={handleCloseSideBar} /> : null}
-
+      {showSidebar && isRegisteredUser ? (
+        <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
+      ) : null}
+      {showSidebar && !isRegisteredUser ? (
+        <Login onClose={handleCloseSideBar} />
+      ) : null}
     </div>
   );
 }

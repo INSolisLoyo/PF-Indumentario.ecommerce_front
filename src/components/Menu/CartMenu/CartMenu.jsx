@@ -1,21 +1,23 @@
 import React from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const CartMenu = ({ onClose, cart }) => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
 
-  const handleIncreaseQuantity = (productId) => {
-    increaseQuantity(productId);
+  const handleIncreaseQuantity = (productId, color, size) => {
+    increaseQuantity(productId, color, size);
   };
 
-  const handleDecreaseQuantity = (productId) => {
-    decreaseQuantity(productId);
+  const handleDecreaseQuantity = (productId, color, size) => {
+    decreaseQuantity(productId, color, size);
   };
 
-  const handleRemoveProduct = (productId) => {
-    removeFromCart(productId);
+  const handleRemoveProduct = (productId, color, size) => {
+    removeFromCart(productId, color, size);
   };
 
   // Calcula el total de productos en el carrito
@@ -61,36 +63,54 @@ const CartMenu = ({ onClose, cart }) => {
                   </h2>
                   <div className="flex gap-4">
                     <span className="text-sm text-gray-700">
-                      Quantity: {product.quantity}
+                      <b>Amount:</b> {product.quantity}
                     </span>
                     <span className="text-sm text-gray-700">
-                      Zise: {product.product.size}
+                      <b>Size:</b> {product.product.size}
                     </span>
                     <span className="text-sm text-gray-700">
-                      Color: {product.product.color}
+                      <b>Color:</b> {product.product.color}
                     </span>
                   </div>
                 </div>
               </li>
               <li>
-                <div className="flex items-center space-x-2">
+                <div className="flex gap-1 items-center space-x-2">
                   <button
-                    onClick={() => handleDecreaseQuantity(product.product.id)}
-                    className="text-red-500 focus:outline-none"
+                    onClick={() =>
+                      handleDecreaseQuantity(
+                        product.product.id,
+                        product.product.color,
+                        product.product.size
+                      )
+                    }
+                    className="text-2xl font-semibold text-red-500 focus:outline-none"
                   >
                     -
                   </button>
                   <button
-                    onClick={() => handleIncreaseQuantity(product.product.id)}
-                    className="text-green-700 focus:outline-none"
+                    onClick={() =>
+                      handleIncreaseQuantity(
+                        product.product.id,
+                        product.product.color,
+                        product.product.size
+                      )
+                    }
+                    className="text-2xl font-semibold text-green-700 focus:outline-none"
                   >
                     +
                   </button>
                   <button
-                    onClick={() => handleRemoveProduct(product.product.id)}
-                    className="text-gray-700 focus:outline-none"
+                    onClick={() =>
+                      handleRemoveProduct(
+                        product.product.id,
+                        product.product.color,
+                        product.product.size
+                      )
+                    }
+                    className="font-semibold text-red-500 focus:outline-none"
                   >
-                    Remove
+                    <DeleteIcon />
                   </button>
                 </div>
               </li>
