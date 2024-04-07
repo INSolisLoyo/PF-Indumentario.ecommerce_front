@@ -5,7 +5,6 @@ import { auth } from './firebase';
 import {
     // createUserWithEmailAndPassword,
     GoogleAuthProvider,
-    FacebookAuthProvider,
     signInWithPopup,
     onAuthStateChanged,
     signOut
@@ -54,30 +53,8 @@ const AuthTerceros = ({ onClose }) => {
       }
     };
 
-    const onClickFacebook = async () => {
-      const provider = new FacebookAuthProvider();
-      try {
-        const userData = await signInWithPopup(auth, provider);
-        const dataDB = { name: userData.user.displayName, email: userData.user.email };
-        await axios.post(AUTH, dataDB)
-      } catch (error) {
-        alert(`Este correo ya existe, intenta con otro metodo: ${error}`);
-      }
-    };
-
     return (
         <div className="login-socials flex justify-center md:gap-4 items-center md:mt-6">
-
-          <div>
-            <button className="w-15 mr-1 shadow-lg shadow-gray-300 p-1 rounded-lg bg-blue-700"
-                onClick={onClickFacebook}>
-              <img
-                className=" w-5 m-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/768px-Facebook_Logo_%282019%29.png"
-                alt=""
-              />
-            </button>
-          </div>
 
           <div>
             <button className="w-15 mr-1 shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200" onClick={onClickGoogle}>
