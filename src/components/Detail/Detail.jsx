@@ -5,11 +5,14 @@ import DetailGallery from "../DetailGallery/DetailGallery";
 import heart from '../../img/heart.png'
 import { getColors } from "./Colors";
 
-
 const Detail = () => {
     
     const { id } = useParams();
+    const STOCK = `/stock/${id}`;
     const PRODUCT = `/product/${id}`;
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+    const [stock, setStock] = useState({});
     const [counter, setCounter] = useState(1);
     const [item, setItem] = useState({
         id: '',
@@ -20,8 +23,20 @@ const Detail = () => {
         material: ''
     });
 
+    const [selectedProduct, setSelectedProduct] = useState({
+        id: item.id,
+        image: item.images[0],
+        name: item.name,
+        price: item.price,
+        quantity: counter,
+        color: selectedColor,
+        size: selectedSize
+    }) 
 
-    const cleaner =  ({id, name, price, images, colour, material}) => {
+    const [errors, setErrors] = useState({
+        maxItems: ''
+    })
+    const cleanerProduct =  ({id, name, price, images, colour, material}) => {
 
         const galleryImages = images?.map( (image) => {
             return {
@@ -47,13 +62,76 @@ const Detail = () => {
         
     }
 
+    const cleanerStock = (stocks) => {
+
+        // Creamos un objeto donde almacenaremos los arrays agrupados por color
+        const grupos = {};
+
+        stocks.forEach(objeto => {
+            const { colour, amount, size } = objeto;
+        
+            // Verificamos si ya existe un array para este color, si no, lo creamos
+            if (!grupos[colour]) {
+                grupos[colour] = [];
+            }
+        
+            // Añadimos un nuevo objeto al array del color correspondiente
+            grupos[colour].push({ amount, size });
+        });
+
+        setStock(grupos);
+        console.log(stock);
+
+        if(!selectedColor){
+            const firstProperty = Object.keys(stock)[0];
+            setSelectedColor(firstProperty)
+            setSelectedProduct({ ...selectedProduct, color:firstProperty})
+        }
+        
+    } 
+
     const handleCounter = (op) => {
 
         if(op === '-'){
             counter > 1 && setCounter(counter - 1)
+            setErrors({ ...setErrors, maxItems: ''}) 
         }
         else{
-            setCounter( counter + 1)
+            if(selectedSize){
+
+                let maxItems = 0
+                stock[selectedColor].forEach( (size) => {
+                    if(size.size === selectedSize)
+                        maxItems = size.amount
+                } )
+                
+                if(counter < maxItems){
+                    setCounter( counter + 1)  
+                }
+                else 
+                    setErrors({ ...setErrors, maxItems: 'You only can buy this numer of products'})                   
+
+            }
+        }
+    }
+
+    const handleClickColor = (color) => {
+        setSelectedColor(color)
+        setSelectedProduct({...selectedProduct, color: color})
+    }
+
+    const handleSizeClick = (size) => {
+        setSelectedSize(size)
+        setSelectedProduct({...selectedProduct, size: size})
+        let maxItems = 0
+        stock[selectedColor].forEach( (size) => {
+            if(size.size === selectedSize)
+                maxItems = size.amount
+        } )
+        if(counter>maxItems)
+        {
+            setCounter[maxItems]
+            setErrors({ ...setErrors, maxItems: ''}) 
         }
     }
 
@@ -61,14 +139,20 @@ const Detail = () => {
 
         const fetchData = async () => {
             try {
-                const {data}  = await axios.get(PRODUCT);    
                 
-                if(data){
-                    cleaner(data);  
+                const productData  = (await axios.get(PRODUCT)).data;    
+
+                const stockData = (await axios.get(STOCK)).data;
+                
+                if(productData){
+                    cleanerProduct(productData);  
                 }
                 else{
                     alert(`Doesn't exist any product with this id: ${id}`);
                 }   
+                if(stockData){
+                    cleanerStock(stockData)
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -76,9 +160,8 @@ const Detail = () => {
         fetchData();
         
         
-    }, [id])
-
-
+    }, [id, selectedColor])
+   
     return (
 
         <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
@@ -127,7 +210,11 @@ const Detail = () => {
                                             return (
                                                 <span 
                                                     key={index}
-                                                    className={`w-6 h-6 ${color} rounded-full hover:border cursor-pointer`}
+                                                    className={`w-6 h-6 ${color[0]} rounded-full hover:border cursor-pointer
+                                                    ${
+                                                        color[1] === selectedColor ? `border-4` : "" }
+                                                    `} onClick={()=> {
+                                                        handleClickColor(color[1])}}
                                                 ></span>
                                             )
                                         })
@@ -140,12 +227,21 @@ const Detail = () => {
 
                                 <p className="text-center font-semibold text-lg">Size</p>
                                 <div className="flex mx-auto justify-center text-md">
-                                    <span className=" hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer">XS</span>
-                                    <span className="hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer">S</span>
-                                    <span className="hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer">M</span>
-                                    <span className="hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer">L</span>
-                                    <span className="hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer">XL</span>
+                                    {
+                                        stock[selectedColor]?.map( (size, index) => {
+                                            if(size.amount > 0) {
+                                                return <span key={index} className={` hover:bg-primary rounded-2xl py-0.5 px-2 cursor-pointer
+                                                ${
+                                                    size.size === selectedSize ? `bg-primary` : "" }
+                                                `} onClick={() => handleSizeClick(size.size)}>{size.size}</span>
+                                            }
+                                            else {
+                                                return <span key={index} className=" hover:bg-primary rounded-2xl py-0.5 px-2 text-gray-600">{size.size}</span>
+                                            }
+                                        })
+                                    }                                  
                                 </div>
+                                { errors.maxItems && <span className="text-sm text-red-500">{errors.maxItems}</span>}
                             </div>
 
 
@@ -172,3 +268,4 @@ const Detail = () => {
 }
 
 export default Detail;
+

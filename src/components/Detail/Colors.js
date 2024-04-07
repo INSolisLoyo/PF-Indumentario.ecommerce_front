@@ -11,8 +11,9 @@ export const getColors = (color) => {
         Green: 'bg-lime-700',
         Red: 'bg-red-500',
         Gray: 'bg-gray-400',
-        LightBlue: 'bg-blue-300'
+        LightBlue: 'bg-blue-300',
+        Purple: 'bg-purple-400'
     }
 
-    return colors[newColor];
+    return [colors[newColor], color];
 }
