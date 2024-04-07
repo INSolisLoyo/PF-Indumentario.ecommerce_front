@@ -103,25 +103,6 @@ const Cards = () => {
 
   const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
-  // Función para manejar la adición de productos al carrito
-  // const handleAddToCart = (productId) => {
-  //   // Encontrar el producto en la lista de productos
-  //   const productToAdd = items.find((item) => item.id === productId);
-  //   if (!productToAdd) {
-  //     console.error("Product not found!");
-  //     return;
-  //   }
-  //   // Llamar a la función addToCart del estado del carrito para agregar el producto
-  //   useCartStore.getState().addToCart(productToAdd);
-  //   // Mostrar alerta de éxito utilizando SweetAlert2
-  //   Swal.fire({
-  //     icon: "success",
-  //     title: "Product added to cart successfully!",
-  //     showConfirmButton: false,
-  //     timer: 1500,
-  //   });
-  // };
-
   return (
     <div className="flex-col pt-[120px] justify-center font-RedHat">
       <div className="flex justify-around relative">
@@ -143,29 +124,28 @@ const Cards = () => {
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}
         >
-          {displayedItems.map((res) => (
-            <div key={res.id} className="relative">
-              {/* Agregamos un botón para agregar productos al carrito */}
-              <Card res={res} />
-              {/* <button
-                className="bg-orange-300 p-2 border-2 border-primary rounded-xl"
-                onClick={() => handleAddToCart(res.id)}
-              >
-                Add to Cart
-              </button> */}
-            </div>
-          ))}
+          {displayedItems.length > 0 ? (
+            displayedItems.map((res) => (
+              <div key={res.id} className="relative">
+                <Card res={res} />
+              </div>
+            ))
+          ) : (
+            <p className="text-xl text-gray-400">There are no items available with the selected filters.</p>
+          )}
         </div>
       </div>
 
       <div className="flex justify-center mt-4">
-        <CustomPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onChangePage={handlePageChange}
-          handlePrevPage={handlePrevPage}
-          handleNextPage={handleNextPage}
-        />
+        {displayedItems.length > 0 ? (
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onChangePage={handlePageChange}
+            handlePrevPage={handlePrevPage}
+            handleNextPage={handleNextPage}
+          />
+        ) : null}
       </div>
     </div>
   );
