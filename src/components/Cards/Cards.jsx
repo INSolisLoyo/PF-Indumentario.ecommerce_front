@@ -7,8 +7,7 @@ import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
 import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importamos el hook del estado del carrito
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 const URL = "http://localhost:3001/product";
 const PRODUCTS_PER_PAGE = 10;
@@ -105,36 +104,30 @@ const Cards = () => {
   const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
   // Función para manejar la adición de productos al carrito
-const handleAddToCart = (productId) => {
-  // Encontrar el producto en la lista de productos
-  const productToAdd = items.find((item) => item.id === productId);
-  if (!productToAdd) {
-    console.error("Product not found!");
-    return;
-  }
-  // Llamar a la función addToCart del estado del carrito para agregar el producto
-  useCartStore.getState().addToCart(productToAdd);
-  // Mostrar alerta de éxito utilizando SweetAlert2
-  Swal.fire({
-    icon: 'success',
-    title: 'Product added to cart successfully!',
-    showConfirmButton: false,
-    timer: 1500
-  });
-};
-
+  // const handleAddToCart = (productId) => {
+  //   // Encontrar el producto en la lista de productos
+  //   const productToAdd = items.find((item) => item.id === productId);
+  //   if (!productToAdd) {
+  //     console.error("Product not found!");
+  //     return;
+  //   }
+  //   // Llamar a la función addToCart del estado del carrito para agregar el producto
+  //   useCartStore.getState().addToCart(productToAdd);
+  //   // Mostrar alerta de éxito utilizando SweetAlert2
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Product added to cart successfully!",
+  //     showConfirmButton: false,
+  //     timer: 1500,
+  //   });
+  // };
 
   return (
-    
     <div className="flex-col pt-[120px] justify-center font-RedHat">
       <div className="flex justify-around relative">
         <div className="flex flex-col gap-4 items-center justify-center w-full h-auto lg:flex-row lg:justify-end md:px-12">
           <div className=" w-full h-12 flex justify-center lg:hidden">
-          {
-            location.pathname === '/cards' && (
-              <SearchBar />           
-            )
-          }
+            {location.pathname === "/cards" && <SearchBar />}
           </div>
           <div
             className="border-solid px-4 py-2  bg-primary/20 hover:bg-primary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
@@ -154,7 +147,12 @@ const handleAddToCart = (productId) => {
             <div key={res.id} className="relative">
               {/* Agregamos un botón para agregar productos al carrito */}
               <Card res={res} />
-              <button className="bg-orange-300 p-2 border-2 border-primary rounded-xl" onClick={() => handleAddToCart(res.id)}>Add to Cart</button>
+              {/* <button
+                className="bg-orange-300 p-2 border-2 border-primary rounded-xl"
+                onClick={() => handleAddToCart(res.id)}
+              >
+                Add to Cart
+              </button> */}
             </div>
           ))}
         </div>
@@ -169,8 +167,6 @@ const handleAddToCart = (productId) => {
           handleNextPage={handleNextPage}
         />
       </div>
-
-      
     </div>
   );
 };

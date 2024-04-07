@@ -1,3 +1,4 @@
+// useCartStore.js
 import { create } from 'zustand';
 
 const useCartStore = create((set) => ({
@@ -5,7 +6,7 @@ const useCartStore = create((set) => ({
   addToCart: (product) =>
     set((state) => {
       const existingProductIndex = state.cart.findIndex(
-        (item) => item.product.id === product.id
+        (item) => item.product.id === product.id && item.product.color === product.color && item.product.size === product.size
       );
 
       if (existingProductIndex !== -1) {
@@ -52,6 +53,8 @@ const useCartStore = create((set) => ({
       return state;
     }),
   clearCart: () => set({ cart: [] }),
+  selectedProduct: null,
+  setSelectedProduct: (product) => set({ selectedProduct: product }),
 }));
 
 export default useCartStore;
