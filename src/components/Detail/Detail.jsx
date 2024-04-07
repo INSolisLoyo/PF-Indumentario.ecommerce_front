@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import heart from '../../img/heart.png'
@@ -24,13 +25,13 @@ const Detail = () => {
     });
 
     const [selectedProduct, setSelectedProduct] = useState({
-        id: item.id,
-        image: item.images[0],
-        name: item.name,
-        price: item.price,
-        quantity: counter,
-        color: selectedColor,
-        size: selectedSize
+        id: '',
+        image: '',
+        name: '',
+        price: 0,
+        quantity: 0,
+        color: '',
+        size: ''
     }) 
 
     const [errors, setErrors] = useState({
@@ -109,7 +110,7 @@ const Detail = () => {
                     setCounter( counter + 1)  
                 }
                 else 
-                    setErrors({ ...setErrors, maxItems: 'You only can buy this numer of products'})                   
+                    setErrors({ ...setErrors, maxItems: 'You only can buy this number of products'})                   
 
             }
         }
@@ -133,6 +134,25 @@ const Detail = () => {
             setCounter[maxItems]
             setErrors({ ...setErrors, maxItems: ''}) 
         }
+    }
+
+    const handleClickButton = () => {
+
+        setSelectedProduct({
+            ...selectedProduct,
+            id: item.id,
+            image: item.images[0],
+            name: item.name,
+            price: item.price,
+            quantity: counter 
+        })
+
+        Swal.fire({
+            icon: "success",
+            title: "Product added to cart!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
     }
 
     useEffect( () => {
@@ -254,7 +274,9 @@ const Detail = () => {
                 <div className="flex justify-center items-center pt-4 md:h-1/6">
                 
                     <button 
-                    className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4">Go</button>
+                    className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
+                    onClick={() => handleClickButton()}
+                    >Go</button>
 
                 </div>
 
