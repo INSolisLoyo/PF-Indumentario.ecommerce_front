@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import axios from "../../axios/axios";
 import { auth } from './firebase';
 import {
@@ -10,7 +11,16 @@ import {
     signOut
   } from 'firebase/auth';
 
-const AuthTerceros = () => {
+  const AUTH = 'user/users_auth';
+
+const AuthTerceros = ({ onClose }) => {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const origin = location.state?.from?.pathname || "/";
+
+  const setCurrentUser = useStore((state) => state.setCurrentUser )
+  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
 
     const onClickGoogle = async () => {
       const provider = new GoogleAuthProvider();
@@ -18,7 +28,27 @@ const AuthTerceros = () => {
         const userData = await signInWithPopup(auth, provider);
         console.log(userData);
         const dataDB = { name: userData.user.displayName, email: userData.user.email };
-        await axios.post('http://localhost:3002/users_auth', dataDB);
+        await axios.post(AUTH, dataDB)
+          .then( (response) => {
+            const cred = userData.user.accessToken;
+            document.cookie = `token=${cred}; max-age=${60 * 60}; path=/; samesite=strict`;
+            const fullName = userData.user.displayName.split(' ');
+            const firstName = fullName[0];
+            const lastName = fullName[1] ? fullName[1] : '';
+            setCurrentUser({
+              id: '',
+              name: firstName,
+              lastname: lastName,
+              dob: '',
+              email: userData.user.email,
+              password: '',
+              isAdmin: '',
+              isActive: ''
+            })
+            setRegisteredUser(true);
+            navigate(origin, { replace: true });
+            onClose();
+          })
       } catch (error) {
         console.log(error);
       }
@@ -29,7 +59,7 @@ const AuthTerceros = () => {
       try {
         const userData = await signInWithPopup(auth, provider);
         const dataDB = { name: userData.user.displayName, email: userData.user.email };
-        await axios.post('http://localhost:3002/users_auth', dataDB);
+        await axios.post(AUTH, dataDB)
       } catch (error) {
         alert(`Este correo ya existe, intenta con otro metodo: ${error}`);
       }
