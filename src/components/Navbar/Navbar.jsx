@@ -1,41 +1,36 @@
 import React, { useState, useEffect } from "react";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import useCartStore from "../GlobalStoreZustand/useCartStore";
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
 import Account from "../Account/Account";
-import { NavLink, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import MenuWomen from "../Menu/menuWomen/MenuWomen";
 import MenuMen from "../Menu/menuMen/MenuMen";
 import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
-import Cart from "../Cart/Cart";
+import CartMenu from "../Menu/CartMenu/CartMenu";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 export default function NavBar() {
-
-  const isRegisteredUser = useStore( (state ) => state.registeredUser )
-
-  const { name } = useStore((state) => state.user)
-  const navigate = useNavigate();
+  const isRegisteredUser = useStore((state) => state.registeredUser);
+  const { name } = useStore((state) => state.user);
   const location = useLocation();
-
   const [showLinks, setShowLinks] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showUserName, setShowUserName] = useState(false);
-  const [showCart, setShowCart] = useState(false)
-
+  const [showCartMenu, setShowCartMenu] = useState(false);
+  const [showFavoriteMenu, setShowFavoriteMenu] = useState(false);
+  const cart = useCartStore((state) => state.cart);
+  const favorites = useFavoriteStore((state) => state.favorites);
 
   const handleMenuClick = () => {
-    setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
+    setShowLinks(!showLinks);
   };
-
-  const handleCartClick = () => {
-    setShowCart(!showCart)
-  }
-
-  const handleCloseCart = () => {
-    setShowCart(false)
-  }
 
   const handleProfileClick = () => {
     setShowSidebar(true);
@@ -45,20 +40,21 @@ export default function NavBar() {
     setShowSidebar(false);
   };
 
-  useEffect( () => {
-    if(isRegisteredUser){
-      setShowUserName(true)
-    }
-    else {
-      setShowUserName(false)
-      setShowSidebar(false);
-      setShowUserName(false);
-    }
-  }, [isRegisteredUser])
+  const handleCartClick = () => {
+    setShowCartMenu(!showCartMenu);
+  };
+
+  const handleFavoriteClick = () => {
+    setShowFavoriteMenu(!showFavoriteMenu);
+  };
+
+  const handleCloseCartMenu = () => {
+    setShowCartMenu(false);
+  };
 
   return (
     <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
-      <button className="lg:hidden " onClick={handleMenuClick} >
+      <button className="lg:hidden " onClick={handleMenuClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -75,12 +71,11 @@ export default function NavBar() {
         </svg>
       </button>
       <div className="logo pl-5 ">
-        <NavLink to="/" >
-        <img className="w-[160px]" src={Logo} alt="BeeComfree" />
+        <NavLink to="/">
+          <img className="w-[160px]" src={Logo} alt="BeeComfree" />
         </NavLink>
       </div>
 
-      {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
       <div className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${showLinks ? "absolute" : "hidden"}  `}>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200  " href="#">
           Women
@@ -90,7 +85,7 @@ export default function NavBar() {
         </a>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="/cards">
           Store
-        </a>{" "}
+        </a>
         <a className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200" href="#">
           About
         </a>
@@ -113,69 +108,63 @@ export default function NavBar() {
           <MenuAbout />
         </div>
         <div className="block uppercase font-medium cursor-pointer focus:outline-none">
-          <Link to='/create'>
-            Create
-          </Link>
+          <Link to="/create">Create</Link>
         </div>
       </div>
-
 
       <div className="searchbar hidden lg:flex ">
-        {
-          location.pathname === '/cards' && (
-            <SearchBar />           
-          )
-        }
+        {location.pathname === "/cards" && <SearchBar />}
       </div>
 
-      <div className="car flex "
+
+      <div className="flex gap-4">
+        <div className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleProfileClick}>
+          {showUserName && <p>Hello {name}</p>}
+          <AccountCircleIcon />
+        </div>
       
-      >
-        <div className="car-shop pr-6 cursor-pointer "
-        onClick={handleCartClick}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="white"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-            />
-          </svg>
-        </div>
-
-
-        <div
-          className="profile pr-4 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 "
-          onClick={handleProfileClick}
-        >
-          { showUserName && <p>Hello {name}</p> }
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-          </svg>
+      <div className="flex gap-4">
+        <div className="favorite pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleFavoriteClick}>
+          <FavoriteIcon />
+          {favorites.length > 0 && (
+            <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+              {favorites.length}
+            </span>
+          )}
         </div>
       </div>
 
-      {showSidebar && isRegisteredUser ? <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar}/> : null}
-      {showSidebar && !isRegisteredUser ? <Login onClose={handleCloseSideBar} /> : null}
+        <div className="car flex relative" onClick={handleCartClick}>
+          <div className="car-shop pr-6 cursor-pointer relative">
+            <ShoppingCartIcon />
+            {cart.length > 0 && (
+              <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                {cart.reduce((total, product) => total + product.quantity, 0)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
 
+      {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />}
+      {showFavoriteMenu && (
+        <div className="favorite-menu">
+          {/* Aquí renderiza el menú desplegable de favoritos */}
+          {/* Por ejemplo: */}
+          <ul>
+            {favorites.map((favorite, index) => (
+              <li key={index}>{/* Renderiza cada elemento favorito */}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {showSidebar && isRegisteredUser ? (
+        <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
+      ) : null}
+      {showSidebar && !isRegisteredUser ? (
+        <Login onClose={handleCloseSideBar} />
+      ) : null}
     </div>
   );
 }
@@ -184,54 +173,62 @@ export default function NavBar() {
 
 
 
-
-
-
-
-
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
+// import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+// import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importa el hook del carrito
 // import Logo from "../../img/logo.png";
 // import Login from "../Login/Login";
-// import {
-//   NavLink,
-//   Link,
-//   Navigate,
-//   useNavigate,
-//   useLocation,
-// } from "react-router-dom";
+// import Account from "../Account/Account";
+// import { NavLink, Link, useLocation } from "react-router-dom";
 // import MenuWomen from "../Menu/menuWomen/MenuWomen";
 // import MenuMen from "../Menu/menuMen/MenuMen";
 // import MenuStore from "../Menu/menuStore/MenuStore";
 // import MenuAbout from "../Menu/menuAbout/MenuAbout";
 // import SearchBar from "./SearchBar";
-// import Cart from "../Cart/Cart";
+// import CartMenu from "../Menu/CartMenu/CartMenu"; // Importa el componente del menú desplegable del carrito
+// import AccountCircleIcon from "@material-ui/icons/AccountCircle"; // Importa el icono de login de Material-UI
+// import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"; // Importa el icono del carrito de Material-UI
 
 // export default function NavBar() {
-//   const navigate = useNavigate();
+//   const isRegisteredUser = useStore((state) => state.registeredUser);
+//   const { name } = useStore((state) => state.user);
 //   const location = useLocation();
 
-//   const [showLogin, setShowLogin] = useState(false);
 //   const [showLinks, setShowLinks] = useState(false);
-//   const [showCart, setShowCart] = useState(false);
+//   const [showSidebar, setShowSidebar] = useState(false);
+//   const [showUserName, setShowUserName] = useState(false);
+//   const [showCartMenu, setShowCartMenu] = useState(false);
+
+//   const cart = useCartStore((state) => state.cart);
 
 //   const handleMenuClick = () => {
-//     setShowLinks(!showLinks); // Alternar la visibilidad de los enlaces al hacer clic en el botón de menú
-//   };
-
-//   const handleCartClick = () => {
-//     setShowCart(!showCart);
-//   };
-
-//   const handleCloseCart = () => {
-//     setShowCart(false);
+//     setShowLinks(!showLinks);
 //   };
 
 //   const handleProfileClick = () => {
-//     setShowLogin(!showLogin);
+//     setShowSidebar(true);
 //   };
 
-//   const handleCloseLogin = () => {
-//     setShowLogin(false);
+//   const handleCloseSideBar = () => {
+//     setShowSidebar(false);
+//   };
+
+//   useEffect(() => {
+//     if (isRegisteredUser) {
+//       setShowUserName(true);
+//     } else {
+//       setShowUserName(false);
+//       setShowSidebar(false);
+//       setShowUserName(false);
+//     }
+//   }, [isRegisteredUser]);
+
+//   const handleCartClick = () => {
+//     setShowCartMenu(!showCartMenu);
+//   };
+
+//   const handleCloseCartMenu = () => {
+//     setShowCartMenu(false);
 //   };
 
 //   return (
@@ -258,7 +255,7 @@ export default function NavBar() {
 //         </NavLink>
 //       </div>
 
-//       {/* Aquí se agregan los enlaces que se mostrarán en la versión responsive */}
+//       {/* Elementos de la barra de navegación */}
 //       <div
 //         className={`links transition-opacity duration-300 pt-[10px] h-[150px] border-b-2 border-slate-500  bg-white text-black w-full left-0 top-10 text-lg lg:hidden ${
 //           showLinks ? "absolute" : "hidden"
@@ -281,7 +278,7 @@ export default function NavBar() {
 //           href="/cards"
 //         >
 //           Store
-//         </a>{" "}
+//         </a>
 //         <a
 //           className="pl-6 pr-6 block hover:ml-[5px] ease-in duration-200"
 //           href="#"
@@ -318,50 +315,39 @@ export default function NavBar() {
 //         {location.pathname === "/cards" && <SearchBar />}
 //       </div>
 
-//       <div className="car flex ">
+//       {/* Icono del carrito con el número de elementos */}
+//       <div className="flex gap-4">
 //         <div
-//           className="car-shop pr-6 cursor-pointer "
-//           onClick={handleCartClick}
-//         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             fill="white"
-//             viewBox="0 0 24 24"
-//             strokeWidth="1.5"
-//             stroke="currentColor"
-//             className="w-6 h-6"
-//           >
-//             <path
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-//             />
-//           </svg>
-//         </div>
-
-//         <div
-//           className="profile pr-4 cursor-pointer "
+//           className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 "
 //           onClick={handleProfileClick}
 //         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             fill="none"
-//             viewBox="0 0 24 24"
-//             strokeWidth="1.5"
-//             stroke="currentColor"
-//             className="w-6 h-6"
-//           >
-//             <path
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-//             />
-//           </svg>
+//           {showUserName && <p>Hello {name}</p>}
+//           <AccountCircleIcon />
+//         </div>
+
+//         <div className="car flex relative" onClick={handleCartClick}>
+//           <div className="car-shop pr-6 cursor-pointer relative">
+//             <ShoppingCartIcon />
+//             {/* Número de elementos en el carrito */}
+//             {cart.length > 0 && (
+//             <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+//               {cart.reduce((total, product) => total + product.quantity, 0)}
+//             </span>
+//             )}
+//           </div>
 //         </div>
 //       </div>
 
-//       {showLogin && <Login onClose={handleCloseLogin} />}
-//       {showCart && <Cart onClose={handleCloseCart} />}
+//       {/* Mostrar el menú desplegable del carrito */}
+//       {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />}
+
+//       {/* Elementos adicionales del Navbar */}
+//       {showSidebar && isRegisteredUser ? (
+//         <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
+//       ) : null}
+//       {showSidebar && !isRegisteredUser ? (
+//         <Login onClose={handleCloseSideBar} />
+//       ) : null}
 //     </div>
 //   );
 // }

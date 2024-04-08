@@ -34,13 +34,6 @@ const Create = () => {
     setImageUrls([...imageUrls, ""]);
   };
 
-  // const createProduct = async (formData) => {
-  //   try {
-  //     await axios.post("http://localhost:3001/products/create", formData);
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

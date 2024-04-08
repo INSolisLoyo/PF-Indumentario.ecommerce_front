@@ -6,12 +6,16 @@ import SearchBar from "../Navbar/SearchBar";
 import axios from "../../axios/axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
+import useCartStore from "../GlobalStoreZustand/useCartStore";
 
 const URL = "/product";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const gender = queryParams.get("gender");
+  const category = queryParams.get("category");
 
   let {
     items,
@@ -19,7 +23,6 @@ const Cards = () => {
     showFilters,
     currentPage,
     name,
-    gender,
     minPrice,
     maxPrice,
     material,
@@ -30,8 +33,6 @@ const Cards = () => {
     setTotalItems,
     setShowFilters,
     setCurrentPage,
-    setName,
-    setGender,
     setMinPrice,
     setMaxPrice,
     setMaterial,
@@ -41,16 +42,18 @@ const Cards = () => {
   } = useStore();
 
   const [displayedItems, setDisplayedItems] = useState([]);
+  const cart = useCartStore((state) => state.cart);
 
   const fetchData = async () => {
     try {
       const response = await axios.post(URL, {
         name,
-        // gender,
         minPrice,
         maxPrice,
         material,
         colour,
+        gender: gender ? gender : undefined,
+        category: category ? category : undefined,
         productLimit: PRODUCTS_PER_PAGE,
         pageNumber: currentPage,
         orderType,
@@ -60,7 +63,6 @@ const Cards = () => {
       setTotalItems(response.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Depuración del cliente: Imprimir detalles del error de Axios
       console.log("Error response:", error.response);
     }
   };
@@ -70,17 +72,17 @@ const Cards = () => {
   }, [
     name,
     currentPage,
-    // gender,
     minPrice,
     maxPrice,
     material,
     colour,
+    gender,
+    category,
     orderType,
     order
   ]);
 
   useEffect(() => {
-    // console.log(location.pathname);
     const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
     const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, items.length);
     setDisplayedItems(items.slice(startIndex, endIndex));
@@ -97,12 +99,11 @@ const Cards = () => {
   };
 
   const handleNextPage = () => {
+    const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-
-  const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
   return (
     <div className="flex-col pt-[120px] justify-center font-RedHat">
@@ -125,22 +126,30 @@ const Cards = () => {
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}
         >
-          {displayedItems.map(res => (
-            <div key={res.id} className="relative">
-              <Card res={res} />
-            </div>
-          ))}
+
+          {displayedItems.length > 0 ? (
+            displayedItems.map((res) => (
+              <div key={res.id} className="relative">
+                <Card res={res} />
+              </div>
+            ))
+          ) : (
+            <p className="text-xl text-gray-400">There are no items available with the selected filters.</p>
+          )}
+
         </div>
       </div>
 
       <div className="flex justify-center mt-4">
-        <CustomPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onChangePage={handlePageChange}
-          handlePrevPage={handlePrevPage}
-          handleNextPage={handleNextPage}
-        />
+        {displayedItems.length > 0 ? (
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalItems / PRODUCTS_PER_PAGE)}
+            onChangePage={handlePageChange}
+            handlePrevPage={handlePrevPage}
+            handleNextPage={handleNextPage}
+          />
+        ) : null}
       </div>
     </div>
   );

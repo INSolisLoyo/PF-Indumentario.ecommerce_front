@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
-import menImage from '../../../img/moda-men.jpg';
-import axios from "../../../axios/axios";
+import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
+import { useNavigate } from "react-router-dom";
+import modaMen from '../../../img/moda-men.jpg';
 
 const MenuMen = () => {
-  const {
-    menMenuOpen,
-    toggleMenMenu,
-    womenMenuOpen,
-    storeMenuOpen,
-    aboutMenuOpen,
-    toggleWomenMenu,
-    toggleStoreMenu,
-    toggleAboutMenu,
-  } = useMenuStore();
-  const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
+  const { menMenuOpen, toggleMenMenu } = useMenuStore(); // Cambia womenMenuOpen por menMenuOpen
+  const { setGender } = useStore();
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // Función para obtener las categorías desde la API
-  
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get('/categories');
-      if (response.status === 200) {
-        const data = response.data;
-        setCategories(data); // Almacena las categorías en el estado
-      } else {
-        console.error("Failed to fetch categories");
+
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/categories");
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        } else {
+          console.error("Failed to fetch categories");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -34,34 +31,34 @@ const MenuMen = () => {
   };
 
 
-    // Llama a la función para obtener las categorías cuando el menú se abre
-    if (menMenuOpen) {
+    if (menMenuOpen) { // Cambia womenMenuOpen por menMenuOpen
       fetchCategories();
     }
-  }, [menMenuOpen]);
+  }, [menMenuOpen]); // Cambia womenMenuOpen por menMenuOpen
 
   const handleClick = () => {
     toggleMenMenu();
-    if (womenMenuOpen) toggleWomenMenu();
-    if (aboutMenuOpen) toggleAboutMenu();
+  };
+
+  const handleCategoryClick = (category) => {
+    setGender("Men"); // Cambia "Women" por "Men"
+    navigate(`/cards?gender=Men&category=${category}`); // Cambia "Women" por "Men"
+    toggleMenMenu(); // Cambiar womenMenuOpen por menMenuOpen
   };
 
   useEffect(() => {
-    // Función para cerrar el menú si se hace clic fuera de él
     const handleCloseMenu = (event) => {
-      if (menMenuOpen && !event.target.closest(".men-menu")) {
+      if (menMenuOpen && !event.target.closest(".men-menu")) { // Cambia womenMenuOpen por menMenuOpen
         toggleMenMenu();
       }
     };
 
-    // Agregar el manejador de eventos al cuerpo del documento
     document.body.addEventListener("click", handleCloseMenu);
 
-    // Limpiar el manejador de eventos al desmontar el componente
     return () => {
       document.body.removeEventListener("click", handleCloseMenu);
     };
-  }, [menMenuOpen, toggleMenMenu]);
+  }, [menMenuOpen, toggleMenMenu]); // Cambia womenMenuOpen por menMenuOpen
 
   return (
     <div className="men-menu">
@@ -73,28 +70,22 @@ const MenuMen = () => {
       </div>
 
       {menMenuOpen && (
-        // Menú desplegable
-        <div
-          className={`absolute top-full shadow-lg transform transition-transform duration-500 ${
-            menMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
+        <div className="absolute top-full shadow-lg transform transition-transform duration-500">
           <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             <ul>
               <li className="font-bold">CATEGORIES</li>
               {categories.map((category, index) => (
                 <li key={index}>
-                  <a href="#">{category}</a>
+                  <a href="#" onClick={() => handleCategoryClick(category)}>
+                    {category}
+                  </a>
                 </li>
               ))}
             </ul>
-            <ul>
-              <img
-                className="w-[220px] rounded-full"
-                src={menImage}
-                alt="Moda Men"
-              />
-            </ul>
+            <div>
+              <img className="w-[220px] rounded-full" src={modaMen} alt="Moda Men" />
+            </div>
+
           </div>
         </div>
       )}
