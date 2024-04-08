@@ -17,6 +17,7 @@ const MenuWomen = () => {
         if (response.ok) {
           const data = await response.json();
           setCategories(data);
+
         } else {
           console.error("Failed to fetch categories");
         }
@@ -76,9 +77,11 @@ const MenuWomen = () => {
                 </li>
               ))}
             </ul>
+
             <div>
             <img className="w-[220px] rounded-full" src={modaWomen} alt="Moda Women" />
             </div>
+
           </div>
         </div>
       )}

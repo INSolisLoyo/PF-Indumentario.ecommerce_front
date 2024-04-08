@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from "../../axios/axios";
 
 const submitForm = async (data) => {
   try {
     // Obtener el token de autenticación (debes obtenerlo de donde lo tengas almacenado)
     const token = localStorage.getItem("token");  // Ejemplo: si está guardado en el localStorage
 
-    const response = await axios.post("http://localhost:3001/products/create", data, {
+    const response = await axios.post("/product/create", data, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`  // Añadir el token en el encabezado
