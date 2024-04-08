@@ -1,6 +1,7 @@
-import { create } from "zustand";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useStore = create((set) => ({
+const useStore = create(persist((set) => ({
 
   // Estado del carrito
   cart: [],
@@ -54,6 +55,7 @@ const useStore = create((set) => ({
   setCurrentUser: (currentUser) => set({ user: currentUser }),
   setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
   registeredUser: false,
+
   user: {
     id: '',
     name: '',
@@ -62,7 +64,14 @@ const useStore = create((set) => ({
     email: '',
     password: '',
     isAdmin: '',
-    isActive: ''}
+    isActive: ''
+  },
+  setCurrentUser: (currentUser) => set({ user: currentUser }),
+  setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered }),
+  registeredUser: false,
+}), {
+  name: 'session-storage', // Nombre del almacenamiento persistente
+  getStorage: () => sessionStorage, // Almacenamiento en sessionStorage
 }));
 
 export default useStore;
