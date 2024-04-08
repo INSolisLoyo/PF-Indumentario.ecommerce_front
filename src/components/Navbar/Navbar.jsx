@@ -12,9 +12,11 @@ import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
 import CartMenu from "../Menu/CartMenu/CartMenu";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Perfil from "../../img/perfil.png"
+import Shop from "../../img/shop.png"
+import Favorite from "../../img/favorite.png"
+// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function NavBar() {
   const isRegisteredUser = useStore((state) => state.registeredUser);
@@ -120,12 +122,21 @@ export default function NavBar() {
       <div className="flex gap-4">
         <div className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleProfileClick}>
           {showUserName && <p>Hello {name}</p>}
-          <AccountCircleIcon />
+
+
+          <img className="w-6" src={Perfil} alt="" />
+
+
+
         </div>
       
       <div className="flex gap-4">
         <div className="favorite pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleFavoriteClick}>
-          <FavoriteIcon />
+
+
+        <img className="w-6" src={Favorite} alt="" />
+
+          
           {favorites.length > 0 && (
             <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
               {favorites.length}
@@ -136,7 +147,11 @@ export default function NavBar() {
 
         <div className="car flex relative" onClick={handleCartClick}>
           <div className="car-shop pr-6 cursor-pointer relative">
-            <ShoppingCartIcon />
+
+
+          <img className="w-6" src={Shop} alt="" />
+
+          
             {cart.length > 0 && (
               <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
                 {cart.reduce((total, product) => total + product.quantity, 0)}
