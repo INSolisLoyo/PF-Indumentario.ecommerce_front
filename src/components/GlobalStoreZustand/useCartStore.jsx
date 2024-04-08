@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useCartStore = create((set) => ({
+const useCartStore = create(persist((set) => ({
   cart: [], // Array de objetos { product, quantity }
   addToCart: (product) =>
     set((state) => {
@@ -55,6 +56,9 @@ const useCartStore = create((set) => ({
     }),
 
   clearCart: () => set({ cart: [] }),
+}), {
+  name: 'cart-storage', // Nombre del almacenamiento persistente
+  getStorage: () => localStorage, // Almacenamiento en localStorage
 }));
 
 export default useCartStore;
