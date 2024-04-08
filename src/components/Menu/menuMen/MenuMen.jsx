@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 import { useNavigate } from "react-router-dom";
-import modaMen from '../../../img/moda-men.jpg';
+import modaMen from "../../../img/moda-men.jpg";
 import axios from "../../../axios/axios"; // Importar axios
 
 const MenuMen = () => {
@@ -18,7 +18,7 @@ const MenuMen = () => {
         setCategories(response.data); // Utilizar response.data para obtener los datos
       } catch (error) {
         console.error("Error fetching categories:", error);
-      };
+      }
     };
 
     if (menMenuOpen) {
@@ -73,7 +73,11 @@ const MenuMen = () => {
               ))}
             </ul>
             <div>
-              <img className="w-[220px] rounded-full" src={modaMen} alt="Moda Men" />
+              <img
+                className="w-[220px] rounded-full"
+                src={modaMen}
+                alt="Moda Men"
+              />
             </div>
           </div>
         </div>
@@ -83,10 +87,6 @@ const MenuMen = () => {
 };
 
 export default MenuMen;
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
