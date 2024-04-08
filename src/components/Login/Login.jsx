@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import axios from "../../axios/axios";
-import AuthTerceros from "../AuthTerceros/AuthTerceros";
+// import AuthTerceros from "../AuthTerceros/AuthTerceros";
 
 
 const LOGIN_URL = '/login';
