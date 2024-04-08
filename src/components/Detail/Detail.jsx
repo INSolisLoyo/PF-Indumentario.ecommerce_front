@@ -68,34 +68,37 @@ const Detail = () => {
   };
 
   const handleCounter = (op) => {
+    if (!selectedSize) return; // Verificar si hay una talla seleccionada
+
     if (op === "-") {
-      counter > 1 && setCounter(counter - 1);
+      setCounter(counter > 1 ? counter - 1 : 1); // No permitir cantidad menor a 1
       setErrors({ ...errors, maxItems: "" });
     } else {
-      if (selectedSize) {
-        let maxItems = 0;
-        stock[selectedColor].forEach((size) => {
-          if (size.size === selectedSize) maxItems = size.amount;
-        });
+      const maxItems = stock[selectedColor]?.find((size) => size.size === selectedSize)?.amount;
 
-        if (counter < maxItems) {
-          setCounter(counter + 1);
-        } else {
-          setErrors({
-            ...errors,
-            maxItems: "You can only buy this number of products",
-          });
-        }
+      if (counter < maxItems) {
+        setCounter(counter + 1);
+        setErrors({ ...errors, maxItems: "" });
+      } else {
+        setErrors({
+          ...errors,
+          maxItems: "You can only buy this number of products",
+        });
       }
     }
   };
 
   const handleClickColor = (color) => {
     setSelectedColor(color);
+    setSelectedSize(""); // Restablecer la talla seleccionada
+    setCounter(1); // Restablecer la cantidad a 1
+    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
   };
 
   const handleSizeClick = (size) => {
     setSelectedSize(size);
+    setCounter(1); // Restablecer la cantidad a 1
+    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
   };
 
   const handleClickButton = () => {

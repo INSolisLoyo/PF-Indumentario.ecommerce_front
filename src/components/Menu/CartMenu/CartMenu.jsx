@@ -1,12 +1,12 @@
 import React from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
-
-const CartMenu = ({ onClose, cart }) => {
+const CartMenu = ({ onClose }) => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const cart = useCartStore((state) => state.cart);
 
   const handleIncreaseQuantity = (productId, color, size) => {
     increaseQuantity(productId, color, size);
@@ -41,9 +41,9 @@ const CartMenu = ({ onClose, cart }) => {
         <p className="text-center pt-6 text-gray-700">No products added</p>
       ) : (
         <div className="divide-y divide-gray-400">
-          {cart.map((product) => (
+          {cart.map((product, index) => (
             <ul
-              key={product.product.id}
+              key={index} // Usa el índice como clave si no tienes una clave única en los datos
               className="py-6 flex gap-8 justify-between items-center"
             >
               <li>

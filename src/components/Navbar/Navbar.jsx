@@ -141,7 +141,6 @@ export default function NavBar() {
       </div>
 
       {/* Icono del carrito con el número de elementos */}
-
       <div className="flex gap-4">
         <div
           className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 "
@@ -156,9 +155,9 @@ export default function NavBar() {
             <ShoppingCartIcon />
             {/* Número de elementos en el carrito */}
             {cart.length > 0 && (
-              <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-                {cart.length}
-              </span>
+            <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+              {cart.reduce((total, product) => total + product.quantity, 0)}
+            </span>
             )}
           </div>
         </div>
