@@ -18,7 +18,7 @@ const MenuMen = () => {
         setCategories(response.data); // Utilizar response.data para obtener los datos
       } catch (error) {
         console.error("Error fetching categories:", error);
-      }
+      };
     };
 
     if (menMenuOpen) {

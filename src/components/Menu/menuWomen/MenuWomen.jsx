@@ -18,7 +18,7 @@ const MenuWomen = () => {
         setCategories(response.data); // Establece las categorías en el estado
       } catch (error) {
         console.error("Error fetching categories:", error);
-      }
+      };
     };
 
     if (womenMenuOpen) {
