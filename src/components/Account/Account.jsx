@@ -41,7 +41,7 @@ export default function Account({ onClose, setShowSidebar }) {
             </div>
 
             <div className="w-full text-left md:mt-12 md:px-4">
-                <p>Hola, {name} 💜</p>
+                <p>Hi, {name} 💜</p>
             </div>
 
             <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
