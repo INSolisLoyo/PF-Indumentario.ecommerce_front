@@ -11,6 +11,7 @@ const MenuMen = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+
     const fetchCategories = async () => {
       try {
         const response = await fetch("/categories");
@@ -22,8 +23,13 @@ const MenuMen = () => {
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
+
       }
-    };
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
 
     if (menMenuOpen) { // Cambia womenMenuOpen por menMenuOpen
       fetchCategories();
@@ -79,6 +85,7 @@ const MenuMen = () => {
             <div>
               <img className="w-[220px] rounded-full" src={modaMen} alt="Moda Men" />
             </div>
+
           </div>
         </div>
       )}

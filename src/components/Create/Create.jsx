@@ -41,10 +41,12 @@ const Create = () => {
     const formData = {
       name: e.target.name.value,
       price: parseFloat(e.target.price.value),
-      category: e.target.category.value,
-      material: e.target.material.value.split(",").map((item) => item.trim()),
-      colour: e.target.colour.value.split(",").map((item) => item.trim()),
+      gender: e.target.gender.value,
       images: imageUrls.filter((url) => url.trim() !== ""),
+      colour: e.target.colour.value.split(",").map((item) => item.trim()),
+      material: e.target.material.value.split(",").map((item) => item.trim()),
+      category: e.target.category.value,
+      description: e.target.description.value
     };
 
     try {
@@ -53,9 +55,11 @@ const Create = () => {
       resetForm();
       e.target.name.value = "";
       e.target.price.value = "";
-      e.target.category.value = "";
+      e.target.gender.value = "";
       e.target.material.value = "";
       e.target.colour.value = "";
+      e.target.category.value = "";
+      e.target.description.value = "";
       setImageUrls([""]);
     } catch (error) {
       console.error("Error creating product:", error);
@@ -104,18 +108,18 @@ const Create = () => {
             <div>
               <label
                 className="text-white dark:text-gray-200"
-                htmlFor="productCategory"
+                htmlFor="productGender"
               >
-                Category
+                Gender
               </label>
               <select
-                name="category"
-                id="productCategory"
+                name="gender"
+                id="productGender"
                 defaultValue=""
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               >
                 <option value="" disabled>
-                  Choose your category
+                  Choose gender
                 </option>
                 <option value="Men">Men</option>
                 <option value="Women">Women</option>
@@ -177,6 +181,37 @@ const Create = () => {
                 Add Image
               </button>
             </div>
+
+            <div>
+              <label
+                className="text-white dark:text-gray-200"
+                htmlFor="productCategory"
+              >
+                Category
+              </label>
+              <input
+                name="category"
+                id="productCategory"
+                type="text"
+                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+              />
+            </div>
+
+            <div>
+              <label
+                className="text-white dark:text-gray-200"
+                htmlFor="productDescription"
+              >
+                Description
+              </label>
+              <input
+                name="description"
+                id="productDescription"
+                type="text"
+                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+              />
+            </div>
+
           </div>
 
           <div className="flex justify-end mt-6">

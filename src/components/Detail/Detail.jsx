@@ -8,6 +8,7 @@ import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 
 const Detail = () => {
+
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
   const PRODUCT = `/product/${id}`;
@@ -43,6 +44,7 @@ const Detail = () => {
       images: galleryImages,
       colours: newColors,
       material: materials,
+
     });
   };
 

@@ -38,7 +38,7 @@ const Cards = () => {
     setMaterial,
     setColour,
     setOrderType,
-    setOrder,
+    setOrder
   } = useStore();
 
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -57,7 +57,7 @@ const Cards = () => {
         productLimit: PRODUCTS_PER_PAGE,
         pageNumber: currentPage,
         orderType,
-        order,
+        order
       });
       setItems(response.data);
       setTotalItems(response.data.length);
@@ -79,7 +79,7 @@ const Cards = () => {
     gender,
     category,
     orderType,
-    order,
+    order
   ]);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Cards = () => {
     setDisplayedItems(items.slice(startIndex, endIndex));
   }, [items, currentPage]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
 
@@ -126,6 +126,7 @@ const Cards = () => {
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}
         >
+
           {displayedItems.length > 0 ? (
             displayedItems.map((res) => (
               <div key={res.id} className="relative">
@@ -135,6 +136,7 @@ const Cards = () => {
           ) : (
             <p className="text-xl text-gray-400">There are no items available with the selected filters.</p>
           )}
+
         </div>
       </div>
 
