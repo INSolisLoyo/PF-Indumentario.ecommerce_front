@@ -20,11 +20,8 @@ const MenuMen = () => {
       } catch (error) {
         console.error("Error fetching categories:", error);
 
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+      };
+    };
 
 
     if (menMenuOpen) {

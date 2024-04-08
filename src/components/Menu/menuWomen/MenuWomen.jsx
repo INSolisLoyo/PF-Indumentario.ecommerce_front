@@ -20,7 +20,7 @@ const MenuWomen = () => {
 
       } catch (error) {
         console.error("Error fetching categories:", error);
-      }
+      };
     };
 
     if (womenMenuOpen) {
