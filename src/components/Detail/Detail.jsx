@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import axios from "../../env/axios";
+import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import heart from "../../img/heart.png";
 import { getColors } from "./Colors";

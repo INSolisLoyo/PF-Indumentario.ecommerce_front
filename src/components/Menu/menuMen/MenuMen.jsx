@@ -13,7 +13,7 @@ const MenuMen = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:3001/categories");
+        const response = await fetch("/categories");
         if (response.ok) {
           const data = await response.json();
           setCategories(data);

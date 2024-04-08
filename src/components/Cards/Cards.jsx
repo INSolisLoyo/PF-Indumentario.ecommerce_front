@@ -3,13 +3,12 @@ import { useLocation } from "react-router-dom";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import SearchBar from "../Navbar/SearchBar";
-import axios from "axios";
+import axios from "../../axios/axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
-import Swal from "sweetalert2";
 
-const URL = "http://localhost:3001/product";
+const URL = "/product";
 const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {

@@ -131,7 +131,7 @@ const CartMenu = ({ onClose }) => {
         onClick={onClose}
         className="flex mt-6 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none"
       >
-        Close
+        Process
       </button>
     </div>
   );
