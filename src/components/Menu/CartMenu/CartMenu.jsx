@@ -1,6 +1,6 @@
 import React from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CartMenu = ({ onClose }) => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);

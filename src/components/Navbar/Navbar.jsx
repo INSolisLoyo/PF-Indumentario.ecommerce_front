@@ -12,9 +12,9 @@ import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
 import CartMenu from "../Menu/CartMenu/CartMenu";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function NavBar() {
   const isRegisteredUser = useStore((state) => state.registeredUser);

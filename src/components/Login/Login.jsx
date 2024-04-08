@@ -5,6 +5,7 @@ import {jwtDecode} from 'jwt-decode';
 import axios from "../../axios/axios";
 import AuthTerceros from "../AuthTerceros/AuthTerceros";
 
+
 const LOGIN_URL = '/login';
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PWD_REGEX = /.+/;
