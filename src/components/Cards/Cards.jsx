@@ -6,7 +6,7 @@ import SearchBar from "../Navbar/SearchBar";
 import axios from "axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
-import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importamos el hook del estado del carrito
+import useCartStore from "../GlobalStoreZustand/useCartStore";
 import Swal from "sweetalert2";
 
 const URL = "http://localhost:3001/product";
@@ -14,6 +14,9 @@ const PRODUCTS_PER_PAGE = 10;
 
 const Cards = () => {
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const gender = queryParams.get("gender");
+  const category = queryParams.get("category");
 
   let {
     items,
@@ -21,7 +24,6 @@ const Cards = () => {
     showFilters,
     currentPage,
     name,
-    gender,
     minPrice,
     maxPrice,
     material,
@@ -32,8 +34,6 @@ const Cards = () => {
     setTotalItems,
     setShowFilters,
     setCurrentPage,
-    setName,
-    setGender,
     setMinPrice,
     setMaxPrice,
     setMaterial,
@@ -43,7 +43,7 @@ const Cards = () => {
   } = useStore();
 
   const [displayedItems, setDisplayedItems] = useState([]);
-  const cart = useCartStore((state) => state.cart); // Obtenemos el estado del carrito
+  const cart = useCartStore((state) => state.cart);
 
   const fetchData = async () => {
     try {
@@ -53,6 +53,8 @@ const Cards = () => {
         maxPrice,
         material,
         colour,
+        gender: gender ? gender : undefined,
+        category: category ? category : undefined,
         productLimit: PRODUCTS_PER_PAGE,
         pageNumber: currentPage,
         orderType,
@@ -75,6 +77,8 @@ const Cards = () => {
     maxPrice,
     material,
     colour,
+    gender,
+    category,
     orderType,
     order,
   ]);
@@ -96,12 +100,11 @@ const Cards = () => {
   };
 
   const handleNextPage = () => {
+    const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-
-  const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
 
   return (
     <div className="flex-col pt-[120px] justify-center font-RedHat">
@@ -140,7 +143,7 @@ const Cards = () => {
         {displayedItems.length > 0 ? (
           <CustomPagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={Math.ceil(totalItems / PRODUCTS_PER_PAGE)}
             onChangePage={handlePageChange}
             handlePrevPage={handlePrevPage}
             handleNextPage={handleNextPage}
