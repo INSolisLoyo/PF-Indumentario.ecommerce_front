@@ -225,7 +225,7 @@ const Detail = () => {
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
           >
-            Go
+            Add to cart
           </button>
         </div>
       </div>
