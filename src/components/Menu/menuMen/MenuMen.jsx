@@ -12,14 +12,17 @@ const MenuMen = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+
     const fetchCategories = async () => {
       try {
         const response = await axios.get("/categories"); // Cambiar fetch por axios.get
         setCategories(response.data); // Utilizar response.data para obtener los datos
       } catch (error) {
         console.error("Error fetching categories:", error);
+
       };
     };
+
 
     if (menMenuOpen) {
       fetchCategories();
@@ -75,6 +78,7 @@ const MenuMen = () => {
             <div>
               <img className="w-[220px] rounded-full" src={modaMen} alt="Moda Men" />
             </div>
+
           </div>
         </div>
       )}

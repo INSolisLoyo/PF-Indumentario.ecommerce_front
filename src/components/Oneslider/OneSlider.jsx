@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
-import axios from "axios";
+import axios from "../../axios/axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const OneSlider = ({ gender }) => {
   const [data, setData] = useState([]);
-  const URL = "http://localhost:3001/product";
+  const URL = "/product";
 
   useEffect(() => {
     fetchData();
