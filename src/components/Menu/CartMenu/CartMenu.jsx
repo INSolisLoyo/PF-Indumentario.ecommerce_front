@@ -1,6 +1,5 @@
 import React from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const CartMenu = ({ onClose }) => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
@@ -110,7 +109,7 @@ const CartMenu = ({ onClose }) => {
                     }
                     className="font-semibold text-red-500 focus:outline-none"
                   >
-                    <DeleteIcon />
+                    Remove
                   </button>
                 </div>
               </li>
