@@ -14,8 +14,10 @@ const MenuWomen = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+
         const response = await axios.get("/categories"); // Usa Axios para obtener las categorías
         setCategories(response.data); // Establece las categorías en el estado
+
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -72,6 +74,7 @@ const MenuWomen = () => {
                 </li>
               ))}
             </ul>
+
             <div>
               <img
                 className="w-[220px] rounded-full"
@@ -79,6 +82,7 @@ const MenuWomen = () => {
                 alt="Moda Women"
               />
             </div>
+
           </div>
         </div>
       )}
