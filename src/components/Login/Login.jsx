@@ -2,7 +2,7 @@ import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import axios from "../../env/axios";
+import axios from "../../axios/axios";
 
 const LOGIN_URL = '/login';
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
