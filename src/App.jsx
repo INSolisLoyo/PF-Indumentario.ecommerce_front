@@ -12,7 +12,7 @@ import Create from "./components/Create/Create";
 
 function App() {
   return (
-    <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
+    <div className="m-0 p-0 w-full h-auto">
       <NavBar />
 
       <Routes>
