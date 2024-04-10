@@ -109,7 +109,7 @@ const MenuAbout = () => {
             aboutMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
+          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             {teamMembers.map((member, index) => (
               <div key={index}>
                 <img
