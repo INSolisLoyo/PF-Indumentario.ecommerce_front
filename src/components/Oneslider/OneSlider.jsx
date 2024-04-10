@@ -78,7 +78,7 @@ const OneSlider = ({ gender }) => {
             <img
               src={card.images}
               alt={card.name}
-              className="w-[100%] h-[380px] rounded-md sm:h-[380px] cursor-pointer md:h-[380px]"
+              className="w-[100%] h-[380px] rounded-md sm:h-[380px] cursor-pointer md:h-[380px] object-cover"
             />
           </Link>
         </div>

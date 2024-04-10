@@ -88,7 +88,7 @@ const SaleOneSlider = () => {
           <img
             src={card.images}
             alt={card.name}
-            className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
+            className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px] object-cover"
             />
             </Link>
 
