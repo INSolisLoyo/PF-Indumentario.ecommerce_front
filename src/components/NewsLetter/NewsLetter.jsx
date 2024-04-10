@@ -45,15 +45,17 @@ const NewsLetter = () => {
 
     return (
 
-        <div className="flex flex-col gap-4 px-12">
+        <div className="flex flex-col gap-4 px-4 font-RedHat">
 
-            <p className="text-xl text-center text-primary font-bold">NewsLetters</p>
-            <p className="text-justify">Hello, please enter your email address to subscribe to our newsletter.</p>
-            <input type="email" placeholder="Email" value={email} className={`border ${borderStyle} px-4 py-2 rounded-lg`} onChange={handleChange}/>
-            <span className="text-red-500">{error}</span>
-            <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/70"
-                onClick={handleSubmit}
-            >Subscribe</button>
+            <p className="text-md text-center text-primary font-bold">NewsLetters</p>
+            <p className="text-sm text-center">Enter your email address to subscribe to our newsletter!</p>
+            <div className="px-8 flex flex-col gap-2">
+                <input type="email" placeholder="Email" value={email} className={`border ${borderStyle} px-4 py-2 rounded-lg`} onChange={handleChange}/>
+                <span className="text-red-500 text-sm">{error}</span>
+                <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/70 focus:border-gray-500"
+                    onClick={handleSubmit}
+                >Subscribe</button>
+            </div>
 
         </div>
     )

@@ -7,7 +7,8 @@ import MyAccount from "./components/MyAccount/MyAccount";
 import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
-
+import About from "./components/About/About";
+import AboutUs from "./components/About/AboutUs";
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
         <Route path="/myaccount" element={<MyAccount />} />
         <Route path="/cards" element={<Cards />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/about/:section" element={<About />} />
+        
+
       </Routes>
 
       <Footer />

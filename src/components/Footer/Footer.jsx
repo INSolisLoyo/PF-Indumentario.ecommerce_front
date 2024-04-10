@@ -28,30 +28,24 @@ const Footer = () => {
 
               </div>
 
+               {/* Newsletter */}
+               <div className='flex-1'>
+                    <NewsLetter/>
+               </div>   
+
               {/* Links */}
-              <div className='flex-1 flex flex-col gap-4 list-none font-RedHat'>
+              <div className='h-full flex-1 flex flex-col items-center gap-4 list-none font-RedHat'>
 
-                {/* About us */}
-                    <div className='flex flex-col gap-4'>
-                            
-                        <p className='text-xl text-center text-primary font-bold'>About us</p>
-                        <p className='text-justify font-semibold'>Our team is a group of developers with pasion and dedication, this is our first project together. For know us better, please <span className='font-semibold text-primary cursor-pointer'>click here.</span></p>
+                    <p className="text-md text-center text-primary font-bold">Links</p>
+                    <ul className='flex flex-col gap-.5 items-center justify-center'>
 
-                    </div>
-
-                    <ul className='flex flex-col gap-2 items-center'>
-
-                        <li><a href="#" className='text-primary font-semibold'>Terms and conditions</a></li>
-                        <li><a href="#" className='text-primary font-semibold'>Privacy</a></li>
+                        <li><a href="/about/aboutUs" className='text-sm  text-primary font-semibold hover:text-primary/70'>About us</a></li>
+                        <li><a href="/about/termsAndConditions" className='text-sm  text-primary font-semibold hover:text-primary/70'>Terms and conditions</a></li>
+                        <li><a href="/about/privacy" className='text-sm text-primary font-semibold hover:text-primary/70'>Privacy</a></li>
 
                     </ul>
             
-              </div>
-
-              {/* Follow */}
-              <div className='flex-1'>
-                    <NewsLetter/>
-              </div>            
+              </div>     
              
             </div>
 
