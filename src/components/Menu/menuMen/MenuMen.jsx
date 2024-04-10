@@ -9,22 +9,26 @@ const MenuMen = () => {
   const { menMenuOpen, toggleMenMenu } = useMenuStore();
   const { setGender } = useStore();
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
+  const [menCategories, setMenCategories] = useState([]);
 
   useEffect(() => {
-
-    const fetchCategories = async () => {
+    const fetchProduct = async () => {
       try {
-        const response = await axios.get("/categories"); // Cambiar fetch por axios.get
-        setCategories(response.data); // Utilizar response.data para obtener los datos
+        const response = await axios.post("/product"); // Cambiar la ruta por /product
+        const product = response.data;
+        const menCategories = product
+          .filter(product => product.gender === "Men")
+          .map(product => product.category)
+          .filter((category, index, self) => self.indexOf(category) === index) // Eliminar categorías duplicadas
+          .sort(); // Ordenar las categorías alfabéticamente
+        setMenCategories(menCategories);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching product:", error);
       }
     };
 
-
     if (menMenuOpen) {
-      fetchCategories();
+      fetchProduct();
     }
   }, [menMenuOpen]);
 
@@ -66,7 +70,7 @@ const MenuMen = () => {
           <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             <ul>
               <li className="font-bold">CATEGORIES</li>
-              {categories.map((category, index) => (
+              {menCategories.map((category, index) => (
                 <li key={index}>
                   <a href="#" onClick={() => handleCategoryClick(category)}>
                     {category}
@@ -81,7 +85,6 @@ const MenuMen = () => {
                 alt="Moda Men"
               />
             </div>
-
           </div>
         </div>
       )}
@@ -91,51 +94,56 @@ const MenuMen = () => {
 
 export default MenuMen;
 
+
+
+
+
+
+
+
 // import React, { useState, useEffect } from "react";
 // import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 // import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 // import { useNavigate } from "react-router-dom";
-// import modaMen from '../../../img/moda-men.jpg';
+// import modaMen from "../../../img/moda-men.jpg";
+// import axios from "../../../axios/axios"; // Importar axios
 
 // const MenuMen = () => {
-//   const { menMenuOpen, toggleMenMenu } = useMenuStore(); // Cambia womenMenuOpen por menMenuOpen
+//   const { menMenuOpen, toggleMenMenu } = useMenuStore();
 //   const { setGender } = useStore();
 //   const navigate = useNavigate();
 //   const [categories, setCategories] = useState([]);
 
 //   useEffect(() => {
+
 //     const fetchCategories = async () => {
 //       try {
-//         const response = await fetch("/categories");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setCategories(data);
-//         } else {
-//           console.error("Failed to fetch categories");
-//         }
+//         const response = await axios.get("/categories"); // Cambiar fetch por axios.get
+//         setCategories(response.data); // Utilizar response.data para obtener los datos
 //       } catch (error) {
 //         console.error("Error fetching categories:", error);
 //       }
 //     };
 
-//     if (menMenuOpen) { // Cambia womenMenuOpen por menMenuOpen
+
+//     if (menMenuOpen) {
 //       fetchCategories();
 //     }
-//   }, [menMenuOpen]); // Cambia womenMenuOpen por menMenuOpen
+//   }, [menMenuOpen]);
 
 //   const handleClick = () => {
 //     toggleMenMenu();
 //   };
 
 //   const handleCategoryClick = (category) => {
-//     setGender("Men"); // Cambia "Women" por "Men"
-//     navigate(`/cards?gender=Men&category=${category}`); // Cambia "Women" por "Men"
-//     toggleMenMenu(); // Cambiar womenMenuOpen por menMenuOpen
+//     setGender("Men");
+//     navigate(`/cards?gender=Men&category=${category}`);
+//     toggleMenMenu();
 //   };
 
 //   useEffect(() => {
 //     const handleCloseMenu = (event) => {
-//       if (menMenuOpen && !event.target.closest(".men-menu")) { // Cambia womenMenuOpen por menMenuOpen
+//       if (menMenuOpen && !event.target.closest(".men-menu")) {
 //         toggleMenMenu();
 //       }
 //     };
@@ -145,7 +153,7 @@ export default MenuMen;
 //     return () => {
 //       document.body.removeEventListener("click", handleCloseMenu);
 //     };
-//   }, [menMenuOpen, toggleMenMenu]); // Cambia womenMenuOpen por menMenuOpen
+//   }, [menMenuOpen, toggleMenMenu]);
 
 //   return (
 //     <div className="men-menu">
@@ -170,8 +178,13 @@ export default MenuMen;
 //               ))}
 //             </ul>
 //             <div>
-//               <img className="w-[220px] rounded-full" src={modaMen} alt="Moda Men" />
+//               <img
+//                 className="w-[220px] rounded-full"
+//                 src={modaMen}
+//                 alt="Moda Men"
+//               />
 //             </div>
+
 //           </div>
 //         </div>
 //       )}

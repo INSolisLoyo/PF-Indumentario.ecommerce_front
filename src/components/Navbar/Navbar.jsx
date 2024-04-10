@@ -15,10 +15,7 @@ import CartMenu from "../Menu/CartMenu/CartMenu";
 import Perfil from "../../img/perfil.png";
 import Shop from "../../img/shop.png";
 import Favorite from "../../img/favorite.png";
-import FavoritesMenu from "../Menu/FavoritesMenu/FavoritesMenu"; // Asegúrate de importar el componente FavoritesMenu
-
-// Resto del código...
-
+import FavoritesMenu from "../Menu/FavoritesMenu/FavoritesMenu";
 
 export default function NavBar() {
   const isRegisteredUser = useStore((state) => state.registeredUser);
@@ -57,7 +54,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="w-full mx-auto flex justify-around py-8 gap-4 h-10 items-center bg-white/50 fixed font-RedHat z-[100] ">
+    <div className="w-full mx-auto flex justify-around py-8 gap-4 h-[100px] items-center bg-white/70 fixed font-RedHat z-[100] ">
       <button className="lg:hidden " onClick={handleMenuClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +73,7 @@ export default function NavBar() {
       </button>
       <div className="logo pl-5 ">
         <NavLink to="/">
-          <img className="w-[160px]" src={Logo} alt="BeeComfree" />
+          <img className="w-[200px]" src={Logo} alt="BeeComfree" />
         </NavLink>
       </div>
 
@@ -111,23 +108,29 @@ export default function NavBar() {
         <div className="pl-6  pr-6  " href="#">
           <MenuAbout />
         </div>
-        <div className="block uppercase font-medium cursor-pointer focus:outline-none">
+        {/* <div className="block uppercase font-medium cursor-pointer focus:outline-none">
           <Link to="/create">Create</Link>
-        </div>
+        </div> */}
       </div>
 
       <div className="searchbar hidden lg:flex ">
         {location.pathname === "/cards" && <SearchBar />}
       </div>
 
-      <div className="flex  gap-4">
-        <div className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleProfileClick}>
-          {showUserName && <p>Wellcome {name}</p>}
-          <img className="w-6" src={Perfil} alt="" />
-        </div>
+      <div className="flex justify-center text-center items-center content-center gap-3">
+        {isRegisteredUser ? (
+          <div className="profile pr-2 text-lg cursor-pointer flex   md:gap-2 " onClick={handleProfileClick}>
+            <p><b>Welcome {name}</b></p>
+            {/* <img className="h-6" src={Perfil} alt="" /> */}
+          </div>
+        ) : (
+          <div className="profile pr-2 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 " onClick={handleProfileClick}>
+            <img className="h-6" src={Perfil} alt="" />
+          </div>
+        )}
 
         <div className="favorite pr-4 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 relative" onClick={handleFavoriteClick}>
-          <img className="w-6" src={Favorite} alt="" />
+          <img className="h-6" src={Favorite} alt="" />
           {favorites.length > 0 && (
             <span className="absolute top-0 right-[calc(.4rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
               {favorites.length}
@@ -137,7 +140,7 @@ export default function NavBar() {
 
         <div className="car flex relative" onClick={handleCartClick}>
           <div className="car-shop pr-6 cursor-pointer relative">
-            <img className="w-6" src={Shop} alt="" />
+            <img className="h-6" src={Shop} alt="" />
             {cart.length > 0 && (
               <span className="absolute top-0 right-[calc(.8rem)] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
                 {cart.reduce((total, product) => total + product.quantity, 0)}

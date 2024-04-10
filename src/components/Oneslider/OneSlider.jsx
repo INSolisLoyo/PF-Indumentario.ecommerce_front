@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import axios from "../../axios/axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 const OneSlider = ({ gender }) => {
   const [data, setData] = useState([]);
@@ -73,11 +74,13 @@ const OneSlider = ({ gender }) => {
     >
       {filteredItems.map((card) => (
         <div key={card.id} className="p-4">
-          <img
-            src={card.images}
-            alt={card.name}
-            className="w-[100%] h-[380px] rounded-md sm:h-[380px] md:h-[380px]"
-          />
+          <Link to={`/detail/${card.id}`}>
+            <img
+              src={card.images}
+              alt={card.name}
+              className="w-[100%] h-[380px] rounded-md sm:h-[380px] cursor-pointer md:h-[380px]"
+            />
+          </Link>
         </div>
       ))}
     </Slider>

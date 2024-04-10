@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import axios from "../../axios/axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 const SaleOneSlider = () => {
   const [data, setData] = useState([]);
@@ -83,11 +84,13 @@ const SaleOneSlider = () => {
           <div className="relative top-0 right-0 bg-[#c17b60] text-white text-right font-RedHat font-bold rounded-full px-2 py-1">
             {generateDiscount()}% OFF
           </div>
+          <Link to={`/detail/${card.id}`}>
           <img
             src={card.images}
             alt={card.name}
             className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px]"
             />
+            </Link>
 
           <div className="mt-2 font-semibold italic">{card.name.split(" ").slice(-3).join(" ")}</div>
           <div className="flex mt-2">

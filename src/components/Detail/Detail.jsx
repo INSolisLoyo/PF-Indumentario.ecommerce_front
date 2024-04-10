@@ -3,18 +3,20 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
-import heart from "../../img/heart.png";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; // Importa el hook de estado global de favoritos
 
 const Detail = () => {
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); // Obtén los favoritos y las funciones para agregar/quitar de favoritos
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
   const PRODUCT = `/product/${id}`;
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-  const [ desabledButton, setDesabledButton ] = useState(true);
+  const [desabledButton, setDesabledButton] = useState(true);
   const [stock, setStock] = useState({});
   const [counter, setCounter] = useState(1);
   const [item, setItem] = useState({
@@ -25,10 +27,16 @@ const Detail = () => {
     colours: [],
     material: "",
   });
+  const [fav, setFav] = useState({
+    id: "",
+    name: "",
+    price: "",
+    images: [],
+  });
 
   const [errors, setErrors] = useState({
     maxItems: "",
-    noSizeSelected: ""
+    noSizeSelected: "",
   });
 
   const cleanerProduct = ({ id, name, price, images, colour, material }) => {
@@ -46,7 +54,13 @@ const Detail = () => {
       images: galleryImages,
       colours: newColors,
       material: materials,
+    });
 
+    setFav({
+      id: id,
+      name: name,
+      price: price,
+      images: images,
     });
   };
 
@@ -78,7 +92,9 @@ const Detail = () => {
       setCounter(counter > 1 ? counter - 1 : 1); // No permitir cantidad menor a 1
       setErrors({ ...errors, maxItems: "" });
     } else {
-      const maxItems = stock[selectedColor]?.find((size) => size.size === selectedSize)?.amount;
+      const maxItems = stock[selectedColor]?.find(
+        (size) => size.size === selectedSize
+      )?.amount;
 
       if (counter < maxItems) {
         setCounter(counter + 1);
@@ -108,16 +124,14 @@ const Detail = () => {
   };
 
   const handleClickButton = () => {
-
-    if(!selectedSize){
+    if (!selectedSize) {
       setErrors({
         ...errors,
         noSizeSelected: "Please, choose a size",
       });
       desabledButton(true);
       return;
-    }
-    else {
+    } else {
       const selectedProduct = {
         id: item.id,
         images: item.images[0].original,
@@ -129,7 +143,7 @@ const Detail = () => {
       };
 
       useCartStore.getState().addToCart(selectedProduct);
-  
+
       Swal.fire({
         icon: "success",
         title: "Product added to cart!",
@@ -137,7 +151,6 @@ const Detail = () => {
         timer: 1500,
       });
     }
-
   };
 
   useEffect(() => {
@@ -159,16 +172,29 @@ const Detail = () => {
         console.log(error);
       }
 
-      if(selectedSize){
-        setDesabledButton(false)
+      if (selectedSize) {
+        setDesabledButton(false);
         setErrors({
           ...errors,
           noSizeSelected: "",
-        })
+        });
       }
     };
     fetchData();
   }, [id, selectedColor, selectedSize, errors]);
+
+  useEffect(() => {
+    // Verifica si el producto actual está en la lista de favoritos
+    setIsFavorite(favorites.some((product) => product.id === fav.id));
+  }, [favorites, fav.id]);
+
+  const handleToggleFavorite = () => {
+    if (isFavorite) {
+      removeFromFavorites(fav.id); // Elimina el producto de favoritos
+    } else {
+      addToFavorites(fav); // Agrega el producto a favoritos
+    }
+  };
 
   return (
     <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
@@ -179,7 +205,23 @@ const Detail = () => {
             <h1 className="font-semibold text-xl tracking-widest">
               {item.name}
             </h1>
-            <img src={heart} alt="heart" className="max-w-6 max-h-6" />
+
+            <div className="cursor-pointer">
+              <span
+                role="img"
+                aria-label="corazon"
+                style={{
+                  fontSize: "23px",
+                  verticalAlign: "middle",
+                  display: "inline-block",
+                  lineHeight: "30px",
+                }}
+                onClick={handleToggleFavorite}
+              >
+                {isFavorite ? "❤️" : "🤍"}{" "}
+                {/* Cambia el corazón a rojo si está en favoritos */}
+              </span>{" "}
+            </div>
           </div>
           <div className="md:w-full bg-primary/20 mt-4 rounded-2xl flex flex-col p-4">
             <div className="mt-5 flex justify-between">
