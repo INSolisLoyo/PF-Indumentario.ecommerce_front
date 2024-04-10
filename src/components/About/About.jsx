@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import AboutUs from "./AboutUs";
+import TermsAndConditions from "./TermsAndConditions";
+import Privacy from "./Privacy";
 
 const About = () => {
 
@@ -44,43 +47,48 @@ const About = () => {
 
         <div className="w-full h-auto pt-40">
 
-            <div className="w-11/12 mx-auto h-20">
+            <div className="w-11/12 mx-auto h-auto flex gap-8">
 
                 {/* Menú */}
-                <div className="font-RedHat w-1/3 pl-4 flex flex-col gap-4">
+                <div className="font-RedHat w-3/12 pl-4 flex flex-col gap-4">
 
-                    <button className="w-full py-4 bg-gray-100 rounded-xl text-center font-light cursor-pointer hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/20" ref={aboutRef} 
+                    <button className="w-full py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={aboutRef} 
                     onClick={() => handleClick('aboutUs')}>
                         <p className="px-6 w-full flex justify-between">
                             <span>About us </span>
                             {
-                                 displayContent === true && (section === 'aboutUs' ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/>)
+                                 section === 'aboutUs' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                             }                           
                         </p>                                 
                     </button>
-                    <button className="w-full py-4 bg-gray-100 rounded-xl text-center font-light cursor-pointer hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/20" ref={termsRef} 
+                    <button className="w-full py-4 bg-[#f4e8e0] rounded-xl text-center font-light cursor-pointer  hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={termsRef} 
                     onClick={() => handleClick('termsAndConditions')}>
                         <p className="px-6 w-full flex justify-between">
                             <span>Terms and conditions </span>
                             {
-                                displayContent === true && (section === 'termsAndConditions' ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/>)
+                                section === 'termsAndConditions' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                             }    
                         </p>   
                     </button>
-                    <button className="w-full py-4 bg-gray-100 rounded-xl text-center font-light cursor-pointer hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/20" ref={privacyRef} 
+                    <button className="w-full py-4 bg-[#f4e8e0] rounded-xl text-center font-light cursor-pointer  hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={privacyRef} 
                     onClick={() => handleClick('privacy')}
                     >
                         <p className="px-6 w-full flex justify-between">
                             <span>Privacy </span>
                             {
-                                displayContent === true && (section === 'privacy' ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/>)
+                                section === 'privacy' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                             }   
                         </p>  
                     </button>
 
                 </div>
 
+                {
+                    section === 'aboutUs' ? <AboutUs/> : section === 'termsAndConditions' ?  <TermsAndConditions /> : <Privacy />
+                }
+
             </div>
+
 
         </div>
 
