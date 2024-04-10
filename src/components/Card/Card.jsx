@@ -33,7 +33,7 @@ const Card = ({ res }) => {
         <img
           src={res.images[0]}
           alt=""
-          className="h-[350px] w-[280px] rounded-[12px]"
+          className="h-[350px] w-[280px] rounded-[12px] object-cover"
         />
       </Link>
       <div
