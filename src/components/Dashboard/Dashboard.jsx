@@ -37,6 +37,16 @@ function Dashboard() {
       </div>
     </div>
   );
+
+  <div
+                      className={`inline-block rounded-md p-2 ${
+                        user.isActive
+                          ? "bg-green-400 w-[80px] text-center "
+                          : "bg-red-400 w-[80px] text-center "
+                      }`}
+                    >
+                      {user.isActive ? "Active" : "Inactive"}
+                    </div>
 }
 
 export default Dashboard;
