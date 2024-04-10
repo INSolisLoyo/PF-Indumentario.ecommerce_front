@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import useFavoriteStore from "../../GlobalStoreZustand/useFavoriteStore";
 import { Link } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const FavoritesMenu = ({ onClose }) => {
   const menuRef = useRef(null);
@@ -70,7 +71,7 @@ const FavoritesMenu = ({ onClose }) => {
                   onClick={() => handleRemoveFromFavorites(favorite.id)}
                   className="font-semibold text-red-500 focus:outline-none"
                 >
-                  Remove
+                  <DeleteIcon />
                 </button>
               </li>
             </ul>
