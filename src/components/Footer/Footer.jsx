@@ -10,7 +10,7 @@ const Footer = () => {
 
         <footer className="w-full mt-40 h-auto relative text-black bg-primary/10">
 
-            <div className="flex py-6">
+            <div className="flex flex-col gap-8 px-8 md:px-0 md:flex-row py-6">
 
               {/* Social */}
               <div className='flex-1 flex flex-col gap-6 items-center justify-center'>
@@ -57,11 +57,7 @@ const Footer = () => {
 
               <div className="text-sm md:text-left text-center py-2 px-2 border w-full bg-primary/40">
                   <p className="mb-0">
-                      &copy;
-                      <script>
-                          document.write(new Date().getFullYear())
-                      </script>
-                      BeComfree Team
+                  &copy; {new Date().getFullYear()} BeComfree Team
                   </p>
               </div>
 
