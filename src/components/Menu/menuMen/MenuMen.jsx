@@ -67,7 +67,7 @@ const MenuMen = () => {
 
       {menMenuOpen && (
         <div className="absolute top-full shadow-lg transform transition-transform duration-500">
-          <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
+          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             <ul>
               <li className="font-bold">CATEGORIES</li>
               {menCategories.map((category, index) => (
@@ -93,9 +93,6 @@ const MenuMen = () => {
 };
 
 export default MenuMen;
-
-
-
 
 
 

@@ -14,7 +14,7 @@ const MenuWomen = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.post("/product"); // Cambiar la ruta por /product
+        const response = await axios.post("/product");
         const product = response.data;
         const womenCategories = product
           .filter(product => product.gender === "Women")
@@ -67,7 +67,7 @@ const MenuWomen = () => {
 
       {womenMenuOpen && (
         <div className="absolute top-full shadow-lg transform transition-transform duration-500">
-          <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
+          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             <ul>
               <li className="font-bold">CATEGORIES</li>
               {womenCategories.map((category, index) => (
@@ -93,7 +93,6 @@ const MenuWomen = () => {
 };
 
 export default MenuWomen;
-
 
 
 
