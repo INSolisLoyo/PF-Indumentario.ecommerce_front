@@ -1,13 +1,14 @@
 import React from 'react';
+import imageLanding from '../../img/landing-bee.jpg'
 
 
 export default function Title() {
   return (
     <div className='w-full h-auto flex justify-center items-center' >
 
-      <div className='w-full h-full md:relative flex flex-col gap-4 md:block'>
+      <div className='w-full h-full md:relative  flex flex-col gap-4 md:block'>
         <picture className='w-full flex justify-center items-center rounded-xl'>
-          <img src="https://cdn.pixabay.com/photo/2017/08/05/12/19/dress-2583113_960_720.jpg" alt="clothes" 
+          <img src={imageLanding} alt="clothes" 
             className='rounded-xl'  
           />
         </picture>
