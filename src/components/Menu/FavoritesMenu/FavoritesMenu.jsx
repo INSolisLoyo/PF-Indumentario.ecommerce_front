@@ -31,7 +31,7 @@ const FavoritesMenu = ({ onClose }) => {
   const totalFavorites = favorites.length;
 
   return (
-    <div className="cart-menuw divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[400px] max-h-[450px] overflow-y-auto" ref={menuRef}>
+    <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[400px] max-h-[450px] overflow-y-auto" ref={menuRef}>
       <h2 className="text-center text-lg font-semibold py-4">Favorites</h2>
       {totalFavorites === 0 ? (
         <div className="text-center py-8">
@@ -69,11 +69,6 @@ const FavoritesMenu = ({ onClose }) => {
           </div>
         </>
       )}
-      {/* <div className="absolute top-2 right-2">
-        <button onClick={toggleFavoriteMenu} className="focus:outline-none">
-          <DeleteIcon />
-        </button>
-      </div> */}
     </div>
   );
 };
