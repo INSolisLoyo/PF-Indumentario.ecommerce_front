@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { green } from '@mui/material/colors';
+import Icon from '@mui/material/Icon';
 
 const CartMenu = ({ onClose }) => {
   const menuRef = useRef(null);
@@ -67,7 +69,7 @@ const CartMenu = ({ onClose }) => {
       {/* Tercera columna para los botones */}
       <li className="flex justify-center gap-2 items-center">
         <button onClick={() => handleDecreaseQuantity(product.product.id, product.product.color, product.product.size)} className="text-2xl font-semibold text-red-500 focus:outline-none">-</button>
-        <button onClick={() => handleIncreaseQuantity(product.product.id, product.product.color, product.product.size)} className="text-2xl font-semibold text-green-700 focus:outline-none">+</button>
+        <button onClick={() => handleIncreaseQuantity(product.product.id, product.product.color, product.product.size)} className="text-2xl font-semibold text-green-700 focus:outline-none"><Icon sx={{ color: green[500] }}>add_circle</Icon></button>
         <button onClick={() => handleRemoveProduct(product.product.id, product.product.color, product.product.size)} className="font-semibold text-red-500 focus:outline-none"><DeleteIcon /></button>
       </li>
     </ul>
