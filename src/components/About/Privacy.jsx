@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Privacy = ({setSectionPartsAbout}) => {
 
-    const [ sectionMain, setSectionMain ] = useState(['Privacy Policy'])
+    const [ sectionMain, setSectionMain ] = useState(['Privacy and Policy'])
     const [ sectionParts , setSectionParts ] = useState(['Collection and Use of Information', 'Security of Information', 'Disclosure of Information', 'Links to Other Websites', 'Changes to this Privacy Policy', 'Contact'])
 
     useEffect(() => {

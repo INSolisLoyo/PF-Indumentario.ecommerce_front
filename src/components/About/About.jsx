@@ -55,7 +55,7 @@ const About = () => {
 
                     <div className="hidden font-RedHat md:w-3/12 md:pl-4 md:flex md:flex-col md:gap-4">
 
-                        <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={aboutRef} 
+                        <button className={`w-full  py-4 ${ section === 'aboutUs' ? "bg-[#ae5e48] text-white" : "bg-[#f4e8e0] border-[#e7d0c1]"} rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white`} ref={aboutRef} 
                         onClick={() => handleClick('aboutUs')}>
                             <p className="px-2 md:px-6 w-full flex justify-between">
                                 <span>About us </span>
@@ -80,7 +80,7 @@ const About = () => {
 
                         </div>
 
-                        <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={termsRef} 
+                        <button className={`w-full  py-4 ${ section === 'termsAndConditions' ? "bg-[#ae5e48] text-white" : "bg-[#f4e8e0] border-[#e7d0c1]"} rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white`} ref={termsRef} 
                         onClick={() => handleClick('termsAndConditions')}>
                             <p className="px-2 md:px-6 w-full flex justify-between">
                                 <span>Terms and conditions </span>
@@ -106,11 +106,11 @@ const About = () => {
                         </div>
 
 
-                        <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={privacyRef} 
+                        <button className={`w-full  py-4 ${ section === 'privacy' ? "bg-[#ae5e48] text-white" : "bg-[#f4e8e0] border-[#e7d0c1]"} rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white`} ref={privacyRef} 
                         onClick={() => handleClick('privacy')}
                         >
                             <p className="px-2 md:px-6 w-full flex justify-between">
-                                <span>Privacy </span>
+                                <span>Privacy and Policy</span>
                                 {
                                     section === 'privacy' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                                 }   

@@ -110,10 +110,10 @@ const AboutUs = ({setSectionPartsAbout}) => {
 
                                         <img src={frontColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
-                                        <div class="w-full flex flex-col gap-1 items-center justify-center">
+                                        <div className="w-full flex flex-col gap-1 items-center justify-center">
 
-                                            <h1 class="text-md font-medium text-[#331917] font-RedHat">{frontColaborator.name}</h1>
-                                            <div class="w-full flex items-center justify-center gap-3">
+                                            <h1 className="text-md font-medium text-[#331917] font-RedHat">{frontColaborator.name}</h1>
+                                            <div className="w-full flex items-center justify-center gap-3">
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
                                                     onClick={ () => handleClick(frontColaborator.linkedIn)}
@@ -190,10 +190,10 @@ const AboutUs = ({setSectionPartsAbout}) => {
 
                                         <img src={backColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
-                                        <div class="w-full flex flex-col gap-1 items-center justify-center">
+                                        <div className="w-full flex flex-col gap-1 items-center justify-center">
 
-                                            <h1 class="text-md font-medium text-[#331917] font-RedHat">{backColaborator.name}</h1>
-                                            <div class="w-full flex items-center justify-center gap-3">
+                                            <h1 className="text-md font-medium text-[#331917] font-RedHat">{backColaborator.name}</h1>
+                                            <div className="w-full flex items-center justify-center gap-3">
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
                                                     onClick={ () => handleClick(backColaborator.linkedIn)}
