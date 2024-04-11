@@ -14,7 +14,7 @@ const MenuMen = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.post("/product"); // Cambiar la ruta por /product
+        const response = await axios.post("/product");
         const product = response.data;
         const menCategories = product
           .filter(product => product.gender === "Men")

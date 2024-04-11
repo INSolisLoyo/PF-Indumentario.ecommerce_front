@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
-import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
+import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
@@ -23,8 +23,8 @@ export default function NavBar() {
   const location = useLocation();
   const [showLinks, setShowLinks] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showUserName, setShowUserName] = useState(false);
-  const [showCartMenu, setShowCartMenu] = useState(false);
+
+  const [showCartMenu, setShowCartMenu] = useState(false); // Estado para controlar la apertura/cierre del menú del carrito
   const [showFavoriteMenu, setShowFavoriteMenu] = useState(false);
   const cart = useCartStore((state) => state.cart);
   const favorites = useFavoriteStore((state) => state.favorites);
@@ -42,7 +42,7 @@ export default function NavBar() {
   };
 
   const handleCartClick = () => {
-    setShowCartMenu(!showCartMenu);
+    setShowCartMenu(!showCartMenu); // Alternar el estado del menú del carrito al hacer clic en el ícono del carrito
   };
 
   const handleFavoriteClick = () => {
@@ -50,7 +50,7 @@ export default function NavBar() {
   };
 
   const handleCloseCartMenu = () => {
-    setShowCartMenu(false);
+    setShowCartMenu(false); // Cerrar el menú del carrito cuando se hace clic fuera de él
   };
 
   return (
@@ -150,7 +150,7 @@ export default function NavBar() {
         </div>
       </div>
 
-      {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />}
+      {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />} {/* Renderizar el componente CartMenu cuando showCartMenu es true */}
       {showFavoriteMenu && <FavoritesMenu onClose={() => setShowFavoriteMenu(false)} />}
       {showSidebar && isRegisteredUser ? (
         <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
@@ -161,3 +161,4 @@ export default function NavBar() {
     </div>
   );
 }
+
