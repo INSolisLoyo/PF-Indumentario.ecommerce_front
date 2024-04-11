@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope, faClipboardCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from '@headlessui/react'
 
 const AboutUs = ({setSectionPartsAbout}) => {
@@ -83,7 +83,9 @@ const AboutUs = ({setSectionPartsAbout}) => {
     }
 
     useEffect(() => {
+
         setSectionPartsAbout([...sectionMain, ...sectionParts])
+
     }, [])
 
     return (
@@ -152,13 +154,13 @@ const AboutUs = ({setSectionPartsAbout}) => {
 
                                                     </CopyToClipboard>
 
-                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20 h-10">
+                                                      <Popover.Panel className="absolute z-10 m-4  w-20 h-10 px-2 py-.5">
                                                         
                                                         <div className="flex gap-2 items-baseline">
 
                                                             <p className="text-[#ae5e48]">Copied</p>
-                                                          <FontAwesomeIcon icon={faClipboardCheck}
-                                                            size="2xl"
+                                                          <FontAwesomeIcon icon={faCheck}
+                                                            size="sm"
                                                             className="text-[#ae5e48]"
                                                           />
 
@@ -232,12 +234,12 @@ const AboutUs = ({setSectionPartsAbout}) => {
 
                                                     </CopyToClipboard>
 
-                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20">
+                                                      <Popover.Panel className="absolute z-10 m-4  w-20 h-10 px-2 py-.5">
                                                         
                                                         <div className="flex gap-2 items-baseline">
 
                                                             <p className="text-[#ae5e48]">Copied</p>
-                                                          <FontAwesomeIcon icon={faClipboardCheck}
+                                                          <FontAwesomeIcon icon={faCheck}
                                                             size="2xl"
                                                             className="text-[#ae5e48]"
                                                           />

@@ -41,6 +41,7 @@ const About = () => {
             default:
                 aboutRef.current.focus();
          }
+
         
     }, [section])
 
