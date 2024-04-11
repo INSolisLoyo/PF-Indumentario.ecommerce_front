@@ -41,7 +41,9 @@ const CartMenu = ({ onClose }) => {
       <h2 className="text-center text-lg font-semibold py-4">Shopping Cart</h2>
       {cart.length === 0 ? (
         <div className="text-center py-8">
+          <div className="text-gray-400">
           <ShoppingCartIcon style={{ fontSize: 100 }}/>
+          </div>
           <p className="text-center text-lg font-semibold mt-4">Your cart is empty</p>
         </div>
       ) : (

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import useFavoriteStore from "../../GlobalStoreZustand/useFavoriteStore";
 import { Link } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import FavoriteIcon  from "@mui/icons-material/Favorite";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore"; // Importa el estado global
 
 const FavoritesMenu = ({ onClose }) => {
@@ -34,6 +35,9 @@ const FavoritesMenu = ({ onClose }) => {
       <h2 className="text-center text-lg font-semibold py-4">Favorites</h2>
       {totalFavorites === 0 ? (
         <div className="text-center py-8">
+          <div className="text-gray-400">
+          <FavoriteIcon style={{ fontSize: 100 }}/>
+          </div>
           <p className="text-center text-lg font-semibold mt-4">No favorites added</p>
         </div>
       ) : (
