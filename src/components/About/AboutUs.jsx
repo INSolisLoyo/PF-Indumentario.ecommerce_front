@@ -1,7 +1,9 @@
 import React from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faClipboardCheck } from "@fortawesome/free-solid-svg-icons";
+import { Popover } from '@headlessui/react'
 
 const AboutUs = () => {
 
@@ -11,7 +13,7 @@ const AboutUs = () => {
             identity: 'https://media.licdn.com/dms/image/D5603AQH6N0ZMGuFN5w/profile-displayphoto-shrink_800_800/0/1701218691878?e=1718236800&v=beta&t=xeQQdn0FMulCgnJ3PNzAtTq9ciM8VnQZA0P0irtsjBA',
             linkedIn: 'https://www.linkedin.com/in/jerry-murillo/',
             gitHub: 'https://github.com/JMurilloCortes',
-            gmail: 'pendiente'
+            gmail: 'jealmuco@gmail.com'
         },
         {
             name: 'Oswaldo Palacios',
@@ -69,12 +71,18 @@ const AboutUs = () => {
 
     ]
 
+    const handleClick = (link) => {
+
+        window.location.href = link;
+
+    }
+
     return (
 
         <section className="w-9/12 font-RedHat flex flex-col gap-4">
 
             <article>
-                <h1 className="text-center text-2xl">About Us</h1>
+                <h1 className="text-center text-2xl text-[#ae5e48]">About Us</h1>
                 <p className="mt-4">This project was crafted with a lot of effort and dedication for the Final Project stay at Soy Henry. It's our first project together. For any contact, we leave our social media handles here. We appreciate any suggestions!</p>
             </article>
 
@@ -98,7 +106,9 @@ const AboutUs = () => {
                                             <h1 class="text-md font-medium text-[#331917] font-RedHat">{frontColaborator.name}</h1>
                                             <div class="w-full flex items-center justify-center gap-3">
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
+                                                    onclick={ () => handleClick(frontColaborator.linkedIn)}
+                                                >
 
                                                     <FontAwesomeIcon icon={faLinkedinIn} 
                                                         size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
@@ -106,7 +116,9 @@ const AboutUs = () => {
 
                                                 </button>
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
+                                                    onclick={ () => handleClick(frontColaborator.gitHub)}
+                                                >
 
                                                     <FontAwesomeIcon icon={faGithub} 
                                                         size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
@@ -114,14 +126,39 @@ const AboutUs = () => {
 
                                                 </button>
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <Popover>
+                                                        
+                                                    <CopyToClipboard text={frontColaborator.gmail}>
 
-                                                    <FontAwesomeIcon icon={faEnvelope} 
-                                                        size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
-                                                    />
+                                                      <Popover.Button
+                                                        className="bg-[#ae5e48] py-1 px-4 rounded-lg w-full"
+                                                        onClick={() => {}}
+                                                      >
+                                                        <FontAwesomeIcon
+                                                          icon={faEnvelope}
+                                                          size="xl"
+                                                          className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+                                                        />
+                                                      </Popover.Button>
 
-                                                </button>
+                                                    </CopyToClipboard>
 
+                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20">
+                                                        
+                                                        <div className="flex gap-2 items-baseline">
+
+                                                            <p className="text-[#ae5e48]">Copied</p>
+                                                          <FontAwesomeIcon icon={faClipboardCheck}
+                                                            size="2xl"
+                                                            className="text-[#ae5e48]"
+                                                          />
+
+                                                        </div>
+                                                       
+                                                       </Popover.Panel>
+                                                    
+                                                </Popover>                                  
+                                                                                                        
                                             </div>
 
                                          </div>
@@ -134,7 +171,7 @@ const AboutUs = () => {
 
                  {/* Bakend💜 */}
                  <div className="flex flex-col gap-4">
-                    <h2 className="text-center">Back End Colaborators</h2>
+                    <h2 className="text-center">Front End Colaborators</h2>
                     <div className="flex justify-center items-center gap-4">
                         {
                             backEndColaborators.map( (backColaborator) => {
@@ -149,7 +186,9 @@ const AboutUs = () => {
                                             <h1 class="text-md font-medium text-[#331917] font-RedHat">{backColaborator.name}</h1>
                                             <div class="w-full flex items-center justify-center gap-3">
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
+                                                    onclick={ () => handleClick(backColaborator.linkedIn)}
+                                                >
 
                                                     <FontAwesomeIcon icon={faLinkedinIn} 
                                                         size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
@@ -157,7 +196,9 @@ const AboutUs = () => {
 
                                                 </button>
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
+                                                    onclick={ () => handleClick(backColaborator.gitHub)}
+                                                >
 
                                                     <FontAwesomeIcon icon={faGithub} 
                                                         size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
@@ -165,14 +206,39 @@ const AboutUs = () => {
 
                                                 </button>
 
-                                                <button className="bg-[#ae5e48] py-1 rounded-lg w-full">
+                                                <Popover>
+                                                        
+                                                    <CopyToClipboard text={backColaborator.gmail}>
 
-                                                    <FontAwesomeIcon icon={faEnvelope} 
-                                                        size="xl" className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
-                                                    />
+                                                      <Popover.Button
+                                                        className="bg-[#ae5e48] py-1 px-4 rounded-lg w-full"
+                                                        onClick={() => {}}
+                                                      >
+                                                        <FontAwesomeIcon
+                                                          icon={faEnvelope}
+                                                          size="xl"
+                                                          className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+                                                        />
+                                                      </Popover.Button>
 
-                                                </button>
+                                                    </CopyToClipboard>
 
+                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20">
+                                                        
+                                                        <div className="flex gap-2 items-baseline">
+
+                                                            <p className="text-[#ae5e48]">Copied</p>
+                                                          <FontAwesomeIcon icon={faClipboardCheck}
+                                                            size="2xl"
+                                                            className="text-[#ae5e48]"
+                                                          />
+
+                                                        </div>
+                                                       
+                                                       </Popover.Panel>
+                                                    
+                                                </Popover>                                  
+                                                                                                        
                                             </div>
 
                                          </div>
