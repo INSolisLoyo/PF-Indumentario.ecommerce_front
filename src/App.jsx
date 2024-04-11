@@ -7,12 +7,13 @@ import MyAccount from "./components/MyAccount/MyAccount";
 import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
-
+import About from "./components/About/About";
+import AboutUs from "./components/About/AboutUs";
 
 
 function App() {
   return (
-    <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
+    <div className="m-0 p-0 w-full h-auto">
       <NavBar />
 
       <Routes>
@@ -22,6 +23,9 @@ function App() {
         <Route path="/myaccount" element={<MyAccount />} />
         <Route path="/cards" element={<Cards />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/about/:section" element={<About />} />
+        
+
       </Routes>
 
       <Footer />
