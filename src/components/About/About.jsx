@@ -50,30 +50,32 @@ const About = () => {
             <div className="w-11/12 mx-auto h-auto flex gap-8">
 
                 {/* Menú */}
-                <div className="font-RedHat w-3/12 pl-4 flex flex-col gap-4">
+                <div className="hidden font-RedHat md:w-3/12 md:pl-4 md:flex md:flex-col md:gap-4">
 
-                    <button className="w-full py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={aboutRef} 
+                    <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={aboutRef} 
                     onClick={() => handleClick('aboutUs')}>
-                        <p className="px-6 w-full flex justify-between">
+                        <p className="px-2 md:px-6 w-full flex justify-between">
                             <span>About us </span>
                             {
                                  section === 'aboutUs' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                             }                           
                         </p>                                 
                     </button>
-                    <button className="w-full py-4 bg-[#f4e8e0] rounded-xl text-center font-light cursor-pointer  hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={termsRef} 
+
+                    <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={termsRef} 
                     onClick={() => handleClick('termsAndConditions')}>
-                        <p className="px-6 w-full flex justify-between">
+                        <p className="px-2 md:px-6 w-full flex justify-between">
                             <span>Terms and conditions </span>
                             {
                                 section === 'termsAndConditions' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>
                             }    
                         </p>   
                     </button>
-                    <button className="w-full py-4 bg-[#f4e8e0] rounded-xl text-center font-light cursor-pointer  hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={privacyRef} 
+
+                    <button className="w-full  py-4 bg-[#f4e8e0] border-[#e7d0c1] rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white" ref={privacyRef} 
                     onClick={() => handleClick('privacy')}
                     >
-                        <p className="px-6 w-full flex justify-between">
+                        <p className="px-2 md:px-6 w-full flex justify-between">
                             <span>Privacy </span>
                             {
                                 section === 'privacy' ? displayContent === true ? <FontAwesomeIcon icon={faChevronDown}/> : <FontAwesomeIcon icon={faChevronUp}/> : <FontAwesomeIcon icon={faChevronUp}/>

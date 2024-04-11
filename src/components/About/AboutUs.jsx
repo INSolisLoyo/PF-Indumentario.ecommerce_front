@@ -73,7 +73,7 @@ const AboutUs = () => {
 
     const handleClick = (link) => {
 
-        window.location.href = link;
+        window.open(link, '_blank');
 
     }
 
@@ -83,7 +83,7 @@ const AboutUs = () => {
 
             <article>
                 <h1 className="text-center text-2xl text-[#ae5e48]">About Us</h1>
-                <p className="mt-4">This project was crafted with a lot of effort and dedication for the Final Project stay at Soy Henry. It's our first project together. For any contact, we leave our social media handles here. We appreciate any suggestions!</p>
+                <p className="mt-4 text-justify">This project was crafted with a lot of effort and dedication for the Final Project stay at Soy Henry. It's our first project together. For any contact, we leave our social media handles here. We appreciate any suggestions!</p>
             </article>
 
             {/* Cards */}
@@ -92,12 +92,12 @@ const AboutUs = () => {
                 {/* FrontEnd💜 */}
                 <div className="flex flex-col gap-4">
                     <h2 className="text-center">Front End Colaborators</h2>
-                    <div className="flex justify-center items-center gap-4">
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         {
                             frontEndColaborators.map( (frontColaborator) => {
                                 return (
 
-                                    <div className="bg-[#e7d0c1] flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
+                                    <div className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
 
                                         <img src={frontColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
@@ -107,7 +107,7 @@ const AboutUs = () => {
                                             <div class="w-full flex items-center justify-center gap-3">
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
-                                                    onclick={ () => handleClick(frontColaborator.linkedIn)}
+                                                    onClick={ () => handleClick(frontColaborator.linkedIn)}
                                                 >
 
                                                     <FontAwesomeIcon icon={faLinkedinIn} 
@@ -117,7 +117,7 @@ const AboutUs = () => {
                                                 </button>
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
-                                                    onclick={ () => handleClick(frontColaborator.gitHub)}
+                                                    onClick={ () => handleClick(frontColaborator.gitHub)}
                                                 >
 
                                                     <FontAwesomeIcon icon={faGithub} 
@@ -170,14 +170,14 @@ const AboutUs = () => {
                 </div>
 
                  {/* Bakend💜 */}
-                 <div className="flex flex-col gap-4">
-                    <h2 className="text-center">Front End Colaborators</h2>
-                    <div className="flex justify-center items-center gap-4">
+                 <div className="flex flex-col gap-4 mt-4">
+                    <h2 className="text-center">Back End Colaborators</h2>
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         {
                             backEndColaborators.map( (backColaborator) => {
                                 return (
 
-                                    <div className="bg-[#e7d0c1] flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
+                                    <div className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
 
                                         <img src={backColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
@@ -187,7 +187,7 @@ const AboutUs = () => {
                                             <div class="w-full flex items-center justify-center gap-3">
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
-                                                    onclick={ () => handleClick(backColaborator.linkedIn)}
+                                                    onClick={ () => handleClick(backColaborator.linkedIn)}
                                                 >
 
                                                     <FontAwesomeIcon icon={faLinkedinIn} 
@@ -197,7 +197,7 @@ const AboutUs = () => {
                                                 </button>
 
                                                 <button className="bg-[#ae5e48] py-1 rounded-lg w-full"
-                                                    onclick={ () => handleClick(backColaborator.gitHub)}
+                                                    onClick={ () => handleClick(backColaborator.gitHub)}
                                                 >
 
                                                     <FontAwesomeIcon icon={faGithub} 
