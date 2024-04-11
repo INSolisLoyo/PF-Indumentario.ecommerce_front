@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faClipboardCheck } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from '@headlessui/react'
 
-const AboutUs = () => {
+const AboutUs = ({setSectionPartsAbout}) => {
+
+    const [ sectionMain, setSectionMain ] = useState(['About Us'])
+    const [ sectionParts , setSectionParts ] = useState([
+        'Front End Colaborators', 'Back End Colaborators' 
+    ])
 
     const frontEndColaborators = [
         {
@@ -77,12 +82,16 @@ const AboutUs = () => {
 
     }
 
+    useEffect(() => {
+        setSectionPartsAbout([...sectionMain, ...sectionParts])
+    }, [])
+
     return (
 
-        <section className="w-9/12 font-RedHat flex flex-col gap-4">
+        <section className="w-11/12 md:w-9/12 mx-auto font-RedHat flex flex-col gap-4">
 
             <article>
-                <h1 className="text-center text-2xl text-[#ae5e48]">About Us</h1>
+                <h1 className="text-center text-2xl text-[#ae5e48]">{sectionMain}</h1>
                 <p className="mt-4 text-justify">This project was crafted with a lot of effort and dedication for the Final Project stay at Soy Henry. It's our first project together. For any contact, we leave our social media handles here. We appreciate any suggestions!</p>
             </article>
 
@@ -91,7 +100,7 @@ const AboutUs = () => {
 
                 {/* FrontEnd💜 */}
                 <div className="flex flex-col gap-4">
-                    <h2 className="text-center">Front End Colaborators</h2>
+                    <h2 className="text-center">{sectionParts[0]}</h2>
                     <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         {
                             frontEndColaborators.map( (frontColaborator) => {
@@ -143,7 +152,7 @@ const AboutUs = () => {
 
                                                     </CopyToClipboard>
 
-                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20">
+                                                      <Popover.Panel className="absolute z-10 m-4 bg-white w-20 h-10">
                                                         
                                                         <div className="flex gap-2 items-baseline">
 
@@ -171,7 +180,7 @@ const AboutUs = () => {
 
                  {/* Bakend💜 */}
                  <div className="flex flex-col gap-4 mt-4">
-                    <h2 className="text-center">Back End Colaborators</h2>
+                    <h2 className="text-center">{sectionParts[1]}</h2>
                     <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         {
                             backEndColaborators.map( (backColaborator) => {
