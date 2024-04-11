@@ -22,19 +22,25 @@ const CartMenu = ({ onClose }) => {
     }, 0)
     .toFixed(2);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (cartMenuOpen && menuRef.current && !menuRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
+  
 
-    document.addEventListener("mousedown", handleClickOutside);
+   
+  
+    useEffect(() => {
+      const handleCloseMenu = (event) => {
+        if (cartMenuOpen && !event.target.closest(".cart-menu")) {
+          toggleCartMenu();
+        }
+      };
+  
+      document.body.addEventListener("click", handleCloseMenu);
+  
+      return () => {
+        document.body.removeEventListener("click", handleCloseMenu);
+      };
+    }, [cartMenuOpen, toggleCartMenu]);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [cartMenuOpen, onClose]);
+
 
   return (
     <div className="cart-menuw divide-y divide-gray-400  bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[400px] max-h-[450px] overflow-y-auto" ref={menuRef}>

@@ -151,7 +151,7 @@ export default function NavBar() {
       </div>
 
       {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />} {/* Renderizar el componente CartMenu cuando showCartMenu es true */}
-      {showFavoriteMenu && <FavoritesMenu onClose={() => setShowFavoriteMenu(false)} />}
+      {showFavoriteMenu && <FavoritesMenu  />}
       {showSidebar && isRegisteredUser ? (
         <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
       ) : null}

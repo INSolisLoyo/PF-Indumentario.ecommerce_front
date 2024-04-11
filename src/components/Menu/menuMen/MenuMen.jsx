@@ -32,6 +32,10 @@ const MenuMen = () => {
     }
   }, [menMenuOpen]);
 
+
+
+  
+
   const handleClick = () => {
     toggleMenMenu();
   };
@@ -55,6 +59,10 @@ const MenuMen = () => {
       document.body.removeEventListener("click", handleCloseMenu);
     };
   }, [menMenuOpen, toggleMenMenu]);
+
+
+
+
 
   return (
     <div className="men-menu">
