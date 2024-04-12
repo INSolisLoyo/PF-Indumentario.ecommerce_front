@@ -13,6 +13,9 @@ export default {
       },
       fontFamily: {
         'RedHat': ["Red Hat Display", "sans-serif"] // Agregamos la familia de fuentes personalizada.
+      },
+      backgroundImage: {
+        'landing-banner': "url('https://cdn.pixabay.com/photo/2017/06/20/22/14/man-2425121_1280.jpg')"
       }
     },
   },

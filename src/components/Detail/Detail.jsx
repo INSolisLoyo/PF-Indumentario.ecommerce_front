@@ -156,6 +156,7 @@ const Detail = () => {
         timer: 1500,
       });
     }
+
   };
 
   useEffect(() => {
@@ -300,7 +301,9 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
+
             disabled={disabledButton}
+
           >
             Add to cart
           </button>

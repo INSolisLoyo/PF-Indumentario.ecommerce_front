@@ -8,14 +8,16 @@ import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
 import Dashboard from "./components/Dashboard/Dashboard";
-
 function App() {
   const location = useLocation();
+import About from "./components/About/About";
+import AboutUs from "./components/About/AboutUs";
 
   // Verifica si la ruta actual es /admin
   const isAdminRoute = location.pathname === "/admin";
 
   return (
+
     <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
       {/* Renderiza el NavBar solo si no estás en la ruta /admin */}
        <NavBar />
@@ -27,8 +29,11 @@ function App() {
         <Route path="/myaccount" element={<MyAccount />} />
         <Route path="/cards" element={<Cards />} />
         <Route path="/create" element={<Create />} />
-        {/* Renderiza el Dashboard solo si estás en la ruta /admin */}
         <Route path="/admin" element={<Dashboard />} />
+        <Route path="/about/:section" element={<About />} />
+        
+
+
       </Routes>
 
       {/* Renderiza el Footer solo si no estás en la ruta /admin */}
