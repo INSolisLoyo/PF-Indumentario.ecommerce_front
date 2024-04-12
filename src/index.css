@@ -17,14 +17,3 @@
   ::-webkit-scrollbar-track {
     background-color: #331E27; /* Color de fondo de la barra de desplazamiento */
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  tr {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-
-
