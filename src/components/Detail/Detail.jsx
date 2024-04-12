@@ -14,6 +14,7 @@ const Detail = () => {
   const PRODUCT = `/product/${id}`;
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [ desabledButton, setDesabledButton ] = useState(true);
   const [stock, setStock] = useState({});
   const [counter, setCounter] = useState(1);
   const [item, setItem] = useState({
@@ -27,6 +28,7 @@ const Detail = () => {
 
   const [errors, setErrors] = useState({
     maxItems: "",
+    noSizeSelected: ""
   });
 
   const cleanerProduct = ({ id, name, price, images, colour, material }) => {
@@ -98,30 +100,44 @@ const Detail = () => {
   };
 
   const handleSizeClick = (size) => {
+    setDesabledButton(false);
     setSelectedSize(size);
     setCounter(1); // Restablecer la cantidad a 1
     setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
+    setErrors({ ...errors, noSizeSelected: "" });
   };
 
   const handleClickButton = () => {
-    const selectedProduct = {
-      id: item.id,
-      images: item.images[0].original,
-      name: item.name,
-      price: item.price,
-      quantity: counter,
-      color: selectedColor,
-      size: selectedSize,
-    };
 
-    useCartStore.getState().addToCart(selectedProduct);
+    if(!selectedSize){
+      setErrors({
+        ...errors,
+        noSizeSelected: "Please, choose a size",
+      });
+      desabledButton(true);
+      return;
+    }
+    else {
+      const selectedProduct = {
+        id: item.id,
+        images: item.images[0].original,
+        name: item.name,
+        price: item.price,
+        quantity: counter,
+        color: selectedColor,
+        size: selectedSize,
+      };
 
-    Swal.fire({
-      icon: "success",
-      title: "Product added to cart!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+      useCartStore.getState().addToCart(selectedProduct);
+  
+      Swal.fire({
+        icon: "success",
+        title: "Product added to cart!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+
   };
 
   useEffect(() => {
@@ -142,9 +158,17 @@ const Detail = () => {
       } catch (error) {
         console.log(error);
       }
+
+      if(selectedSize){
+        setDesabledButton(false)
+        setErrors({
+          ...errors,
+          noSizeSelected: "",
+        })
+      }
     };
     fetchData();
-  }, [id, selectedColor]);
+  }, [id, selectedColor, selectedSize, errors]);
 
   return (
     <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
@@ -218,6 +242,11 @@ const Detail = () => {
                     {errors.maxItems}
                   </span>
                 )}
+                {errors.noSizeSelected && (
+                  <span className="text-sm text-red-500">
+                    {errors.noSizeSelected}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -226,6 +255,7 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
+            disabled={desabledButton}
           >
             Add to cart
           </button>

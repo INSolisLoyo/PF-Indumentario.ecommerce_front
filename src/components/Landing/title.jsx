@@ -4,33 +4,19 @@ import imageLanding from '../../img/landing-bee.jpg'
 
 export default function Title() {
   return (
-    <div className='w-full h-auto flex justify-center items-center' >
+    <section className='w-full flex justify-center items-center' >
 
-      <div className='w-full h-full md:relative  flex flex-col gap-4 md:block'>
-        <picture className='w-full flex justify-center items-center rounded-xl'>
-          <img src={imageLanding} alt="clothes" 
-            className='rounded-xl'  
-          />
-        </picture>
-        <div className=' flex flex-col justify-center items-center text-center md:absolute md:top-8 md:inset-x-1/3 text-primary'>
-          <h3 className='text-sm lg:text-xl font-semibold tracking-[.25em]' >NOTE TO SELF</h3>
-          <div className="subtitle  ">
-            <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>TODAY WILL BE</h1>
-            <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>A GOOD DAY</h1>
-          </div>
+
+      <div class="w-11/12 bg-left rounded-xl flex items-center bg-blend-overlay bg-fixed bg-landing-banner bg-no-repeat bg-cover lg:bg-center" >
+
+        <div class="text-center text-white mx-auto font-RedHat py-20">
+          <h1 class="px-4 text-3xl md:px-0 lg:text-5xl font-semibold">Discover clothes from all seasons</h1>
+          <p class="font-semibold text-2xl mt-5">Be comfy, be free.</p>
+          <a class="px-5 py-2 inline-block bg-primary/70 text-white rounded-xl hover:bg-primary transition-colors mt-10" href="/cards">Get Started</a>
         </div>
+
       </div>
-      {/* <div className="texts text-center   ">
-        <h3 className='text-sm lg:text-xl font-semibold tracking-[.25em] max-lg:pt-[140px]' >NOTE TO SELF</h3>
-        <div className="subtitle  ">
-          <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>TODAY WILL BE</h1>
-          <h1 className='text-4xl max-lg:text-[20px] W-5 tracking-[.25em] font-semibold'>A GOOD DAY</h1>
-        </div>
-      </div>
-      <div className="image-landing">
-        <img className='w-48 rounded lg:w-80 max-lg:m-auto max-lg:mt-[40px] ' src={landingImage} alt="" />
-        <img className='w-[750px] absolute top-0 right-1 z-[-1] max-lg:mt-[230px]'  src={nube} alt="" style={{ top: '-45px' }} />
-      </div> */}
-    </div>
+
+    </section>
   );
 }
