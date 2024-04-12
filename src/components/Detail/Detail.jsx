@@ -3,20 +3,18 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
+import heart from "../../img/heart.png";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
-import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
 
 const Detail = () => {
-  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
   const PRODUCT = `/product/${id}`;
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-  const [disabledButton, setDisabledButton] = useState(true);
+  const [ desabledButton, setDesabledButton ] = useState(true);
   const [stock, setStock] = useState({});
   const [counter, setCounter] = useState(1);
   const [item, setItem] = useState({
@@ -27,16 +25,10 @@ const Detail = () => {
     colours: [],
     material: "",
   });
-  const [itemFav, setItemFav] = useState({
-    id: "",
-    name: "",
-    price: "",
-    images: [],
-  });
 
   const [errors, setErrors] = useState({
     maxItems: "",
-    noSizeSelected: "",
+    noSizeSelected: ""
   });
 
   const cleanerProduct = ({ id, name, price, images, colour, material }) => {
@@ -54,13 +46,7 @@ const Detail = () => {
       images: galleryImages,
       colours: newColors,
       material: materials,
-    });
 
-    setItemFav({
-      id: id,
-      name: name,
-      price: price,
-      images: images,
     });
   };
 
@@ -86,15 +72,13 @@ const Detail = () => {
   };
 
   const handleCounter = (op) => {
-    if (!selectedSize) return;
+    if (!selectedSize) return; // Verificar si hay una talla seleccionada
 
     if (op === "-") {
-      setCounter(counter > 1 ? counter - 1 : 1);
+      setCounter(counter > 1 ? counter - 1 : 1); // No permitir cantidad menor a 1
       setErrors({ ...errors, maxItems: "" });
     } else {
-      const maxItems = stock[selectedColor]?.find(
-        (size) => size.size === selectedSize
-      )?.amount;
+      const maxItems = stock[selectedColor]?.find((size) => size.size === selectedSize)?.amount;
 
       if (counter < maxItems) {
         setCounter(counter + 1);
@@ -102,7 +86,7 @@ const Detail = () => {
       } else {
         setErrors({
           ...errors,
-          maxItems: `You can only buy ${maxItems} units of this product`,
+          maxItems: "You can only buy this number of products",
         });
       }
     }
@@ -110,45 +94,42 @@ const Detail = () => {
 
   const handleClickColor = (color) => {
     setSelectedColor(color);
-    setSelectedSize("");
-    setCounter(1);
-    setErrors({ ...errors, maxItems: "" });
+    setSelectedSize(""); // Restablecer la talla seleccionada
+    setCounter(1); // Restablecer la cantidad a 1
+    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
   };
 
   const handleSizeClick = (size) => {
-    setDisabledButton(false);
+    setDesabledButton(false);
     setSelectedSize(size);
-    setCounter(1);
-    setErrors({ ...errors, maxItems: "" });
+    setCounter(1); // Restablecer la cantidad a 1
+    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
     setErrors({ ...errors, noSizeSelected: "" });
   };
 
   const handleClickButton = () => {
-    if (!selectedSize) {
+
+    if(!selectedSize){
       setErrors({
         ...errors,
         noSizeSelected: "Please, choose a size",
       });
-      setDisabledButton(true);
+      desabledButton(true);
       return;
-    } else {
-      const maxItems = stock[selectedColor]?.find(
-        (size) => size.size === selectedSize
-      )?.amount;
-
+    }
+    else {
       const selectedProduct = {
         id: item.id,
         images: item.images[0].original,
         name: item.name,
         price: item.price,
-        stock: maxItems,
         quantity: counter,
         color: selectedColor,
         size: selectedSize,
       };
 
       useCartStore.getState().addToCart(selectedProduct);
-
+  
       Swal.fire({
         icon: "success",
         title: "Product added to cart!",
@@ -178,28 +159,16 @@ const Detail = () => {
         console.log(error);
       }
 
-      if (selectedSize) {
-        setDisabledButton(false);
+      if(selectedSize){
+        setDesabledButton(false)
         setErrors({
           ...errors,
           noSizeSelected: "",
-        });
+        })
       }
     };
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    setIsFavorite(favorites.some((product) => product.id === item.id));
-  }, [favorites, item.id]);
-
-  const handleToggleFavorite = () => {
-    if (isFavorite) {
-      removeFromFavorites(itemFav.id);
-    } else {
-      addToFavorites(itemFav);
-    }
-  };
+  }, [id, selectedColor, selectedSize, errors]);
 
   return (
     <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
@@ -210,22 +179,7 @@ const Detail = () => {
             <h1 className="font-semibold text-xl tracking-widest">
               {item.name}
             </h1>
-            <div className="cursor-pointer">
-              <span
-                role="img"
-                aria-label="corazon"
-                style={{
-                  fontSize: "23px",
-                  verticalAlign: "middle",
-                  display: "inline-block",
-                  lineHeight: "30px",
-                }}
-                className="md:cursor-pointer top-1 right-1 p-1 bg-orange-200 my-2 mr-2 border-[1px] border-primary rounded-full w-[40px] h-[40px]"
-                onClick={handleToggleFavorite}
-              >
-                {isFavorite ? "❤️" : "🤍"}
-              </span>{" "}
-            </div>
+            <img src={heart} alt="heart" className="max-w-6 max-h-6" />
           </div>
           <div className="md:w-full bg-primary/20 mt-4 rounded-2xl flex flex-col p-4">
             <div className="mt-5 flex justify-between">
@@ -301,9 +255,7 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
-
-            disabled={disabledButton}
-
+            disabled={desabledButton}
           >
             Add to cart
           </button>
