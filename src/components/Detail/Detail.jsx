@@ -3,17 +3,20 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
-import heart from "../../img/heart.png";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
 
 const Detail = () => {
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
   const PRODUCT = `/product/${id}`;
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [disabledButton, setDisabledButton] = useState(true);
   const [stock, setStock] = useState({});
   const [counter, setCounter] = useState(1);
   const [item, setItem] = useState({
@@ -24,9 +27,16 @@ const Detail = () => {
     colours: [],
     material: "",
   });
+  const [itemFav, setItemFav] = useState({
+    id: "",
+    name: "",
+    price: "",
+    images: [],
+  });
 
   const [errors, setErrors] = useState({
     maxItems: "",
+    noSizeSelected: "",
   });
 
   const cleanerProduct = ({ id, name, price, images, colour, material }) => {
@@ -44,7 +54,13 @@ const Detail = () => {
       images: galleryImages,
       colours: newColors,
       material: materials,
+    });
 
+    setItemFav({
+      id: id,
+      name: name,
+      price: price,
+      images: images,
     });
   };
 
@@ -70,13 +86,15 @@ const Detail = () => {
   };
 
   const handleCounter = (op) => {
-    if (!selectedSize) return; // Verificar si hay una talla seleccionada
+    if (!selectedSize) return;
 
     if (op === "-") {
-      setCounter(counter > 1 ? counter - 1 : 1); // No permitir cantidad menor a 1
+      setCounter(counter > 1 ? counter - 1 : 1);
       setErrors({ ...errors, maxItems: "" });
     } else {
-      const maxItems = stock[selectedColor]?.find((size) => size.size === selectedSize)?.amount;
+      const maxItems = stock[selectedColor]?.find(
+        (size) => size.size === selectedSize
+      )?.amount;
 
       if (counter < maxItems) {
         setCounter(counter + 1);
@@ -84,7 +102,7 @@ const Detail = () => {
       } else {
         setErrors({
           ...errors,
-          maxItems: "You can only buy this number of products",
+          maxItems: `You can only buy ${maxItems} units of this product`,
         });
       }
     }
@@ -92,36 +110,52 @@ const Detail = () => {
 
   const handleClickColor = (color) => {
     setSelectedColor(color);
-    setSelectedSize(""); // Restablecer la talla seleccionada
-    setCounter(1); // Restablecer la cantidad a 1
-    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
+    setSelectedSize("");
+    setCounter(1);
+    setErrors({ ...errors, maxItems: "" });
   };
 
   const handleSizeClick = (size) => {
+    setDisabledButton(false);
     setSelectedSize(size);
-    setCounter(1); // Restablecer la cantidad a 1
-    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
+    setCounter(1);
+    setErrors({ ...errors, maxItems: "" });
+    setErrors({ ...errors, noSizeSelected: "" });
   };
 
   const handleClickButton = () => {
-    const selectedProduct = {
-      id: item.id,
-      images: item.images[0].original,
-      name: item.name,
-      price: item.price,
-      quantity: counter,
-      color: selectedColor,
-      size: selectedSize,
-    };
+    if (!selectedSize) {
+      setErrors({
+        ...errors,
+        noSizeSelected: "Please, choose a size",
+      });
+      setDisabledButton(true);
+      return;
+    } else {
+      const maxItems = stock[selectedColor]?.find(
+        (size) => size.size === selectedSize
+      )?.amount;
 
-    useCartStore.getState().addToCart(selectedProduct);
+      const selectedProduct = {
+        id: item.id,
+        images: item.images[0].original,
+        name: item.name,
+        price: item.price,
+        stock: maxItems,
+        quantity: counter,
+        color: selectedColor,
+        size: selectedSize,
+      };
 
-    Swal.fire({
-      icon: "success",
-      title: "Product added to cart!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+      useCartStore.getState().addToCart(selectedProduct);
+
+      Swal.fire({
+        icon: "success",
+        title: "Product added to cart!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   useEffect(() => {
@@ -142,9 +176,29 @@ const Detail = () => {
       } catch (error) {
         console.log(error);
       }
+
+      if (selectedSize) {
+        setDisabledButton(false);
+        setErrors({
+          ...errors,
+          noSizeSelected: "",
+        });
+      }
     };
     fetchData();
-  }, [id, selectedColor]);
+  }, []);
+
+  useEffect(() => {
+    setIsFavorite(favorites.some((product) => product.id === item.id));
+  }, [favorites, item.id]);
+
+  const handleToggleFavorite = () => {
+    if (isFavorite) {
+      removeFromFavorites(itemFav.id);
+    } else {
+      addToFavorites(itemFav);
+    }
+  };
 
   return (
     <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
@@ -155,7 +209,22 @@ const Detail = () => {
             <h1 className="font-semibold text-xl tracking-widest">
               {item.name}
             </h1>
-            <img src={heart} alt="heart" className="max-w-6 max-h-6" />
+            <div className="cursor-pointer">
+              <span
+                role="img"
+                aria-label="corazon"
+                style={{
+                  fontSize: "23px",
+                  verticalAlign: "middle",
+                  display: "inline-block",
+                  lineHeight: "30px",
+                }}
+                className="md:cursor-pointer top-1 right-1 p-1 bg-orange-200 my-2 mr-2 border-[1px] border-primary rounded-full w-[40px] h-[40px]"
+                onClick={handleToggleFavorite}
+              >
+                {isFavorite ? "❤️" : "🤍"}
+              </span>{" "}
+            </div>
           </div>
           <div className="md:w-full bg-primary/20 mt-4 rounded-2xl flex flex-col p-4">
             <div className="mt-5 flex justify-between">
@@ -218,6 +287,11 @@ const Detail = () => {
                     {errors.maxItems}
                   </span>
                 )}
+                {errors.noSizeSelected && (
+                  <span className="text-sm text-red-500">
+                    {errors.noSizeSelected}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -226,6 +300,7 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
+            disabled={disabledButton}
           >
             Add to cart
           </button>
