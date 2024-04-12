@@ -7,7 +7,7 @@ const Men = () => {
         <OneSlider gender={"Men"} />
       </div>
       <div className="text-center relative z-20">
-        <h1 className="text-primary text-2xl tracking-[.25em] font-bold sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl">
+        <h1 className="text-primary text-2xl tracking-[.25em] font-bold sm:text-3xl md:text-3xl lg:ml-[90px] lg:text-5xl xl:text-5xl">
           MEN
         </h1>
         <p className="text-xl tracking-[.25em] sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl">
