@@ -1,7 +1,11 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquareXTwitter, faSquareFacebook, faSquareInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons'; 
-import logo from '../../img/logo.png'
+
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSquareXTwitter, faSquareFacebook, faSquareInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import logo from '../../img/logo.png';
+
+// Resto del código del componente Footer
+
 import NewsLetter from '../NewsLetter/NewsLetter';
 
 const Footer = () => {
