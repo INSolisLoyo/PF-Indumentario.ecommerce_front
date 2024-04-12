@@ -19,6 +19,8 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.3",
     "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "chroma-js": "^2.4.2",
