@@ -6,7 +6,6 @@ import SearchBar from "../Navbar/SearchBar";
 import axios from "../../axios/axios";
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import CustomPagination from "../CustomPagination/CustonPagination";
-import useCartStore from "../GlobalStoreZustand/useCartStore";
 
 const URL = "/product";
 const PRODUCTS_PER_PAGE = 10;
@@ -33,16 +32,10 @@ const Cards = () => {
     setTotalItems,
     setShowFilters,
     setCurrentPage,
-    setMinPrice,
-    setMaxPrice,
-    setMaterial,
-    setColour,
-    setOrderType,
-    setOrder
   } = useStore();
 
   const [displayedItems, setDisplayedItems] = useState([]);
-  const cart = useCartStore((state) => state.cart);
+  const [appliedFilters, setAppliedFilters] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -88,6 +81,17 @@ const Cards = () => {
     setDisplayedItems(items.slice(startIndex, endIndex));
   }, [items, currentPage]);
 
+  useEffect(() => {
+    const filters = [];
+
+    if (material) filters.push(`${material}`);
+    if (colour) filters.push(`${colour}`);
+    if (gender) filters.push(`${gender}`);
+    if (category) filters.push(`${category}`);
+
+    setAppliedFilters(filters);
+  }, [material, colour, gender, category]);
+
   const handlePageChange = page => {
     setCurrentPage(page);
   };
@@ -121,6 +125,22 @@ const Cards = () => {
         </div>
         {showFilters && <Filters />}
       </div>
+      {appliedFilters.length > 0 && (
+        <div className="flex justify-around">
+          <div>
+            <div className="flex gap-5">
+            {appliedFilters.map((filter, index) => (
+              <p key={index} className="text-xl font-bold">
+                {filter}
+              </p>
+            ))}
+            </div>
+          </div>
+          <p className="text-xl font-bold">
+            Página {currentPage} de {Math.ceil(totalItems / PRODUCTS_PER_PAGE)}
+          </p>
+        </div>
+      )}
       <div className="flex pt-[40px] pb-8 justify-center w-full">
         <div
           className="flex flex-wrap gap-10 justify-center"
