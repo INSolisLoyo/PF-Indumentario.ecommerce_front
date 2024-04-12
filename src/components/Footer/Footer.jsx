@@ -1,40 +1,13 @@
-
-import React, { useEffect, useState } from "react";
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareXTwitter, faSquareFacebook, faSquareInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons'; 
 import logo from '../../img/logo.png'
 import NewsLetter from '../NewsLetter/NewsLetter';
 
-
 const Footer = () => {
-  const top = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
-  const [showTopBtn, setShowTopBtn] = useState(false);
+    return (
 
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) { // Ajusta '200' al umbral deseado de px scroll down
-        setShowTopBtn(true);
-      } else {
-        setShowTopBtn(false);
-      }
-    };
-  
-    // Agrega el event listener cuando el componente se monta
-    window.addEventListener("scroll", handleScroll);
-  
-    // Limpia el event listener cuando el componente se desmonte
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
         <footer className="w-full mt-40 h-auto relative text-black bg-primary/10">
 
             <div className="flex flex-col gap-8 px-8 md:px-0 md:flex-row py-6">
@@ -81,27 +54,6 @@ const Footer = () => {
                   &copy; {new Date().getFullYear()} BeComfree Team
                   </p>
               </div>
-
-    <button
-        onClick={top}
-        style={{ display: showTopBtn ? 'block' : 'none' }}
-        className=" fixed right-2 top-[540px] mb-[200px] mt-[.5rem] p-[1rem] border-none rounded-full bg-primary shadow-md shadow-slate-600 "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6 text-white  "
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
-          />
-        </svg>
-      </button>
 
         </footer>
 
