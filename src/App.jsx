@@ -8,10 +8,11 @@ import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
 import Dashboard from "./components/Dashboard/Dashboard";
-function App() {
-  const location = useLocation();
 import About from "./components/About/About";
 import AboutUs from "./components/About/AboutUs";
+
+function App() {
+  const location = useLocation();
 
   // Verifica si la ruta actual es /admin
   const isAdminRoute = location.pathname === "/admin";

@@ -33,8 +33,7 @@ const teamMembers = [
   {
     name: "Jerry Murillo",
     role: "Frontend",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKqOiXUDRBsHmrKcf0C0R4Ssg13FidJp8SP1h2IGdk6AOi69756=s288-c-no",
+    image: "https://avatars.githubusercontent.com/u/106932819?v=4",
     github: "https://github.com/JMurilloCortes",
     linkedin: "https://www.linkedin.com/in/jerry-murillo/",
     mail: "jealmuco@gmail.com",
@@ -42,7 +41,7 @@ const teamMembers = [
   {
     name: "Alma Cane",
     role: "Backend",
-    image: "https://media.licdn.com/dms/image/D4E03AQF7MZIRY0FJog/profile-displayphoto-shrink_800_800/0/1709665737069?e=1718236800&v=beta&t=uQO3siD-bvd2BQtro6augG9MIZFUszHqF8e6n9wI4-A",
+    image: "https://avatars.githubusercontent.com/u/145514315?v=4",
     github: "https://github.com/AlmaCane",
     linkedin: "https://www.linkedin.com/in/alma-cane-a678ab217/",
     mail: "jealmuco@gmail.com",
@@ -58,7 +57,7 @@ const teamMembers = [
   {
     name: "Franco Bottaro",
     role: "Backend",
-    image: "https://media.licdn.com/dms/image/D4D35AQHLhWsXYCWa5A/profile-framedphoto-shrink_800_800/0/1710874990871?e=1712811600&v=beta&t=G2KJvme8hzrWm3zz-JIML5KPGo86xtXoR7SXsc2Mm0o",
+    image: "https://avatars.githubusercontent.com/u/60520589?v=4",
     github: "https://github.com/francobottaro",
     linkedin: "https://www.linkedin.com/in/franco-adolfo-bottaro/",
     mail: "jealmuco@gmail.com",
