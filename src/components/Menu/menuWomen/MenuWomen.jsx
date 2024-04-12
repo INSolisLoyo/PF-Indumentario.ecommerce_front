@@ -3,32 +3,28 @@ import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 import { useNavigate } from "react-router-dom";
 import modaWomen from "../../../img/moda-women.jpg";
-import axios from "../../../axios/axios"; // Importar axios
+import axios from "../../../axios/axios"; // Importa Axios
 
 const MenuWomen = () => {
   const { womenMenuOpen, toggleWomenMenu } = useMenuStore();
   const { setGender } = useStore();
   const navigate = useNavigate();
-  const [womenCategories, setWomenCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchCategories = async () => {
       try {
-        const response = await axios.post("/product");
-        const product = response.data;
-        const womenCategories = product
-          .filter(product => product.gender === "Women")
-          .map(product => product.category)
-          .filter((category, index, self) => self.indexOf(category) === index) // Eliminar categorías duplicadas
-          .sort(); // Ordenar las categorías alfabéticamente
-        setWomenCategories(womenCategories);
+
+        const response = await axios.get("/categories"); // Usa Axios para obtener las categorías
+        setCategories(response.data); // Establece las categorías en el estado
+
       } catch (error) {
-        console.error("Error fetching product:", error);
+        console.error("Error fetching categories:", error);
       }
     };
 
     if (womenMenuOpen) {
-      fetchProduct();
+      fetchCategories();
     }
   }, [womenMenuOpen]);
 
@@ -39,7 +35,7 @@ const MenuWomen = () => {
   const handleCategoryClick = (category) => {
     setGender("Women");
     navigate(`/cards?gender=Women&category=${category}`);
-    toggleWomenMenu();
+    toggleWomenMenu(); // Cerrar el menú después de hacer clic en una categoría
   };
 
   useEffect(() => {
@@ -67,10 +63,10 @@ const MenuWomen = () => {
 
       {womenMenuOpen && (
         <div className="absolute top-full shadow-lg transform transition-transform duration-500">
-          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
+          <div className="flex justify-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
             <ul>
               <li className="font-bold">CATEGORIES</li>
-              {womenCategories.map((category, index) => (
+              {categories.map((category, index) => (
                 <li key={index}>
                   <a href="#" onClick={() => handleCategoryClick(category)}>
                     {category}
@@ -78,6 +74,7 @@ const MenuWomen = () => {
                 </li>
               ))}
             </ul>
+
             <div>
               <img
                 className="w-[220px] rounded-full"
@@ -85,6 +82,7 @@ const MenuWomen = () => {
                 alt="Moda Women"
               />
             </div>
+
           </div>
         </div>
       )}
@@ -94,16 +92,11 @@ const MenuWomen = () => {
 
 export default MenuWomen;
 
-
-
-
-
 // import React, { useState, useEffect } from "react";
 // import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 // import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
 // import { useNavigate } from "react-router-dom";
-// import modaWomen from "../../../img/moda-women.jpg";
-// import axios from "../../../axios/axios"; // Importa Axios
+// import modaWomen from '../../../img/moda-women.jpg';
 
 // const MenuWomen = () => {
 //   const { womenMenuOpen, toggleWomenMenu } = useMenuStore();
@@ -114,10 +107,13 @@ export default MenuWomen;
 //   useEffect(() => {
 //     const fetchCategories = async () => {
 //       try {
-
-//         const response = await axios.get("/categories"); // Usa Axios para obtener las categorías
-//         setCategories(response.data); // Establece las categorías en el estado
-
+//         const response = await fetch("/categories");
+//         if (response.ok) {
+//           const data = await response.json();
+//           setCategories(data);
+//         } else {
+//           console.error("Failed to fetch categories");
+//         }
 //       } catch (error) {
 //         console.error("Error fetching categories:", error);
 //       }
@@ -174,15 +170,9 @@ export default MenuWomen;
 //                 </li>
 //               ))}
 //             </ul>
-
 //             <div>
-//               <img
-//                 className="w-[220px] rounded-full"
-//                 src={modaWomen}
-//                 alt="Moda Women"
-//               />
+//             <img className="w-[220px] rounded-full" src={modaWomen} alt="Moda Women" />
 //             </div>
-
 //           </div>
 //         </div>
 //       )}

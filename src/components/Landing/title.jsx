@@ -1,11 +1,9 @@
 import React from 'react';
-import imageLanding from '../../img/landing-bee.jpg'
 
 
 export default function Title() {
   return (
     <section className='w-full flex justify-center items-center' >
-
 
       <div className="w-11/12 bg-left rounded-xl flex items-center bg-blend-overlay bg-fixed bg-landing-banner bg-no-repeat bg-cover lg:bg-center" >
 
