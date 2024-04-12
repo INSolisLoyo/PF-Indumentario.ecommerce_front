@@ -16,7 +16,14 @@ const SaleOneSlider = () => {
   const fetchData = async () => {
     try {
       const response = await axios.post(URL);
-      setData(response.data);
+      // Renombrar las extensiones de las imágenes de .webp a .jpg
+      const dataWithRenamedImages = response.data.map((item) => {
+        const imagesWithJpgExtension = item.images.map((imageUrl) => {
+          return imageUrl.replace(/\.webp$/, '.jpg');
+        });
+        return { ...item, images: imagesWithJpgExtension };
+      });
+      setData(dataWithRenamedImages);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -39,15 +46,15 @@ const SaleOneSlider = () => {
     autoplay: true,
     arrows: false,
     responsive: [
-        {
-            breakpoint: 640,
-            settings: {
-                slidesToShow: 1,
-            },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
         },
-        {
-            breakpoint: 768,
-            settings: {
+      },
+      {
+        breakpoint: 768,
+        settings: {
           slidesToShow: 2,
         },
       },
@@ -62,17 +69,15 @@ const SaleOneSlider = () => {
         settings: {
           slidesToShow: 3,
         },
-    },
-    {
+      },
+      {
         breakpoint: 1536,
         settings: {
           slidesToShow: 3,
         },
       },
     ],
-};
-
-  
+  };
 
   return (
     <Slider
@@ -85,21 +90,22 @@ const SaleOneSlider = () => {
             {generateDiscount()}% OFF
           </div>
           <Link to={`/detail/${card.id}`}>
-          <img
-            src={card.images}
-            alt={card.name}
-            className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px] object-cover"
+            <img
+              src={card.images[0]} // Solo mostramos la primera imagen
+              alt={card.name}
+              className="w-[100%] h-auto rounded-md sm:h-[380px] md:h-[380px] object-cover"
             />
-            </Link>
+          </Link>
 
-          <div className="mt-2 font-semibold italic">{card.name.split(" ").slice(-3).join(" ")}</div>
+          <div className="mt-2 font-semibold italic">
+            {card.name.split(" ").slice(-3).join(" ")}
+          </div>
           <div className="flex mt-2">
             <span className="line-through mr-2">${card.price}</span>
             <span>
               ${applyDiscount(card.price, generateDiscount()).toFixed(2)}
             </span>
           </div>
-
         </div>
       ))}
     </Slider>

@@ -121,7 +121,7 @@ const Cards = () => {
         </div>
         {showFilters && <Filters />}
       </div>
-      <div className="flex pt-[40px] justify-center w-full">
+      <div className="flex pt-[40px] pb-8 justify-center w-full">
         <div
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}

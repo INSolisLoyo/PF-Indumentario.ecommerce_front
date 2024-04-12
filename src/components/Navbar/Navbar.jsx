@@ -12,10 +12,9 @@ import MenuStore from "../Menu/menuStore/MenuStore";
 import MenuAbout from "../Menu/menuAbout/MenuAbout";
 import SearchBar from "./SearchBar";
 import CartMenu from "../Menu/CartMenu/CartMenu";
-import MenuPrueba from "../Menu/MenuPrueba/MenuPrueba";
 import Perfil from "../../img/perfil.png";
 // import Shop from "../../img/shop.png";
-import Favorite from "../../img/favorite.png";
+// import Favorite from "../../img/favorite.png";
 import FavoritesMenu from "../Menu/FavoritesMenu/FavoritesMenu";
 
 export default function NavBar() {
@@ -27,8 +26,8 @@ export default function NavBar() {
 
   const [showCartMenu, setShowCartMenu] = useState(false); // Estado para controlar la apertura/cierre del menú del carrito
   const [showFavoriteMenu, setShowFavoriteMenu] = useState(false);
-  const cart = useCartStore((state) => state.cart);
-  const favorites = useFavoriteStore((state) => state.favorites);
+  // const cart = useCartStore((state) => state.cart);
+  // const favorites = useFavoriteStore((state) => state.favorites);
 
   const handleMenuClick = () => {
     setShowLinks(!showLinks);
@@ -128,9 +127,6 @@ export default function NavBar() {
         <div className="pl-6  pr-6  " href="#">
           <MenuAbout />
         </div>
-        {/* <div className="pl-6  pr-6  " href="#">
-          <MenuPrueba />
-        </div> */}
         {/* <div className="block uppercase font-medium cursor-pointer focus:outline-none">
           <Link to="/create">Create</Link>
         </div> */}
@@ -149,7 +145,6 @@ export default function NavBar() {
             <p>
               <b>Welcome {name}</b>
             </p>
-            {/* <img className="h-6" src={Perfil} alt="" /> */}
           </div>
         ) : (
           <div
@@ -160,7 +155,7 @@ export default function NavBar() {
           </div>
         )}
 
-        <div
+        {/* <div
           className="favorite pr-4 cursor-pointer flex gap-0.5 sm:gap-.5 md:gap-2 relative"
           onClick={handleFavoriteClick}
         >
@@ -170,7 +165,8 @@ export default function NavBar() {
               {favorites.length}
             </span>
           )}
-        </div>
+        </div> */}
+        <FavoritesMenu />
         <CartMenu />
 
         {/* <div className="car flex relative" onClick={handleCartClick}>
@@ -184,11 +180,7 @@ export default function NavBar() {
           </div>
         </div> */}
       </div>
-
-      {/* {showCartMenu && <CartMenu onClose={handleCloseCartMenu} cart={cart} />} */}
-      {showFavoriteMenu && (
-        <FavoritesMenu onClose={() => setShowFavoriteMenu(false)} />
-      )}
+     
       {showSidebar && isRegisteredUser ? (
         <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
       ) : null}

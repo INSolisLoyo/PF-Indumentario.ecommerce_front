@@ -5,10 +5,10 @@ import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
-import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; // Importa el hook de estado global de favoritos
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
 
 const Detail = () => {
-  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); // Obtén los favoritos y las funciones para agregar/quitar de favoritos
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
   const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
@@ -16,7 +16,7 @@ const Detail = () => {
   const PRODUCT = `/product/${id}`;
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-  const [desabledButton, setDesabledButton] = useState(true);
+  const [disabledButton, setDisabledButton] = useState(true);
   const [stock, setStock] = useState({});
   const [counter, setCounter] = useState(1);
   const [item, setItem] = useState({
@@ -27,7 +27,7 @@ const Detail = () => {
     colours: [],
     material: "",
   });
-  const [fav, setFav] = useState({
+  const [itemFav, setItemFav] = useState({
     id: "",
     name: "",
     price: "",
@@ -56,7 +56,7 @@ const Detail = () => {
       material: materials,
     });
 
-    setFav({
+    setItemFav({
       id: id,
       name: name,
       price: price,
@@ -86,10 +86,10 @@ const Detail = () => {
   };
 
   const handleCounter = (op) => {
-    if (!selectedSize) return; // Verificar si hay una talla seleccionada
+    if (!selectedSize) return;
 
     if (op === "-") {
-      setCounter(counter > 1 ? counter - 1 : 1); // No permitir cantidad menor a 1
+      setCounter(counter > 1 ? counter - 1 : 1);
       setErrors({ ...errors, maxItems: "" });
     } else {
       const maxItems = stock[selectedColor]?.find(
@@ -102,7 +102,7 @@ const Detail = () => {
       } else {
         setErrors({
           ...errors,
-          maxItems: "You can only buy this number of products",
+          maxItems: `You can only buy ${maxItems} units of this product`,
         });
       }
     }
@@ -110,16 +110,16 @@ const Detail = () => {
 
   const handleClickColor = (color) => {
     setSelectedColor(color);
-    setSelectedSize(""); // Restablecer la talla seleccionada
-    setCounter(1); // Restablecer la cantidad a 1
-    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
+    setSelectedSize("");
+    setCounter(1);
+    setErrors({ ...errors, maxItems: "" });
   };
 
   const handleSizeClick = (size) => {
-    setDesabledButton(false);
+    setDisabledButton(false);
     setSelectedSize(size);
-    setCounter(1); // Restablecer la cantidad a 1
-    setErrors({ ...errors, maxItems: "" }); // Limpiar el mensaje de error
+    setCounter(1);
+    setErrors({ ...errors, maxItems: "" });
     setErrors({ ...errors, noSizeSelected: "" });
   };
 
@@ -129,14 +129,19 @@ const Detail = () => {
         ...errors,
         noSizeSelected: "Please, choose a size",
       });
-      desabledButton(true);
+      setDisabledButton(true);
       return;
     } else {
+      const maxItems = stock[selectedColor]?.find(
+        (size) => size.size === selectedSize
+      )?.amount;
+
       const selectedProduct = {
         id: item.id,
         images: item.images[0].original,
         name: item.name,
         price: item.price,
+        stock: maxItems,
         quantity: counter,
         color: selectedColor,
         size: selectedSize,
@@ -173,7 +178,7 @@ const Detail = () => {
       }
 
       if (selectedSize) {
-        setDesabledButton(false);
+        setDisabledButton(false);
         setErrors({
           ...errors,
           noSizeSelected: "",
@@ -181,18 +186,17 @@ const Detail = () => {
       }
     };
     fetchData();
-  }, [id, selectedColor, selectedSize, errors]);
+  }, []);
 
   useEffect(() => {
-    // Verifica si el producto actual está en la lista de favoritos
-    setIsFavorite(favorites.some((product) => product.id === fav.id));
-  }, [favorites, fav.id]);
+    setIsFavorite(favorites.some((product) => product.id === item.id));
+  }, [favorites, item.id]);
 
   const handleToggleFavorite = () => {
     if (isFavorite) {
-      removeFromFavorites(fav.id); // Elimina el producto de favoritos
+      removeFromFavorites(itemFav.id);
     } else {
-      addToFavorites(fav); // Agrega el producto a favoritos
+      addToFavorites(itemFav);
     }
   };
 
@@ -205,7 +209,6 @@ const Detail = () => {
             <h1 className="font-semibold text-xl tracking-widest">
               {item.name}
             </h1>
-
             <div className="cursor-pointer">
               <span
                 role="img"
@@ -216,10 +219,10 @@ const Detail = () => {
                   display: "inline-block",
                   lineHeight: "30px",
                 }}
+                className="md:cursor-pointer top-1 right-1 p-1 bg-orange-200 my-2 mr-2 border-[1px] border-primary rounded-full w-[40px] h-[40px]"
                 onClick={handleToggleFavorite}
               >
-                {isFavorite ? "❤️" : "🤍"}{" "}
-                {/* Cambia el corazón a rojo si está en favoritos */}
+                {isFavorite ? "❤️" : "🤍"}
               </span>{" "}
             </div>
           </div>
@@ -297,7 +300,7 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
-            disabled={desabledButton}
+            disabled={disabledButton}
           >
             Add to cart
           </button>
