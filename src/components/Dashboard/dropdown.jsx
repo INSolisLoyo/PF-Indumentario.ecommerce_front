@@ -11,8 +11,7 @@ export default function Example() {
             Options
             <ChevronDownIcon
               className="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
-              aria-hidden="true"
-            />
+              aria-hidden="true"/>
           </Menu.Button>
         </div>
         <Transition
