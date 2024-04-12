@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../img/logo1.png";
 
 const Footer = () => {
@@ -8,6 +8,24 @@ const Footer = () => {
       behavior: "smooth",
     });
   };
+
+  const [showTopBtn, setShowTopBtn] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) { // Ajusta '200' al umbral deseado de px scroll down
+        setShowTopBtn(true);
+      } else {
+        setShowTopBtn(false);
+      }
+    };
+  
+    // Agrega el event listener cuando el componente se monta
+    window.addEventListener("scroll", handleScroll);
+  
+    // Limpia el event listener cuando el componente se desmonte
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <footer className="bg-transparent mt-40 relative text-black font-RedHat border-t border-primary">
@@ -185,7 +203,8 @@ const Footer = () => {
 
       <button
         onClick={top}
-        className=" absolute left-2 top-0 mb-[200px] mt-[.5rem] p-[1rem] border-none rounded-full bg-primary shadow-md shadow-slate-600 "
+        style={{ display: showTopBtn ? 'block' : 'none' }}
+        className=" fixed right-2 top-[540px] mb-[200px] mt-[.5rem] p-[1rem] border-none rounded-full bg-primary shadow-md shadow-slate-600 "
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
