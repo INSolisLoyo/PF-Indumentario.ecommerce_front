@@ -10,6 +10,8 @@ const DetailGallery = ({ images }) => {
             showPlayButton={false}  
             showNav={true}//muestra las flechas de navegación
             thumbnailPosition='bottom'//posición de la barra
+            autoPlay={false}
+            slideOnThumbnailOver={true}
           />
         </div>
       )
