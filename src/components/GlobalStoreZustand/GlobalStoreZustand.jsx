@@ -48,6 +48,7 @@ const useStore = create(persist((set) => ({
   setColour: (value) => set({ colour: value, currentPage: 1 }),
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
+  setCurrentPage: (page) => set({ currentPage: page }),
 
 }), {
   name: 'session-storage', // Nombre del almacenamiento persistente

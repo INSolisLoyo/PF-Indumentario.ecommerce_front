@@ -1,4 +1,4 @@
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import userStore from "../GlobalStoreZustand/UserStore";
 import axios from "../../axios/axios";
 import { auth } from './firebase';
 import {
@@ -15,8 +15,8 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const AuthTerceros = ({ onClose }) => {
 
-  const setCurrentUser = useStore((state) => state.setCurrentUser )
-  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
+  const setCurrentUser = userStore((state) => state.setCurrentUser )
+  const setRegisteredUser = userStore((state) => state.setRegisteredUser)
 
     const onClickGoogle = async () => {
 

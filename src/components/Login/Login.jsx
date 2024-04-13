@@ -1,4 +1,4 @@
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import userStore from "../GlobalStoreZustand/UserStore";
 import React, { useState, useRef, useEffect } from "react";
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,8 +14,8 @@ const LOGIN_URL = '/login';
 
 export default function Login({ onClose }) {
 
-  const setCurrentUser = useStore((state) => state.setCurrentUser )
-  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
+  const setCurrentUser = userStore((state) => state.setCurrentUser )
+  const setRegisteredUser = userStore((state) => state.setRegisteredUser)
 
   const [ form, setForm] = useState({
     email: '',

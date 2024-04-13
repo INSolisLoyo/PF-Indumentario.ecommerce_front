@@ -1,11 +1,11 @@
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import userStore from "../GlobalStoreZustand/UserStore";
 import { useEffect } from "react";
 
 export default function Account({ onClose, setShowSidebar }) {
    
-    const { name } = useStore((state) => state.user)
-    const setCurrentUser = useStore((state) => state.setCurrentUser)
-    const setRegisteredUser = useStore((state) => state.setRegisteredUser)
+    const { name } = userStore((state) => state.user)
+    const setCurrentUser = userStore((state) => state.setCurrentUser)
+    const setRegisteredUser = userStore((state) => state.setRegisteredUser)
 
     const handleLogOut = () => {
 
