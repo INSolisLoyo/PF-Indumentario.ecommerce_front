@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../axios/axios";
 import AuthTerceros from "../AuthTerceros/AuthTerceros";
@@ -12,19 +11,116 @@ import PopoverInfo from "./PopoverInfo";
 
 
 const LOGIN_URL = '/login';
-const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PWD_REGEX = /.+/;
 
 export default function Login({ onClose }) {
+
+  const [ form, setForm] = useState({
+    email: '',
+    password: ''
+  })
+  const [ errors, setErrors ] = useState({
+    email: '',
+    password: ''
+  })
+  const [ validation, setValidation ] = useState({
+    email: false,
+    password: false
+  })
 
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleChange = (event) => {
+
+    const value = event.target.value;
+    const property = event.target.name;
+
+    setForm({
+      ...form,
+      [property]: value
+    })
+
+  }
+
+  const validationData = () => {
+
+    let emailError = '';
+    let passwordError = '';
+
+    let validationEmail = false;
+    let validationPassword = false;
+
+    if(form.email.length === 0){
+
+      emailError = 'Enter your email account';
+
+    } else {
+
+      if(EMAIL_REGEX.test(form.email)){
+        
+        validationEmail = true;
+
+      } else {
+        emailError = 'Enter a valid email';
+      }
+
+    }
+ 
+    if(form.password.length === 0){
+          
+      passwordError = 'Enter your password';
+      
+    } else {
+
+      validationPassword = true;
+
+    }
+
+    setErrors({
+      email: emailError,
+      password: passwordError
+    })
+
+    setValidation({
+      email: validationEmail,
+      password: validationPassword
+    })
+
+  }
+
+  const submitHandler = async () => {
+
+    await validationData();
+
+    if(validation.email && validation.password){
+      
+
+    }
+
+  }
+
+  useEffect( () => {
+
+    setValidation({
+      email: false,
+      password: false
+    })
+
+    setErrors({
+      email: '',
+      password: ''
+    })
+
+  }, [form])
   
   return (
-    <div className="absolute right-2 top-2 w-11/12 h-auto md:right-4 md:top-4 border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
+
+    <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
 
       <div className="w-full p-2 md:p-4 flex flex-col gap-2 md:gap-4">
 
@@ -43,9 +139,7 @@ export default function Login({ onClose }) {
 
           {/* Autenticación de terceros */}
           
-          <button className="w-full py-2 border border-gray-300 rounded-xl flex gap-4 justify-center items-center hover:bg-[#fae8e6]">
-            <FontAwesomeIcon icon={faGoogle} size="xl" className=" text-slate-800"/> <span>Log in with Google</span>
-          </button>
+          <AuthTerceros onClose={onClose} />
 
           {/* OR */}
           <div className="relative">
@@ -59,17 +153,17 @@ export default function Login({ onClose }) {
           <div className="flex flex-col gap-4">
 
               <input className="w-full py-2 px-4 border border-gray-300 rounded-xl flex gap-4 justify-center items-center focus:border-[#f6d5d2]" 
-                placeholder="Enter your email" type="email"
+                placeholder="Enter your email" type="email" id="email" name="email" value={form.email} onChange={handleChange}
               />
               
               <div className="relative">
               
                 <input className="w-full py-2 px-4 border border-gray-300 rounded-xl flex gap-4 justify-center items-center" 
-                  placeholder="Enter your password" type={showPassword ? 'text' : 'password'}                
+                  placeholder="Enter your password" type={showPassword ? 'text' : 'password'} id="password" name="password" value={form.password} onChange={handleChange}          
                 />
                 
                 <div className="absolute inset-y-0 right-2 flex items-center pr-4">
-                  {showPassword ? <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility}/> : <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility}/>}
+                  {showPassword ? <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility} className="text-gray-300"/> : <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} className="text-gray-300"/>}
                 </div>
 
               </div>
@@ -83,7 +177,7 @@ export default function Login({ onClose }) {
                 <PopoverInfo/>
               </div>
 
-              <button className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center">
+              <button className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center" onClick={submitHandler}>
                 Log in
               </button>
 

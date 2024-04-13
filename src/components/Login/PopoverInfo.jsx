@@ -13,7 +13,7 @@ export default function PopoverInfo() {
               className={'group inline-flex items-center rounded-md py-2 text-base font-medium hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'}
             >
               
-              <FontAwesomeIcon icon={faCircleQuestion} className={`${open ? 'text-primary' : 'text-primary/80'}
+              <FontAwesomeIcon icon={faCircleQuestion} className={`${open ? 'text-primary' : 'text-[#efb7b2]'}
                 h-5 w-5 transition duration-150 ease-in-out group-hover:text-primary`}
                 aria-hidden="true"/>               
               
