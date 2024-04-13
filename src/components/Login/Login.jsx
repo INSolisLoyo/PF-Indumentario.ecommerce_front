@@ -1,6 +1,5 @@
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -17,10 +16,6 @@ export default function Login({ onClose }) {
 
   const setCurrentUser = useStore((state) => state.setCurrentUser )
   const setRegisteredUser = useStore((state) => state.setRegisteredUser)
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const origin = location.state?.from?.pathname || "/";
 
   const [ form, setForm] = useState({
     email: '',
@@ -90,8 +85,6 @@ export default function Login({ onClose }) {
         setRegisteredUser(true);
 
         onClose();
-
-        navigate(origin, { replace: true });
 
       } catch (error) {
         

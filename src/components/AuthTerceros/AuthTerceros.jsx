@@ -1,4 +1,3 @@
-import { useNavigate, useLocation } from 'react-router-dom';
 import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
 import axios from "../../axios/axios";
 import { auth } from './firebase';
@@ -15,10 +14,6 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
   const AUTH = '/user/google';
 
 const AuthTerceros = ({ onClose }) => {
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const origin = location.state?.from?.pathname || "/";
 
   const setCurrentUser = useStore((state) => state.setCurrentUser )
   const setRegisteredUser = useStore((state) => state.setRegisteredUser)
@@ -52,7 +47,7 @@ const AuthTerceros = ({ onClose }) => {
               isActive: ''
             })
             setRegisteredUser(true);
-            navigate(origin, { replace: true });
+            
             onClose();
           })
       } catch (error) {
