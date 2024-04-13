@@ -16,7 +16,7 @@ export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
-    dob: "",
+    birthdate: "",
     email: "",
     password: "",
     phone: "",
@@ -166,7 +166,7 @@ export default function Register() {
                   <div className="md:col-span-5">
                     <label className="text-xl" htmlFor="dob">Date of Birth</label>
                     <input type="date"  name="dob" id="dob" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
-                    value={formData.dob}
+                    value={formData.birthdate}
                     onChange={handleChange}
 
                     />

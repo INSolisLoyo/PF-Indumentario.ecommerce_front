@@ -8,13 +8,19 @@ import axios from "../../axios/axios";
 import AuthTerceros from "../AuthTerceros/AuthTerceros";
 import SesionSwitch from "./Switch";
 import PopoverInfo from "./PopoverInfo";
+import validationData from "./validationData";
 
 
 const LOGIN_URL = '/login';
-const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const PWD_REGEX = /.+/;
 
 export default function Login({ onClose }) {
+
+  const setCurrentUser = useStore((state) => state.setCurrentUser )
+  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const origin = location.state?.from?.pathname || "/";
 
   const [ form, setForm] = useState({
     email: '',
@@ -47,61 +53,59 @@ export default function Login({ onClose }) {
 
   }
 
-  const validationData = () => {
+  const submitHandler = async (event) => {
 
-    let emailError = '';
-    let passwordError = '';
+    event.preventDefault();
 
-    let validationEmail = false;
-    let validationPassword = false;
-
-    if(form.email.length === 0){
-
-      emailError = 'Enter your email account';
-
-    } else {
-
-      if(EMAIL_REGEX.test(form.email)){
-        
-        validationEmail = true;
-
-      } else {
-        emailError = 'Enter a valid email';
-      }
-
-    }
- 
-    if(form.password.length === 0){
-          
-      passwordError = 'Enter your password';
-      
-    } else {
-
-      validationPassword = true;
-
-    }
-
-    setErrors({
-      email: emailError,
-      password: passwordError
-    })
-
-    setValidation({
-      email: validationEmail,
-      password: validationPassword
-    })
-
-  }
-
-  const submitHandler = async () => {
-
-    await validationData();
+    await validationData(form, setErrors, setValidation);
 
     if(validation.email && validation.password){
       
+      try {
+        
+        const { data } = await axios.post(LOGIN_URL, {
+          email: form.email,
+          password: form.password
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        document.cookie = `token=${data.token}; max-age=${60 * 60}; path=/; samesite=strict`;
+        const { userId, userName, userLastname, userBirthdate, userEmail, userPassword, isAdmin, isActive, userMobile } = jwtDecode(data.token);
+        
+        const newUser = {
+          id: userId,
+          name: userName,
+          lastname: userLastname,
+          dob: userBirthdate,
+          email: userEmail,
+          password: userPassword,
+          isAdmin: isAdmin,
+          isActive: isActive
+        };
+
+        setCurrentUser(newUser);
+        setRegisteredUser(true);
+
+        onClose();
+
+        navigate(origin, { replace: true });
+
+      } catch (error) {
+        
+        console.error('There is a problem');
+
+      }
 
     }
 
+  }
+
+  const handleRegister = () => {
+    navigate('/register');
+    onClose();
   }
 
   useEffect( () => {
@@ -109,11 +113,6 @@ export default function Login({ onClose }) {
     setValidation({
       email: false,
       password: false
-    })
-
-    setErrors({
-      email: '',
-      password: ''
     })
 
   }, [form])
@@ -152,13 +151,16 @@ export default function Login({ onClose }) {
           {/* Inputs */}
           <div className="flex flex-col gap-4">
 
-              <input className="w-full py-2 px-4 border border-gray-300 rounded-xl flex gap-4 justify-center items-center focus:border-[#f6d5d2]" 
+              <input className={`w-full py-2 px-4 border ${ errors.email ? "border-red-500" : "border-gray-300"} rounded-xl flex gap-4 justify-center items-center`}
                 placeholder="Enter your email" type="email" id="email" name="email" value={form.email} onChange={handleChange}
               />
+              { 
+                errors.email && <span className="text-red-500">{errors.email}</span>
+              }
               
               <div className="relative">
               
-                <input className="w-full py-2 px-4 border border-gray-300 rounded-xl flex gap-4 justify-center items-center" 
+                <input className={`w-full py-2 px-4 border ${ errors.password ? "border-red-500" : "border-gray-300"} rounded-xl flex gap-4 justify-center items-center`}
                   placeholder="Enter your password" type={showPassword ? 'text' : 'password'} id="password" name="password" value={form.password} onChange={handleChange}          
                 />
                 
@@ -168,7 +170,9 @@ export default function Login({ onClose }) {
 
               </div>
 
-    
+              { 
+                errors.password && <span className="text-red-500">{errors.password}</span>
+              }
 
               {/* Keep sesion open? */}
               <div className="flex gap-2 items-center">
@@ -189,7 +193,7 @@ export default function Login({ onClose }) {
           </p>
 
           {/* Create an account*/}
-          <button className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex     justify-center items-center">
+          <button className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center" onClick={handleRegister}>
                 Create an account
           </button>
 
