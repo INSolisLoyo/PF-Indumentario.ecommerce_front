@@ -53,7 +53,7 @@ const FavoritesMenu = () => {
       </div>
 
       {favoritesMenuOpen && (
-        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[500px] max-h-[450px] overflow-y-auto rounded-lg">
+        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[450px] max-h-[500px] overflow-y-auto rounded-lg">
           <div className="flex justify-center items-center">
             <div className="w-[40px]"></div>
             <h2 className="text-center text-lg font-semibold py-4 w-[75%]">
