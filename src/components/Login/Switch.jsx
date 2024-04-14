@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Switch } from '@headlessui/react'
+import userStore from '../GlobalStoreZustand/UserStore'
 
 export default function SesionSwitch() {
 
+  const setSessionOpen = userStore((state) => state.setSessionOpen)
   const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    setSessionOpen(enabled);
+  }, enabled)
 
   return (
     
