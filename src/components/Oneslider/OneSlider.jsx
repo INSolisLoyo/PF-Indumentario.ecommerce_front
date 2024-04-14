@@ -34,7 +34,7 @@ const OneSlider = ({ gender }) => {
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     arrows: true,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
@@ -100,7 +100,7 @@ const CustomPrevArrow = (props) => {
     <div
       className="slick-arrow"
       style={{
-        left: "-20px",
+        left: "-25px",
         zIndex: "10",
         top: "50%",
         transform: "translateY(-50%)",
@@ -109,7 +109,7 @@ const CustomPrevArrow = (props) => {
       }}
       onClick={onClick}
     >
-      <div className="text-primary text-3xl font-extrabold">{"<"}</div>
+      <div className="text-primary text-4xl font-extrabold">{"<"}</div>
     </div>
   );
 };
@@ -120,7 +120,7 @@ const CustomNextArrow = (props) => {
     <div
       className="slick-arrow"
       style={{
-        right: "-20px",
+        right: "-25px",
         zIndex: "10",
         top: "50%",
         transform: "translateY(-50%)",
@@ -129,7 +129,7 @@ const CustomNextArrow = (props) => {
       }}
       onClick={onClick}
     >
-      <div className="text-primary text-3xl font-extrabold">{">"}</div>
+      <div className="text-primary text-4xl font-extrabold">{">"}</div>
     </div>
   );
 };
