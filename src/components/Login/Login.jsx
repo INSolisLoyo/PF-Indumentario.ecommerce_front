@@ -99,11 +99,25 @@ export default function Login({ onClose }) {
 
         // Iterar sobre cada elemento del carrito y agregarlo al estado global del carrito
         response.data.forEach(async (cartItem) => {
+          // Obtener el producto del carrito
           const productRescue = await axios.get(
             `/product/${cartItem.productId}`
           );
           const productLimpio = productRescue.data;
 
+          // Obtener el stock real del producto para el color y talla específicos
+          const stockRescue = await axios.get(`/stock/${cartItem.productId}`, {
+            params: {
+              color: cartItem.colour,
+              size: cartItem.size,
+            },
+          });
+
+          console.log(stockRescue);
+
+          const stockData = stockRescue.data;
+
+          // Combinar los datos del producto y el stock real
           const selectedProduct = {
             id: cartItem.id,
             images: productLimpio.images[0],
@@ -112,6 +126,8 @@ export default function Login({ onClose }) {
             quantity: cartItem.amount,
             color: cartItem.colour,
             size: cartItem.size,
+            // Usar el stock específico para el color y la talla del producto
+            stock: cartItem.stock,
           };
 
           // Actualizar el estado global del carrito con los datos recibidos

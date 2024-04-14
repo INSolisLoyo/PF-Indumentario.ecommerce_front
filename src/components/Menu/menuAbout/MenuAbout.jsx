@@ -44,7 +44,7 @@ const teamMembers = [
     image: "https://avatars.githubusercontent.com/u/145514315?v=4",
     github: "https://github.com/AlmaCane",
     linkedin: "https://www.linkedin.com/in/alma-cane-a678ab217/",
-    mail: "jealmuco@gmail.com",
+    mail: "almacane36@gmail.com",
   },
   {
     name: "Jhonatan Ponce",
@@ -52,7 +52,7 @@ const teamMembers = [
     image: "https://avatars.githubusercontent.com/u/122419336?v=4",
     github: "https://github.com/Ponce08",
     linkedin: "url_linkedin_6",
-    mail: "jealmuco@gmail.com",
+    mail: "yonathanponce2019@gmail.com",
   },
   {
     name: "Franco Bottaro",
@@ -60,7 +60,7 @@ const teamMembers = [
     image: "https://avatars.githubusercontent.com/u/60520589?v=4",
     github: "https://github.com/francobottaro",
     linkedin: "https://www.linkedin.com/in/franco-adolfo-bottaro/",
-    mail: "jealmuco@gmail.com",
+    mail: "francoabottaro@gmail.com",
   },
   {
     name: "Ezequiel Sarrugeri",
@@ -68,7 +68,7 @@ const teamMembers = [
     image: "https://avatars.githubusercontent.com/u/85004180?v=4",
     github: "https://github.com/ezesarru",
     linkedin: "https://www.linkedin.com/in/ezesarru/",
-    mail: "jealmuco@gmail.com",
+    mail: "ezesarru@gmail.com",
   },
 ];
 
@@ -108,36 +108,36 @@ const MenuAbout = () => {
             aboutMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/80">
+          <div className="flex justify-center items-center gap-[50px] p-11 z-10 h-[350px] bg-white/90">
             {teamMembers.map((member, index) => (
               <div key={index}>
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-32 h-32 rounded-full mb-2"
+                  className="w-32 h-32 rounded-full mb-2 shadow shadow-orange-800"
                 />
                 <p className="text-center font-semibold">{member.name}</p>
-                <p className="text-center text-sm text-gray-500 mb-2">
+                <p className="text-center text-sm text-gray-900 mb-2">
                   {member.role}
                 </p>
                 <div className="flex justify-center gap-4">
                   <a
                     href={member.github}
                     target="_blank"
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-[#c47b5b] hover:text-gray-900"
                   >
                     <FontAwesomeIcon icon={faGithub} size="lg" />
                   </a>
                   <a
                     href={member.linkedin}
                     target="_blank"
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-[#c47b5b] hover:text-blue-800"
                   >
                     <FontAwesomeIcon icon={faLinkedin} size="lg" />
                   </a>
                   <a
                     href={`mailto:${member.mail}`}
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-[#c47b5b] hover:text-red-600"
                   >
                     <FontAwesomeIcon icon={faEnvelope} size="lg" />
                   </a>

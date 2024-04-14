@@ -157,6 +157,7 @@ const Detail = () => {
         colour: selectedColor,
         size: selectedSize,
         amount: counter,
+        stock: maxItems,
         productId: item.id,
         userId: user.id, // ID del usuario actual
       };
