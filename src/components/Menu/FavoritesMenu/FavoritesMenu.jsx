@@ -1,149 +1,140 @@
-import React, { useEffect, useRef } from 'react';
-import useFavoriteStore from '../../GlobalStoreZustand/useFavoriteStore';
+import React, { useEffect } from "react";
+import useFavoriteStore from "../../GlobalStoreZustand/useFavoriteStore";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CloseIcon from "@mui/icons-material/Close";
+import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 
-const FavoritesMenu = ({ onClose }) => {
-  const menuRef = useRef(null);
-  const removeFromFavorites = useFavoriteStore((state) => state.removeFromFavorites);
+const FavoritesMenu = () => {
+  const removeFromFavorites = useFavoriteStore(
+    (state) => state.removeFromFavorites
+  );
+  const clearFavorites = useFavoriteStore((state) => state.clearFavorites);
   const favorites = useFavoriteStore((state) => state.favorites);
+  const { favoritesMenuOpen, toggleFavoritesMenu } = useMenuStore();
 
   const handleRemoveFromFavorites = (productId) => {
     removeFromFavorites(productId);
   };
 
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      onClose();
-    }
+  const handleClick = () => {
+    toggleFavoritesMenu();
+  };
+
+  const handleClearFavorites = () => {
+    clearFavorites();
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const handleCloseMenu = (event) => {
+      if (favoritesMenuOpen && !event.target.closest(".favorites-menu")) {
+        if (favorites.length > 0) {
+          toggleFavoritesMenu();
+        }
+      }
     };
-  }, [menuRef]);
+
+    document.body.addEventListener("click", handleCloseMenu);
+
+    return () => {
+      document.body.removeEventListener("click", handleCloseMenu);
+    };
+  }, [favoritesMenuOpen, toggleFavoritesMenu, favorites]);
 
   const totalFavorites = favorites.length;
 
   return (
-    <div ref={menuRef} className="favorites-menu bg-gray-200 right-4 top-full p-6 shadow-lg absolute z-50 max-h-[450px] overflow-y-auto">
-      <h2 className="text-xl text-center font-semibold mb-4">Favorites</h2>
-      <hr />
-      {totalFavorites === 0 ? (
-        <p className="text-center pt-6 text-gray-700">No favorites added</p>
-      ) : (
-        <div className="divide-y divide-gray-400">
-          {favorites.map((favorite, index) => (
-            <ul key={index} className="py-6 flex gap-8 justify-between items-center">
-              <li>
-                <img className="w-16 h-20" src={favorite.images} alt={favorite.name} />
-              </li>
-              <li>
-                <div>
-                  <h3 className="text-lg font-semibold">{favorite.name}</h3>
-                  <h2 className="text-lg font-semibold">$ {favorite.price}</h2>
-                  <div className="flex gap-4"></div>
-                </div>
-              </li>
-              <li>
-                <button onClick={() => handleRemoveFromFavorites(favorite.id)} className="font-semibold text-red-500 focus:outline-none">
-                  Remove
-                </button>
-              </li>
-            </ul>
-          ))}
-        </div>
-      )}
-      <div className="divide-y">
-        {/* Muestra el total de favoritos */}
+    <div className="favorites-menu">
+      <div className="relative flex items-center" onClick={handleClick}>
+        <FavoriteIcon
+          style={{ fontSize: 35 }}
+          className="text-2xl cursor-pointer"
+        />
         {totalFavorites > 0 && (
-          <p className="text-lg mt-2">Total Favorites: {totalFavorites}</p>
+          <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 rounded-full bg-red-500 text-white text-xs">
+            {totalFavorites}
+          </div>
         )}
       </div>
-      <button onClick={onClose} className="flex mt-6 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none">
-        Close
-      </button>
+
+      {favoritesMenuOpen && (
+        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[450px] max-h-[500px] overflow-y-auto rounded-lg">
+          <div className="flex justify-center items-center">
+            <div className="w-[40px]"></div>
+            <h2 className="text-center text-xl font-bold py-4 w-[75%]">
+              Favorites
+            </h2>
+            <div className="w-[40px]">
+              <CloseIcon
+                style={{ fontSize: 30, marginLeft: 10, cursor: "pointer" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavoritesMenu();
+                }}
+              />
+            </div>
+          </div>
+
+          {favorites.length === 0 ? (
+            <div className="empty-cart text-center py-8">
+              <div className="text-gray-400">
+                <FavoriteIcon style={{ fontSize: 100 }} />
+              </div>
+              <p className="empty-cart-text text-lg font-semibold mt-4">
+                Your favorites is empty
+              </p>
+            </div>
+          ) : (
+            <>
+              {favorites.map((favorite, index) => (
+                <ul
+                  key={index}
+                  className="py-6 grid grid-cols-4 gap-2 items-center"
+                >
+                  <li className="flex justify-center col-span-1">
+                    <img
+                      className="w-16 h-20 object-cover"
+                      src={favorite.images[0]}
+                      alt={favorite.name}
+                    />
+                  </li>
+                  <li className="flex flex-col justify-between col-span-2">
+                    <div>
+                      <h3 className="text-lg font-bold">
+                        {favorite.name}
+                      </h3>
+                      <h2 className="text-base font-semibold">
+                      <b>Price:</b> ${favorite.price}
+                      </h2>
+                    </div>
+                  </li>
+                  <li className="flex gap-2 items-center justify-center col-span-1">
+                    <button
+                      onClick={() => handleRemoveFromFavorites(favorite.id)}
+                      className="font-semibold text-red-500 focus:outline-none"
+                    >
+                      <DeleteIcon />
+                    </button>
+                  </li>
+                </ul>
+              ))}
+              <div className="text-center py-4">
+                <p className="text-lg font-bold mt-2">
+                  Total Favorites: {totalFavorites}
+                </p>
+                <button
+                  onClick={handleClearFavorites}
+                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
+                >
+                  Clear All Favorites
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 export default FavoritesMenu;
-
-
-
-
-
-// import React from "react";
-// import useFavoriteStore from "../../GlobalStoreZustand/useFavoriteStore"; // Importa el hook del estado de favoritos
-
-// const FavoritesMenu = ({ onClose }) => {
-//   const removeFromFavorites = useFavoriteStore(
-//     (state) => state.removeFromFavorites
-//   );
-//   const favorites = useFavoriteStore((state) => state.favorites);
-
-//   const handleRemoveFromFavorites = (productId) => {
-//     removeFromFavorites(productId);
-//   };
-
-//   // Calcula el total de productos favoritos
-//   const totalFavorites = favorites.length;
-
-//   return (
-//     <div className="favorites-menu bg-gray-200 right-4 top-full p-6 shadow-lg absolute z-50 max-h-[450px] overflow-y-auto">
-//       <h2 className="text-xl text-center font-semibold mb-4">Favorites</h2>
-
-//       <hr />
-//       {totalFavorites === 0 ? (
-//         <p className="text-center pt-6 text-gray-700">No favorites added</p>
-//       ) : (
-//         <div className="divide-y divide-gray-400">
-//           {favorites.map((favorite, index) => (
-//             <ul
-//               key={index}
-//               className="py-6 flex gap-8 justify-between items-center"
-//             >
-//               <li>
-//                 <img
-//                   className="w-16 h-20"
-//                   src={favorite.images}
-//                   alt={favorite.name}
-//                 />
-//               </li>
-//               <li>
-//                 <div>
-//                   <h3 className="text-lg font-semibold">{favorite.name}</h3>
-//                   <h2 className="text-lg font-semibold">$ {favorite.price}</h2>
-//                   <div className="flex gap-4"></div>
-//                 </div>
-//               </li>
-//               <li>
-//                 <button
-//                   onClick={() => handleRemoveFromFavorites(favorite.id)}
-//                   className="font-semibold text-red-500 focus:outline-none"
-//                 >
-//                   Remove
-//                 </button>
-//               </li>
-//             </ul>
-//           ))}
-//         </div>
-//       )}
-//       <div className="divide-y">
-//         {/* Muestra el total de favoritos */}
-//       {totalFavorites > 0 && (
-//         <p className="text-lg mt-2">Total Favorites: {totalFavorites}</p>
-//       )}
-//       </div>
-      
-//       <button
-//         onClick={onClose}
-//         className="flex mt-6 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none"
-//       >
-//         Close
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default FavoritesMenu;

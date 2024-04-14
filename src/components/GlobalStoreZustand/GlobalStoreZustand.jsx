@@ -1,8 +1,8 @@
+// GlobalStoreZustand.js
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const useStore = create(persist((set) => ({
-
   // Estado del carrito
   cart: [],
   addToCart: (product) =>
@@ -49,6 +49,7 @@ const useStore = create(persist((set) => ({
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
   setCurrentPage: (page) => set({ currentPage: page }),
+
 
 }), {
   name: 'session-storage', // Nombre del almacenamiento persistente

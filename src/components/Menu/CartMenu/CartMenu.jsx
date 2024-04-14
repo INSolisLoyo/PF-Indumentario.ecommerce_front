@@ -1,23 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import useCartStore from '../../GlobalStoreZustand/useCartStore';
+import React, { useEffect } from "react";
+import useCartStore from "../../GlobalStoreZustand/useCartStore";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CloseIcon from "@mui/icons-material/Close";
+import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 
-const CartMenu = ({ onClose }) => {
-  const menuRef = useRef(null);
+const CartMenu = () => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
   const cart = useCartStore((state) => state.cart);
+  const { cartMenuOpen, toggleCartMenu } = useMenuStore();
 
-  const handleIncreaseQuantity = (productId, color, size) => {
-    increaseQuantity(productId, color, size);
-  };
-
-  const handleDecreaseQuantity = (productId, color, size) => {
-    decreaseQuantity(productId, color, size);
-  };
-
-  const handleRemoveProduct = (productId, color, size) => {
-    removeFromCart(productId, color, size);
+  const handleClick = () => {
+    toggleCartMenu();
   };
 
   const totalProducts = cart.reduce((total, product) => {
@@ -30,224 +27,202 @@ const CartMenu = ({ onClose }) => {
     }, 0)
     .toFixed(2);
 
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      onClose();
+  useEffect(() => {
+    const handleCloseMenu = (event) => {
+      if (cartMenuOpen && !event.target.closest(".cart-menu")) {
+        if (cart.length > 0) {
+          toggleCartMenu();
+        }
+      }
+    };
+
+    document.body.addEventListener("click", handleCloseMenu);
+
+    return () => {
+      document.body.removeEventListener("click", handleCloseMenu);
+    };
+  }, [cartMenuOpen, toggleCartMenu, cart]);
+
+  const handleIncreaseQuantity = (product) => {
+    const maxItems = product.product.stock;
+
+    if (product.quantity < maxItems) {
+      increaseQuantity(
+        product.product.id,
+        product.product.color,
+        product.product.size
+      );
     }
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [menuRef]);
+  const handleDecreaseQuantity = (product) => {
+    if (product.quantity > 1) {
+      decreaseQuantity(
+        product.product.id,
+        product.product.color,
+        product.product.size
+      );
+    }
+  };
 
   return (
-    <div ref={menuRef} className="divide-gray-400 cart-menu bg-gray-200 right-4 top-full p-6 shadow-lg absolute z-50 max-h-[450px] overflow-y-auto">
-      <h2 className="text-xl text-center font-semibold mb-4">Shopping Cart</h2>
+    <div className="cart-menu">
+      <div className="relative flex items-center" onClick={handleClick}>
+        <ShoppingCartIcon
+          style={{ fontSize: 35 }}
+          className="text-2xl cursor-pointer"
+        />
+        {totalProducts > 0 && (
+          <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 rounded-full bg-red-500 text-white text-xs">
+            {totalProducts}
+          </div>
+        )}
+      </div>
 
-      <hr />
-      {cart.length === 0 ? (
-        <p className="text-center pt-6 text-gray-700">No products added</p>
-      ) : (
-        <div className="divide-y divide-gray-400">
-          {cart.map((product, index) => (
-            <ul key={index} className="py-6 flex gap-8 justify-between items-center">
-              <li>
-                <img className="w-16 h-20" src={product.product.images} alt="" />
-              </li>
-              <li>
-                <div>
-                  <h3 className="text-lg font-semibold">{product.product.name}</h3>
-                  <h2 className="text-lg font-semibold">$ {product.product.price}</h2>
-                  <div className="flex gap-4">
-                    <span className="text-sm text-gray-700">
-                      <b>Amount:</b> {product.quantity}
-                    </span>
-                    <span className="text-sm text-gray-700">
-                      <b>Size:</b> {product.product.size}
-                    </span>
-                    <span className="text-sm text-gray-700">
-                      <b>Color:</b> {product.product.color}
-                    </span>
+      {cartMenuOpen && (
+        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[450px] max-h-[500px] overflow-y-auto rounded-lg">
+          <div className="flex justify-center items-center">
+            <div className="w-[40px]"></div>
+            <h2 className="text-center text-xl font-bold py-4 w-[75%]">
+              Shopping Cart
+            </h2>
+            <div className="w-[40px]">
+              <CloseIcon
+                style={{ fontSize: 30, marginLeft: 10, cursor: "pointer" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCartMenu();
+                }}
+              />
+            </div>
+          </div>
+          {cart.length === 0 ? (
+            <div className="empty-cart text-center py-8">
+              <div className="text-gray-400">
+                <ShoppingCartIcon style={{ fontSize: 100 }} />
+              </div>
+              <p className="empty-cart-text text-lg font-semibold mt-4">
+                Your cart is empty
+              </p>
+            </div>
+          ) : (
+            <>
+              {cart.map((product, index) => (
+                <div
+                  key={index}
+                  className="py-6 grid grid-cols-5 gap-2 items-center"
+                >
+                  <div className="flex justify-center col-span-1 pl-2">
+                    <img
+                      className="w-16 h-20 object-cover"
+                      src={product.product.images}
+                      alt={product.product.name}
+                    />
+                  </div>
+                  <div className="flex flex-col justify-between col-span-3">
+                    <div>
+                      <h3 className="text-lg font-bold">
+                        {product.product.name}
+                      </h3>
+                      <h2 className="text-base font-semibold">
+                        <b>Price:</b> ${product.product.price}
+                      </h2>
+                    </div>
+                    <div className="flex-col gap-4 justify-center items-center">
+                      <div className="flex gap-4 justify-center items-center">
+                        <p className="text-base">
+                          <b>Size:</b> {product.product.size}
+                        </p>
+                        <p className="text-base">
+                          <b>Color:</b> {product.product.color}
+                        </p>
+                      </div>
+
+                      <div>
+                        {product.product.stock <= 5 && ( // Mostrar el stock si es menor o igual a 5
+                          <p className="text-base text-red-500">
+                            <b>Stock: </b>Only {product.product.stock} available
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-col items-center justify-center col-span-1 pr-3">
+                    <div className="grid grid-cols-3 justify-center items-center text-center">
+                      <button
+                        onClick={() => handleDecreaseQuantity(product)}
+                        className={`text-2xl font-semibold text-red-500 focus:outline-none ${
+                          product.quantity === 1
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={product.quantity === 1}
+                      >
+                        -
+                      </button>
+                      <label className="flex justify-center w-[20px] text-center text-base font-bold">
+                        {product.quantity}
+                      </label>
+                      <button
+                        onClick={() => handleIncreaseQuantity(product)}
+                        className={`text-2xl font-semibold text-green-700 focus:outline-none ${
+                          product.quantity === product.product.stock
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={product.quantity === product.product.stock}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() =>
+                          removeFromCart(
+                            product.product.id,
+                            product.product.color,
+                            product.product.size
+                          )
+                        }
+                        className="text-red-500 focus:outline-none"
+                      >
+                        <DeleteIcon />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div className="flex gap-1 items-center space-x-2">
-                  <button onClick={() => handleDecreaseQuantity(product.product.id, product.product.color, product.product.size)} className="text-2xl font-semibold text-red-500 focus:outline-none">
-                    -
-                  </button>
-                  <button onClick={() => handleIncreaseQuantity(product.product.id, product.product.color, product.product.size)} className="text-2xl font-semibold text-green-700 focus:outline-none">
-                    +
-                  </button>
-                  <button onClick={() => handleRemoveProduct(product.product.id, product.product.color, product.product.size)} className="font-semibold text-red-500 focus:outline-none">
-                    Remove
-                  </button>
-                </div>
-              </li>
-            </ul>
-          ))}
+              ))}
+              <div className="cart-summary text-center py-4">
+                <p className="total-products text-base font-semibold">
+                  Total Products: {totalProducts}
+                </p>
+                <p className="total-price text-lg font-bold">
+                  Total Price: ${totalPrice}
+                </p>
+              </div>
+              <div className="flex justify-around text-center py-4">
+                <button
+                  onClick={() => {
+                    clearCart();
+                    toggleCartMenu();
+                  }}
+                  className="flex mt-2 mb-2 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none"
+                >
+                  Clear all cart
+                </button>
+                <button
+                  onClick={toggleCartMenu}
+                  className="flex mt-2 mb-2 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none"
+                >
+                  Go to Checkout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
-
-      {cart.length > 0 && (
-        <>
-          <hr />
-          <p className="text-lg mt-2">Total Products: {totalProducts}</p>
-          <p className="text-lg font-semibold">Total Price: $ {totalPrice}</p>
-        </>
-      )}
-      <button onClick={onClose} className="flex mt-6 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none">
-        Process
-      </button>
     </div>
   );
 };
 
 export default CartMenu;
-
-
-
-
-
-// import React from "react";
-// import useCartStore from "../../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
-
-// const CartMenu = ({ onClose }) => {
-//   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
-//   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
-//   const removeFromCart = useCartStore((state) => state.removeFromCart);
-//   const cart = useCartStore((state) => state.cart);
-
-//   const handleIncreaseQuantity = (productId, color, size) => {
-//     increaseQuantity(productId, color, size);
-//   };
-
-//   const handleDecreaseQuantity = (productId, color, size) => {
-//     decreaseQuantity(productId, color, size);
-//   };
-
-//   const handleRemoveProduct = (productId, color, size) => {
-//     removeFromCart(productId, color, size);
-//   };
-
-//   // Calcula el total de productos en el carrito
-//   const totalProducts = cart.reduce((total, product) => {
-//     return total + product.quantity;
-//   }, 0);
-
-//   // Calcula el valor total de la suma de todos los precios de los productos en el carrito
-//   const totalPrice = cart
-//     .reduce((total, product) => {
-//       return total + product.product.price * product.quantity;
-//     }, 0)
-//     .toFixed(2); // Formatea el valor a dos cifras después del punto decimal
-
-//   return (
-//     <div className=" divide-gray-400 cart-menu bg-gray-200 right-4 top-full p-6 shadow-lg absolute z-50 max-h-[450px] overflow-y-auto">
-//       <h2 className="text-xl text-center font-semibold mb-4">Shopping Cart</h2>
-
-//       <hr />
-//       {cart.length === 0 ? (
-//         <p className="text-center pt-6 text-gray-700">No products added</p>
-//       ) : (
-//         <div className="divide-y divide-gray-400">
-//           {cart.map((product, index) => (
-//             <ul
-//               key={index} // Usa el índice como clave si no tienes una clave única en los datos
-//               className="py-6 flex gap-8 justify-between items-center"
-//             >
-//               <li>
-//                 <img
-//                   className="w-16 h-20"
-//                   src={product.product.images}
-//                   alt=""
-//                 />
-//               </li>
-//               <li>
-//                 <div>
-//                   <h3 className="text-lg font-semibold">
-//                     {product.product.name}
-//                   </h3>
-//                   <h2 className="text-lg font-semibold">
-//                     $ {product.product.price}
-//                   </h2>
-//                   <div className="flex gap-4">
-//                     <span className="text-sm text-gray-700">
-//                       <b>Amount:</b> {product.quantity}
-//                     </span>
-//                     <span className="text-sm text-gray-700">
-//                       <b>Size:</b> {product.product.size}
-//                     </span>
-//                     <span className="text-sm text-gray-700">
-//                       <b>Color:</b> {product.product.color}
-//                     </span>
-//                   </div>
-//                 </div>
-//               </li>
-//               <li>
-//                 <div className="flex gap-1 items-center space-x-2">
-//                   <button
-//                     onClick={() =>
-//                       handleDecreaseQuantity(
-//                         product.product.id,
-//                         product.product.color,
-//                         product.product.size
-//                       )
-//                     }
-//                     className="text-2xl font-semibold text-red-500 focus:outline-none"
-//                   >
-//                     -
-//                   </button>
-//                   <button
-//                     onClick={() =>
-//                       handleIncreaseQuantity(
-//                         product.product.id,
-//                         product.product.color,
-//                         product.product.size
-//                       )
-//                     }
-//                     className="text-2xl font-semibold text-green-700 focus:outline-none"
-//                   >
-//                     +
-//                   </button>
-//                   <button
-//                     onClick={() =>
-//                       handleRemoveProduct(
-//                         product.product.id,
-//                         product.product.color,
-//                         product.product.size
-//                       )
-//                     }
-//                     className="font-semibold text-red-500 focus:outline-none"
-//                   >
-//                     Remove
-//                   </button>
-//                 </div>
-//               </li>
-//             </ul>
-//           ))}
-//         </div>
-//       )}
-
-//       {/* Muestra el valor total solo si hay productos en el carrito */}
-//       {cart.length > 0 && (
-//         <>
-//           <hr />
-//           <p className="text-lg mt-2">Total Products: {totalProducts}</p>
-//           <p className="text-lg font-semibold ">Total Price: $ {totalPrice}</p>
-//         </>
-//       )}
-//       <button
-//         onClick={onClose}
-//         className="flex mt-6 mx-auto bg-[#F1E2DB] text-black px-4 py-2 rounded-md hover:bg-primary focus:outline-none"
-//       >
-//         Process
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default CartMenu;

@@ -108,7 +108,7 @@ const AboutUs = ({setSectionPartsAbout}) => {
                             frontEndColaborators.map( (frontColaborator) => {
                                 return (
 
-                                    <div className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
+                                    <div key={frontColaborator.name} className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
 
                                         <img src={frontColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
@@ -188,7 +188,7 @@ const AboutUs = ({setSectionPartsAbout}) => {
                             backEndColaborators.map( (backColaborator) => {
                                 return (
 
-                                    <div className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
+                                    <div key={index} className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
 
                                         <img src={backColaborator.identity} className="h-20 w-20 rounded-full object-cover"/>
 
