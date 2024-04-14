@@ -17,13 +17,10 @@ const Login = ({ onClose }) => {
 
   // Estado para persistencia de sesión
   const setCurrentUser = userStore((state) => state.setCurrentUser )
-  const setRegisteredUser = userStore((state) => state.setRegisteredUser)
   const sessionOpen = userStore((state) => state.sessionOpen);
 
   //Estado sin persistencia de sesión
   const setCurrentUserWithoutPersist = userStoreWithoutPersist((state) => state.setCurrentUserWithoutPersist);
-  const setRegisteredUserWithoutPersist = userStoreWithoutPersist((state) => state.setRegisteredUserWithoutPersist);
-  const userWithoutPersist = userStoreWithoutPersist((state) => state.userWithoutPersist)
 
   const [ form, setForm] = useState({
     email: '',

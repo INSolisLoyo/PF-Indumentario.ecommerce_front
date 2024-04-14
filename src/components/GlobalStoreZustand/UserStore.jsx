@@ -9,9 +9,7 @@ const userStore = create(
 
               // Login Usuarios
             setCurrentUser: (currentUser) => set({ user: currentUser }),
-            setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
             setSessionOpen: (isOpen) => set({ sessionOpen: isOpen}),
-            registeredUser: false,
             sessionOpen: false,
             
             user: {

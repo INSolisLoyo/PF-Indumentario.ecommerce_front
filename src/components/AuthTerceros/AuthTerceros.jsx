@@ -1,4 +1,5 @@
 import userStore from "../GlobalStoreZustand/UserStore";
+import userStoreWithoutPersist from "../GlobalStoreZustand/UserStoreWithoutPersist";
 import axios from "../../axios/axios";
 import { auth } from './firebase';
 import {
@@ -11,12 +12,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
+
   const AUTH = '/user/google';
 
 const AuthTerceros = ({ onClose }) => {
 
   const setCurrentUser = userStore((state) => state.setCurrentUser )
-  const setRegisteredUser = userStore((state) => state.setRegisteredUser)
+  const sessionOpen = userStore((state) => state.sessionOpen)
+  const setCurrentUserWithoutPersist = userStoreWithoutPersist((state) => state.setCurrentUserWithoutPersist);
 
     const onClickGoogle = async () => {
 
@@ -30,23 +33,41 @@ const AuthTerceros = ({ onClose }) => {
 
         await axios.post(AUTH, dataDB)
           .then( (response) => {
+
             const cred = userData.user.accessToken;
             document.cookie = `token=${cred}; max-age=${60 * 60}; path=/; samesite=strict`;
             const fullName = userData.user.displayName.split(' ');
             const firstName = fullName[0];
             
             const lastName = fullName[1] ? fullName[1] : '';
-            setCurrentUser({
-              id: '',
-              name: firstName,
-              lastname: lastName,
-              dob: '',
-              email: userData.user.email,
-              password: '',
-              isAdmin: '',
-              isActive: ''
-            })
-            setRegisteredUser(true);
+
+            if(sessionOpen){
+
+              setCurrentUser({
+                id: '',
+                name: firstName,
+                lastname: lastName,
+                dob: '',
+                email: userData.user.email,
+                password: '',
+                isAdmin: '',
+                isActive: ''
+              })
+              
+            } else {
+              
+              setCurrentUserWithoutPersist({
+                id: '',
+                name: firstName,
+                lastname: lastName,
+                dob: '',
+                email: userData.user.email,
+                password: '',
+                isAdmin: '',
+                isActive: ''
+              })
+
+            }
             
             onClose();
           })
