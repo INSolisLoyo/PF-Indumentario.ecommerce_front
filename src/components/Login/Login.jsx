@@ -1,5 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import React, { useState, useRef, useEffect } from "react";
+import userStoreWithoutPersist from "../GlobalStoreZustand/UserStoreWithoutPersist";
+import React, { useState, useEffect } from "react";
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -12,10 +13,17 @@ import validationData from "./validationData";
 
 const LOGIN_URL = '/login';
 
-export default function Login({ onClose }) {
+const Login = ({ onClose }) => {
 
+  // Estado para persistencia de sesión
   const setCurrentUser = userStore((state) => state.setCurrentUser )
   const setRegisteredUser = userStore((state) => state.setRegisteredUser)
+  const sessionOpen = userStore((state) => state.sessionOpen);
+
+  //Estado sin persistencia de sesión
+  const setCurrentUserWithoutPersist = userStoreWithoutPersist((state) => state.setCurrentUserWithoutPersist);
+  const setRegisteredUserWithoutPersist = userStoreWithoutPersist((state) => state.setRegisteredUserWithoutPersist);
+  const userWithoutPersist = userStoreWithoutPersist((state) => state.userWithoutPersist)
 
   const [ form, setForm] = useState({
     email: '',
@@ -81,9 +89,12 @@ export default function Login({ onClose }) {
           isActive: isActive
         };
 
-        setCurrentUser(newUser);
-        setRegisteredUser(true);
-
+        if (sessionOpen) {
+          setCurrentUser(newUser); 
+        } else {
+          setCurrentUserWithoutPersist(newUser);
+        }
+        
         onClose();
 
       } catch (error) {
@@ -198,3 +209,5 @@ export default function Login({ onClose }) {
     </div>
   );
 }
+
+export default Login;

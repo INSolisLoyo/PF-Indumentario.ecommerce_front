@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import userStore from "../GlobalStoreZustand/UserStore";
+import userStoreWithoutPersist from "../GlobalStoreZustand/UserStoreWithoutPersist";
 import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 import Logo from "../../img/logo.png";
@@ -18,8 +19,13 @@ import Perfil from "../../img/perfil.png";
 import FavoritesMenu from "../Menu/FavoritesMenu/FavoritesMenu";
 
 export default function NavBar() {
-  const isRegisteredUser = userStore((state) => state.registeredUser);
-  const { name } = userStore((state) => state.user);
+  
+  const sessionOpen = userStore((state) => state.sessionOpen);
+  const user = userStore((state) => state.user);
+  const userWithoutPersist = userStoreWithoutPersist((state) => state.userWithoutPersist)
+  const [currentUserName, setCurrentUserName] = useState('')
+  const [currentSession, setCurrentSession] = useState(false);
+
   const location = useLocation();
   const [showLinks, setShowLinks] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -52,6 +58,32 @@ export default function NavBar() {
   const handleCloseCartMenu = () => {
     setShowCartMenu(false); // Cerrar el menú del carrito cuando se hace clic fuera de él
   };
+
+  useEffect(() => {
+
+    //Hay algún usuario registrado?
+    if(user.name || userWithoutPersist.name){
+
+      //EL usuario decidió mantener la sesión abierta?
+      if(sessionOpen){
+
+        setCurrentSession(true)
+        setCurrentUserName(user.name)
+      }
+      else {
+
+        setCurrentSession(true)
+        setCurrentUserName(userWithoutPersist.name)
+      }
+
+
+    } else {
+
+      setCurrentSession(false);
+
+    }
+
+  }, [user, userWithoutPersist])
 
   return (
     <div className="w-full mx-auto flex justify-around py-8 gap-4 h-[100px] items-center bg-white/70 fixed font-RedHat z-[100] ">
@@ -137,14 +169,15 @@ export default function NavBar() {
       </div>
 
       <div className="flex justify-center text-center items-center content-center gap-3">
-        {isRegisteredUser ? (
+        { currentSession ? (
           <div
             className="profile pr-2 text-lg cursor-pointer flex   md:gap-2 "
             onClick={handleProfileClick}
           >
-            <p>
-              <b>Welcome {name}</b>
-            </p>
+            {
+              currentSession && <p><b>Welcome {currentUserName}</b></p>
+            }
+           
           </div>
         ) : (
           <div
@@ -181,12 +214,12 @@ export default function NavBar() {
         </div> */}
       </div>
      
-      {showSidebar && isRegisteredUser ? (
-        <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
-      ) : null}
-      {showSidebar && !isRegisteredUser ? (
-        <Login onClose={handleCloseSideBar} />
-      ) : null}
+      {
+        showSidebar && (currentSession ? (
+          <Account onClose={handleCloseSideBar} setShowSidebar={setShowSidebar} />
+        ) : (<Login onClose={handleCloseSideBar} />)) 
+      }
+      
     </div>
   );
 }

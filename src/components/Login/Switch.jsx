@@ -9,7 +9,7 @@ export default function SesionSwitch() {
 
   useEffect(() => {
     setSessionOpen(enabled);
-  }, enabled)
+  }, [enabled])
 
   return (
     

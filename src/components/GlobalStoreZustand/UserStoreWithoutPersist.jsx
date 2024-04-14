@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 
-const userStoreWithoutPersist = create(  
-        
-    (set) => ({
+const userStoreWithoutPersist = create((set) => ({
           // Login Usuarios
         setCurrentUserWithoutPersist: (currentUser) => set({ userWithoutPersist: currentUser }),
         setRegisteredUserWithoutPersist: (isRegistered) => set({ registeredUserWithoutPersist: isRegistered}),
@@ -17,8 +15,8 @@ const userStoreWithoutPersist = create(
           isAdmin: '',
           isActive: ''
         }
-    })
-
+    
+      })
 )
 
 export default userStoreWithoutPersist;

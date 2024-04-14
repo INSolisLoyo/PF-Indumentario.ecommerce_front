@@ -1,33 +1,71 @@
 
 import userStore from "../GlobalStoreZustand/UserStore";
-import { useEffect } from "react";
+import userStoreWithoutPersist from "../GlobalStoreZustand/UserStoreWithoutPersist";
+import { useEffect, useState } from "react";
 
 export default function Account({ onClose, setShowSidebar }) {
    
-    const { name } = userStore((state) => state.user)
+    //Estados para persistencia de sesión
+    const user = userStore((state) => state.user)
     const setCurrentUser = userStore((state) => state.setCurrentUser)
     const setRegisteredUser = userStore((state) => state.setRegisteredUser)
+    const sessionOpen = userStore((state) => state.sessionOpen)
+
+    //Estados sin persistencia de sesión
+    const userWithoutPersist = userStoreWithoutPersist((state) => state.userWithoutPersist)
+    const setCurrentUserWithoutPersist = userStoreWithoutPersist((state) => state.setCurrentUserWithoutPersist)
+    const setRegisteredUserWithoutPersist = userStoreWithoutPersist((state) => state.setRegisteredUserWithoutPersist);
+
+    //Estado local
+    const [currentUserName, setCurrentUserName] = useState('');
 
     const handleLogOut = () => {
 
-      setCurrentUser({
-        id: '',
-        name: '',
-        lastname: '',
-        dob: '',
-        email: '',
-        password: '',
-        isAdmin: '',
-        isActive: ''
-      })
+      if(sessionOpen){
 
-      setRegisteredUser(false);
+        setCurrentUser({
+          id: '',
+          name: '',
+          lastname: '',
+          dob: '',
+          email: '',
+          password: '',
+          isAdmin: '',
+          isActive: ''
+        })       
 
+      } else {
+
+        setCurrentUserWithoutPersist({
+          id: '',
+          name: '',
+          lastname: '',
+          dob: '',
+          email: '',
+          password: '',
+          isAdmin: '',
+          isActive: ''
+        })
+
+      }
+   
       document.cookie = 'token=; max-age=0; path=/';
 
       setShowSidebar(false);
+      onClose();
 
     } 
+
+    useEffect(() => {
+
+      if(sessionOpen){
+        setCurrentUserName(user.name)
+      }
+      else{
+        setCurrentUserName(userWithoutPersist.name)
+      }
+
+    }, [user, userWithoutPersist ])
 
     return (
       <div className="bg-gradient-to-t from-[#dfb69f] to-white absolute right-0 top-0 border-none rounded-lg shadow shadow-slate-500 font-RedHat md:w-1/3 md:h-svh">
@@ -42,7 +80,7 @@ export default function Account({ onClose, setShowSidebar }) {
             </div>
 
             <div className="w-full text-left md:mt-12 md:px-4">
-                <p>Hi, {name} 💜</p>
+                <p>Hi, {currentUserName} 💜</p>
             </div>
 
             <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
@@ -52,7 +90,7 @@ export default function Account({ onClose, setShowSidebar }) {
 
             <div className="w-full flex justify-center md:mt-32 md:px-4">
               <button className="md:w-3/6 bg-primary/40 hover:bg-primary md:rounded-lg md:p-2"
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
               >
                   Log Out
               </button>
