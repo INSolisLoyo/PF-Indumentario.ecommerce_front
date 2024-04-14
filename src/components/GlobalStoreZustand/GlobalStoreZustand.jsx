@@ -48,25 +48,9 @@ const useStore = create(persist((set) => ({
   setColour: (value) => set({ colour: value, currentPage: 1 }),
   setOrderType: (value) => set({ orderType: value, currentPage: 1 }),
   setOrder: (value) => set({ order: value, currentPage: 1 }),
-
-  // Login Usuarios
   setCurrentPage: (page) => set({ currentPage: page }),
-  setCurrentUser: (currentUser) => set({ user: currentUser }),
-  setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered }),
-  registeredUser: false,
 
 
-
-  user: {
-    id: '',
-    name: '',
-    lastname: '',
-    dob: '',
-    email: '',
-    password: '',
-    isAdmin: '',
-    isActive: ''
-  },
 }), {
   name: 'session-storage', // Nombre del almacenamiento persistente
   getStorage: () => sessionStorage, // Almacenamiento en sessionStorage

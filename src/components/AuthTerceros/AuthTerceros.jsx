@@ -1,5 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
+import userStore from "../GlobalStoreZustand/UserStore";
 import axios from "../../axios/axios";
 import { auth } from './firebase';
 import {
@@ -8,31 +7,34 @@ import {
     signInWithPopup,
     onAuthStateChanged,
     signOut
-  } from 'firebase/auth';
+} from 'firebase/auth';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-  const AUTH = 'user/users_auth';
+  const AUTH = '/user/google';
 
 const AuthTerceros = ({ onClose }) => {
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const origin = location.state?.from?.pathname || "/";
-
-  const setCurrentUser = useStore((state) => state.setCurrentUser )
-  const setRegisteredUser = useStore((state) => state.setRegisteredUser)
+  const setCurrentUser = userStore((state) => state.setCurrentUser )
+  const setRegisteredUser = userStore((state) => state.setRegisteredUser)
 
     const onClickGoogle = async () => {
+
       const provider = new GoogleAuthProvider();
+
       try {
+
         const userData = await signInWithPopup(auth, provider);
-        console.log(userData);
-        const dataDB = { name: userData.user.displayName, email: userData.user.email };
+        
+        const dataDB = { name: userData.user.displayName, email: userData.user.email, profilePicture: userData.user.photoURL };
+
         await axios.post(AUTH, dataDB)
           .then( (response) => {
             const cred = userData.user.accessToken;
             document.cookie = `token=${cred}; max-age=${60 * 60}; path=/; samesite=strict`;
             const fullName = userData.user.displayName.split(' ');
             const firstName = fullName[0];
+            
             const lastName = fullName[1] ? fullName[1] : '';
             setCurrentUser({
               id: '',
@@ -45,7 +47,7 @@ const AuthTerceros = ({ onClose }) => {
               isActive: ''
             })
             setRegisteredUser(true);
-            navigate(origin, { replace: true });
+            
             onClose();
           })
       } catch (error) {
@@ -54,18 +56,11 @@ const AuthTerceros = ({ onClose }) => {
     };
 
     return (
-        <div className="login-socials flex justify-center md:gap-4 items-center md:mt-6">
-
-          <div>
-            <button className="w-15 mr-1 shadow-lg shadow-gray-300 rounded-lg  p-1 border border-slate-200" onClick={onClickGoogle}>
-              <img
-                className="w-5 m-auto "
-                src="https://cdn-icons-png.flaticon.com/512/300/300221.png"
-                alt="Google Icon"
-              />
-            </button>
-          </div>
-        </div>
+        
+        <button className="w-full py-2 border border-gray-300 rounded-xl flex gap-4 justify-center items-center hover:bg-[#fae8e6]" onClick={onClickGoogle}>
+          <FontAwesomeIcon icon={faGoogle} size="xl" className=" text-slate-800"/> <span>Log in with Google</span>
+        </button>
+         
     )
 }
 

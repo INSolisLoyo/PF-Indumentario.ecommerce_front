@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useStore from "../GlobalStoreZustand/GlobalStoreZustand";
-import useCartStore from "../GlobalStoreZustand/useCartStore";
+import userStore from "../GlobalStoreZustand/UserStore";
+import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 import Logo from "../../img/logo.png";
 import Login from "../Login/Login";
@@ -18,8 +18,8 @@ import Perfil from "../../img/perfil.png";
 import FavoritesMenu from "../Menu/FavoritesMenu/FavoritesMenu";
 
 export default function NavBar() {
-  const isRegisteredUser = useStore((state) => state.registeredUser);
-  const { name } = useStore((state) => state.user);
+  const isRegisteredUser = userStore((state) => state.registeredUser);
+  const { name } = userStore((state) => state.user);
   const location = useLocation();
   const [showLinks, setShowLinks] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
