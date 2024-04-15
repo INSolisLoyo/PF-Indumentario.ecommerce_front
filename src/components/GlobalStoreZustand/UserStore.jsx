@@ -8,8 +8,8 @@ const userStore = create(
         (set) => ({
 
               // Login Usuarios
-            setCurrentUser: (currentUser) => set({ user: currentUser }),
-            setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
+            // setCurrentUser: (currentUser) => set({ user: currentUser }),
+            // setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered}),
             setCurrentUser: (currentUser) => set({ user: currentUser }),
             setRegisteredUser: (isRegistered) => set({ registeredUser: isRegistered }),
             registeredUser: false,

@@ -6,10 +6,12 @@ import DetailGallery from "../DetailGallery/DetailGallery";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
+import userStore from "../GlobalStoreZustand/UserStore"; 
 
 const Detail = () => {
   const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
   const [isFavorite, setIsFavorite] = useState(false);
+  const {user} = userStore();
 
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
@@ -147,16 +149,37 @@ const Detail = () => {
         size: selectedSize,
       };
 
+      // Agrega el producto al carrito local
       useCartStore.getState().addToCart(selectedProduct);
 
-      Swal.fire({
-        icon: "success",
-        title: "Product added to cart!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
+      // Envía los datos del producto al servidor
+      const productData = {
+        colour: selectedColor,
+        size: selectedSize,
+        amount: counter,
+        stock: maxItems,
+        productId: item.id,
+        userId: user.id, // ID del usuario actual
+      };
 
+      axios.post("/cart", productData)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Product added to cart!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        })
+        .catch((error) => {
+          console.error("Error adding product to cart:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong. Please try again later.",
+          });
+        });
+    }
   };
 
   useEffect(() => {

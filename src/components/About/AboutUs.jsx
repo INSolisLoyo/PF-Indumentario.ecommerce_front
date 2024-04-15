@@ -185,7 +185,7 @@ const AboutUs = ({setSectionPartsAbout}) => {
                     <h2 className="text-center">{sectionParts[1]}</h2>
                     <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         {
-                            backEndColaborators.map( (backColaborator) => {
+                            backEndColaborators.map( (backColaborator, index) => {
                                 return (
 
                                     <div key={index} className="bg-[#e7d0c1] w-full mx-auto md:flex-1 flex flex-col gap-4 items-center justify-center rounded-lg p-4">
