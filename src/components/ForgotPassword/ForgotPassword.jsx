@@ -5,7 +5,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const URL = '/forgot-password'
+const URL = '/forgotPassword'
 
 const ForgotPassword = ({handleClickPassword}) => {
 
@@ -19,21 +19,30 @@ const ForgotPassword = ({handleClickPassword}) => {
 
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
-         if(!email){
-            setError('Enter an email')
-         } else {
-            if(!EMAIL_REGEX.test(email)){
-                setError('Enter a valid email')
+        try {
+            
+            if(!email){
+               setError('Enter an email')
             } else {
-                axios.post(URL, { email: email })
-                    .then((response) => {
-                        Swal.fire(response);
-                    })
-                    .catch( (error) => Swal.fire('Error with send de email'))
-            }
-         } 
+               if(!EMAIL_REGEX.test(email)){
+                   setError('Enter a valid email')
+               } else {
+                    console.log(email);
+                    const newEmail = {
+                        email: email
+                    };
+
+                   const response = await axios.post(URL, newEmail)                  
+                    Swal.fire(response);
+                      
+               }
+            } 
+
+        } catch (error) {
+            Swal.fire('Error with send de email')
+        }
     }
 
     return (
