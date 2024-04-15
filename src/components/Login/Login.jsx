@@ -8,7 +8,7 @@ import AuthTerceros from "../AuthTerceros/AuthTerceros";
 import SesionSwitch from "./Switch";
 import PopoverInfo from "./PopoverInfo";
 import validationData from "./validationData";
-
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
 
 const LOGIN_URL = '/login';
 
@@ -31,6 +31,8 @@ export default function Login({ onClose }) {
   })
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -101,6 +103,12 @@ export default function Login({ onClose }) {
     onClose();
   }
 
+  const handleClickPassword = () => {
+
+    setShowForgotPassword(!showForgotPassword)
+
+  }
+
   useEffect( () => {
 
     setValidation({
@@ -113,6 +121,10 @@ export default function Login({ onClose }) {
   return (
 
     <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
+
+      {
+        showForgotPassword && <ForgotPassword handleClickPassword={handleClickPassword} />  
+      }
 
       <div className="w-full p-2 md:p-4 flex flex-col gap-2 md:gap-4">
 
@@ -181,9 +193,7 @@ export default function Login({ onClose }) {
           </div>
 
           { /* Forget password */}
-          <p className="text-center">
-            <a href="#" className="underline">Forgot your password?</a>
-          </p>
+          <p className="underline text-center cursor-pointer" onClick={handleClickPassword}>Forgot your password?</p>
 
           {/* Create an account*/}
           <button className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center" onClick={handleRegister}>
