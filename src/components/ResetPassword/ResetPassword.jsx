@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import axios from "../../axios/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import validate from "../Register/validation";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-
 const VALIDATEPASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
 
 const ResetPassword = () => {
+
+    const navigate = useNavigate();
+    const { token } = useParams();
 
     const [form, setForm] = useState({
         password: '',
@@ -26,12 +29,25 @@ const ResetPassword = () => {
         setShowPassword(!showPassword);
       };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
 
         if(!errors.password && !errors.confirmPassword ){
-            Swal.fire('Password reset!');
+
+            try {
+
+                const { userChange } = await axios.post(`/reset-password/${token}`, {
+                    password: form.password 
+                })
+                
+                Swal.fire('Password reset!');
+                navigate('/');
+
+
+            } catch (error) {
+                Swal.fire('Cannot reset the password');
+            }
         }
 
     }
