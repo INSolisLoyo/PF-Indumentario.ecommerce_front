@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import validate from "../Register/validation";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 const VALIDATEPASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
 
@@ -17,6 +20,12 @@ const ResetPassword = () => {
         confirmPassword: false
     })
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+      };
+
     const handleSubmit = (event) => {
 
         event.preventDefault();
@@ -24,7 +33,6 @@ const ResetPassword = () => {
         if(!errors.password && !errors.confirmPassword ){
             Swal.fire('Password reset!');
         }
-
 
     }
 
@@ -89,7 +97,17 @@ const ResetPassword = () => {
                 <form onSubmit={handleSubmit} className="w-1/2 flex flex-col gap-4 font-RedHat text-center">
 
                     <label htmlFor="password">Enter your new password</label>
-                    <input type="password"  id="password" name="password" value={form.password} onChange={handleChange} placeholder="Password" className={`w-full py-2 px-4 border ${ errors.password ? "border-red-500" : "border-gray-300"} rounded-xl flex gap-4 justify-center items-center`}/>
+
+                    <div className="relative">
+
+                        <input type={showPassword ? 'text' : 'password'}  id="password" name="password" value={form.password} onChange={handleChange} placeholder="Password" className={`w-full py-2 px-4 border ${ errors.password ? "border-red-500" : "border-gray-300"} rounded-xl flex gap-4 justify-center items-center`}/>
+
+                        <div className="absolute inset-y-0 right-2 flex items-center pr-4 cursor-pointer">
+                            {showPassword ? <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility} className="text-gray-300"/> : <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} className="text-gray-300"/>}
+                        </div>
+
+
+                    </div>
                     {
                         errors.password && <div className="w-full h-auto border-2  p-2 rounded-xl border-primary bg-primary/50">
                             <ul>
