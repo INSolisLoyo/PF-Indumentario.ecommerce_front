@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
+import axios from "../../../axios/axios";
 
 const CartMenu = () => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
@@ -52,6 +53,18 @@ const CartMenu = () => {
         product.product.color,
         product.product.size
       );
+
+      const productData = {
+        // id: product.product.id,
+        // size: product.product.size,
+        amount: product.quantity,
+        // colour: product.product.color,
+        // stock: 19,
+        // userId: "2bc5e843-1779-4f12-aaa3-14eda7a321e8",
+        // productId: "fc9694bb-f5a7-4d8f-9e88-70beee95902a",
+      };
+
+      axios.put(`/cart/${product.product.id}`, productData);
     }
   };
 
@@ -62,7 +75,23 @@ const CartMenu = () => {
         product.product.color,
         product.product.size
       );
+
+      const productData = {
+        amount: product.quantity,
+      };
+
+      axios.put(`/cart/${product.product.id}`, productData);
     }
+  };
+
+  const handleRemoveCart = (product) => {
+    removeFromCart(
+      product.product.id,
+      product.product.color,
+      product.product.size
+    );
+
+    axios.delete(`/cart/${product.product.id}`);
   };
 
   return (
@@ -177,13 +206,7 @@ const CartMenu = () => {
                     </div>
                     <div>
                       <button
-                        onClick={() =>
-                          removeFromCart(
-                            product.product.id,
-                            product.product.color,
-                            product.product.size
-                          )
-                        }
+                        onClick={() => handleRemoveCart(product)}
                         className="text-red-500 focus:outline-none"
                       >
                         <DeleteIcon />
