@@ -29,7 +29,7 @@ const ForgotPassword = ({handleClickPassword}) => {
                if(!EMAIL_REGEX.test(email)){
                    setError('Enter a valid email')
                } else {
-                    console.log(email);
+                
                     const newEmail = {
                         email: email
                     };

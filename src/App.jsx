@@ -10,6 +10,7 @@ import Create from "./components/Create/Create";
 import Dashboard from "./components/Dashboard/Dashboard";
 import About from "./components/About/About";
 import AboutUs from "./components/About/AboutUs";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 function App() {
   const location = useLocation();
@@ -19,7 +20,7 @@ function App() {
 
   return (
 
-    <div className="m-0 p-0 w-full h-auto bg-gradient-to-t from-primary/40">
+    <div className="m-0 p-0 w-full h-auto">
       {/* Renderiza el NavBar solo si no estás en la ruta /admin */}
        <NavBar />
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/create" element={<Create />} />
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/about/:section" element={<About />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         
 
 
