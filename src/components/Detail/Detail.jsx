@@ -5,10 +5,11 @@ import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
-import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
+import { Popover } from '@headlessui/react'
 
 const Detail = () => {
-  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
@@ -77,12 +78,22 @@ const Detail = () => {
       grupos[colour].push({ amount, size });
     });
 
+    /* //*BUG DISORDERED SIZES
+    // Sort the sizes within each color
+
+    Object.keys(grupos).forEach((color) => {
+      grupos[color].sort((a, b) => {
+        const order = { XS: 1, S: 2, M: 3, L: 4, XL: 5 };
+        return order[a.size] - order[b.size];
+      });
+    }); */
+
     setStock(grupos);
 
-    if (!selectedColor) {
+    /* if (!selectedColor) {
       const firstProperty = Object.keys(grupos)[0];
       setSelectedColor(firstProperty);
-    }
+    } */
   };
 
   const handleCounter = (op) => {
@@ -123,6 +134,21 @@ const Detail = () => {
     setErrors({ ...errors, noSizeSelected: "" });
   };
 
+
+  /* const handleStockAlert = () => {
+    const totalStock = Object.values(stock)
+      .flatMap((sizes) => sizes.map((size) => size.amount))
+      .reduce((acc, curr) => acc + curr, 0);
+  
+    if (totalStock <= 5) {
+      alert("Only 5 items left in stock!");
+    }
+  
+    if (totalStock === 0) {
+      alert("This product is out of stock!");
+    }
+  }; */
+
   const handleClickButton = () => {
     if (!selectedSize) {
       setErrors({
@@ -130,6 +156,7 @@ const Detail = () => {
         noSizeSelected: "Please, choose a size",
       });
       setDisabledButton(true);
+      /* alert("Please select a size before adding to cart!"); */
       return;
     } else {
       const maxItems = stock[selectedColor]?.find(
@@ -156,14 +183,14 @@ const Detail = () => {
         timer: 1500,
       });
     }
-
+    handleStockAlert();
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productData = (await axios.get(PRODUCT)).data;
-        const stockData = (await axios.get(STOCK)).data;
+        const stockData = (await axios.post(STOCK)).data; //*estaba como get 
 
         if (productData) {
           cleanerProduct(productData);
@@ -174,9 +201,23 @@ const Detail = () => {
         if (stockData) {
           cleanerStock(stockData);
         }
+        console.log(productData);
+        console.log(stockData);
       } catch (error) {
-        console.log(error);
+        //*console.log(error);
+        console.error('Error fetching data:', error);
+      if (error.response) {
+        // La solicitud fue hecha y el servidor respondió con un estado de error
+        console.error('Error response:', error.response.data);
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió ninguna respuesta
+        console.error('No response received:', error.request);
+      } else {
+        // Algo sucedió en la configuración de la solicitud que desencadenó un Error
+        console.error('Error', error.message);
       }
+      }
+      
 
       if (selectedSize) {
         setDisabledButton(false);
@@ -268,6 +309,37 @@ const Detail = () => {
                   ))}
                 </div>
               </div>
+
+              {/* <Popover>
+                                                        
+                                                        <Popover.Button
+                                                        className="bg-[#ae5e48] py-1 px-4 rounded-lg w-full"
+                                                        onClick={() => {}}
+                                                      >
+                                                        <FontAwesomeIcon
+                                                          icon={faEnvelope}
+                                                          size="xl"
+                                                          className="text-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+                                                        />
+                                                      </Popover.Button>
+
+                                                    
+
+                                                      <Popover.Panel className="absolute z-10 m-4  w-20 h-10 px-2 py-.5">
+                                                        
+                                                        <div className="flex gap-2 items-baseline">
+
+                                                            <p className="text-[#ae5e48]">Copied</p>
+                                                          <FontAwesomeIcon icon={faCheck}
+                                                            size="2xl"
+                                                            className="text-[#ae5e48]"
+                                                          />
+
+                                                        </div>
+                                                       
+                                                       </Popover.Panel>
+                                                    
+                                                </Popover> */ }
               <div className="flex flex-col gap-2 mx-auto">
                 <p className="text-center font-semibold text-lg">Size</p>
                 <div className="flex mx-auto justify-center text-md">
@@ -301,9 +373,7 @@ const Detail = () => {
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
-
             disabled={disabledButton}
-
           >
             Add to cart
           </button>
