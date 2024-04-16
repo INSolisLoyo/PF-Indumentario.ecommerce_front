@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import userStore from "../GlobalStoreZustand/UserStore";
 import axios from "../../axios/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +9,8 @@ import validateData from "./validateData";
 import Swal from "sweetalert2";
 
 const Settings = () => {
+
+  const navigate = useNavigate();
 
   const user = userStore((state) => state.user);
 
@@ -190,8 +193,16 @@ const Settings = () => {
 
     }, [])
 
+    useEffect(() => {
+
+      if(!user.id){
+        navigate('/');
+      }
+
+    }, [user])
+
     return (
-        <div className="w-full p-16 rounded-xl flex flex-col gap-4 items-center justify-center">
+        <div className="p-4 w-full md:p-16 rounded-xl flex flex-col gap-4 items-center justify-center">
 
           {/* Información de contacto */}
           <div className="w-full bg-white p-4 rounded-lg flex flex-col gap-4 font-RedHat">
@@ -203,7 +214,7 @@ const Settings = () => {
 
                 {/* Nombre y fecha de cumpleaños */}
                 {/* User Data */}
-                <div className="w-full flex justify-around">
+                <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-around">
 
                     {/* Nombre */}
                     <div className="flex flex-col gap-2">
@@ -243,13 +254,13 @@ const Settings = () => {
                     </div>
 
                     {/* Birthdate */}
-                    <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
+                    <div className="flex flex-col gap-2 justify-center items-center w-full md:w-1/4 md:h-1/4 ">
                         
                         <label htmlFor="">Date of birthdate</label>
                         <input name="birthdate" id="birthdate" type="date" value={form.birthdate} onChange={handleChange}
                           className={`cursor-pointer p-2 rounded-lg border-gray-300" disabled={enabledUserData} ${ enabledUserData ? "text-gray-500 bg-gray-100 cursor-not-allowed" : "cursor-pointer"}`}/>
                         
-                        <button onClick={editUserData} className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledUserData ?"Edit" : "Save" }</button>
+                        <button onClick={editUserData} className="w-full mt-8 py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledUserData ?"Edit" : "Save" }</button>
 
                     </div>
 
@@ -258,7 +269,7 @@ const Settings = () => {
                 <div className="w-full h-[2px] bg-gray-300"></div>
 
                 {/* Data Contact */}
-                <div className="w-full flex justify-around">
+                <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-around">
                     
                     {/* Email y contraseña */}
                     <div className="flex flex-col gap-2">
@@ -283,7 +294,7 @@ const Settings = () => {
                         <div className="relative">
 
                           <input
-                              className={`w-full py-2 px-4 border ${
+                              className={`w-4/6 md:w-full py-2 px-4 border ${
                                 errors.password ? "border-red-500" : "border-gray-300"
                               } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
                               type={showPassword ? 'text' : 'password'}
@@ -295,7 +306,7 @@ const Settings = () => {
                               placeholder="Click to change"
                           />
 
-                          <div className="absolute inset-y-0 -right-12 flex items-center pr-4 cursor-pointer">
+                          <div className="absolute inset-y-0 right-4 md:-right-12 flex items-center pr-4 cursor-pointer">
                               {showPassword ? <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility} className="text-gray-300 z-10"/> : <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} className="text-gray-300 z-10"/>}
                           </div>
 
@@ -315,7 +326,7 @@ const Settings = () => {
                     </div>
 
                     {/* Teléfono */}
-                    <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4">
+                    <div className="flex flex-col gap-2 justify-center items-center w-full md:w-1/4 md:h-1/4">
 
                         <label htmlFor="phone">Phone</label>
                         <input type="text" id="phone" name="phone" value={form.phone} className={`w-full py-2 px-4 border ${
@@ -344,7 +355,7 @@ const Settings = () => {
             <div className="w-full h-[2px] bg-gray-300"></div>
 
             {/*formulario*/}
-            <div className="w-full flex justify-around">
+            <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-around">
               
               {/* Dirección de envío */}
               <div className="flex flex-col gap-2">
@@ -434,7 +445,7 @@ const Settings = () => {
               </div>
               
               {/* Información de pago */}
-              <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
+              <div className="flex flex-col gap-2 justify-center items-center w-full md:w-1/4 md:h-1/4 ">
 
                 <label>Payment options</label>
                 <button className=" w-full py-2 border border-gray-300 bg-[#fae8e6] rounded-xl flex justify-center items-center cursor-not-allowed" disabled="true"><FontAwesomeIcon icon={faCcPaypal} size="2xl"/></button>
