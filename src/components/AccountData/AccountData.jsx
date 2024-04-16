@@ -55,7 +55,7 @@ const AccountData = () => {
                 </div>
 
                 {/* Div componentes */}
-                <div className="w-10/12 p-16 bg-primary/10 rounded-xl">
+                <div className="w-10/12 bg-primary/10 rounded-xl">
                     {
                         section == 'settings' ? <Settings /> : <Orders/> 
                     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import userStore from "../GlobalStoreZustand/UserStore";
-userStore;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCcPaypal } from "@fortawesome/free-brands-svg-icons";
 
 const Settings = () => {
 
@@ -36,21 +37,35 @@ const Settings = () => {
 
     }
 
+    const editDataContact = () => {
+
+    }
+
+    const editUserData = () => {
+
+    }
+
+    const editPayment = () => {
+
+    }
+
     return (
-        <div className="p-4 rounded-xl flex flex-col gap-4 items-center justify-center bg-white">
+        <div className="w-full p-16 rounded-xl flex flex-col gap-4 items-center justify-center">
 
+          {/* Información de contacto */}
+          <div className="w-full bg-white p-4 rounded-lg flex flex-col gap-4 font-RedHat">
 
-            <h1 className="text-2xl text-center font-RedHat font-semibold text-gray-500">My Account</h1>
-
+            <h1 className="text-xl font-semibold text-black/70">Personal Information</h1>
             <div className="w-full h-[2px] bg-gray-300"></div>
 
             <div className="flex flex-col gap-8 w-full">
 
                 {/* Nombre y fecha de cumpleaños */}
+                {/* User Data */}
                 <div className="w-full flex justify-around">
 
                     {/* Nombre */}
-                    <form className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2">
 
                       <label htmlFor="name">Name</label>
                       <input
@@ -82,28 +97,28 @@ const Settings = () => {
                             <span className="text-red-500">{errors.lastname}</span>
                           )}
 
-                    </form>
+                    </div>
 
                     {/* Birthdate */}
-                    <form className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
+                    <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
                         
                         <label htmlFor="">Date of birthdate</label>
                         <input name="birthdate" id="birthdate" type="date" value={form.birthdate}
                           className="cursor-pointer p-2 rounded-lg border-gray-300"/>
+                        
+                        <button onClick={editUserData} className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
 
-                    </form>
-
-
+                    </div>
 
                 </div>
 
                 <div className="w-full h-[2px] bg-gray-300"></div>
 
-                {/* Datos de contacto */}
+                {/* Data Contact */}
                 <div className="w-full flex justify-around">
                     
                     {/* Email y contraseña */}
-                    <form className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2">
 
                         <label htmlFor="email">Email</label>
                         <input
@@ -134,21 +149,132 @@ const Settings = () => {
                             {errors.password && (
                               <span className="text-red-500">{errors.password}</span>
                             )}
-                    </form>
+                    </div>
 
                     {/* Teléfono */}
-                    <form className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 r">
+                    <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4">
 
                         <label htmlFor="phone">Phone</label>
                         <input type="text" id="phone" name="phone" value={form.phone} className={`w-full py-2 px-4 border ${
                             errors.name ? "border-red-500" : "border-gray-300"
                           } rounded-xl flex gap-4 justify-center items-center`}/>
+                        <button onClick={editDataContact} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
+                        {errors.phone && (
+                          <span className="text-red-500">{errors.phone}</span>
+                        )}
 
-                    </form>
+                    </div>
 
                 </div>
 
             </div>
+
+          </div>
+          
+          {/* Información de compra */}
+          <div className="w-full bg-white p-4 rounded-lg flex flex-col gap-4 font-RedHat">
+            
+            <h1 className="text-xl font-semibold text-black/70">Payment Information</h1>
+            <div className="w-full h-[2px] bg-gray-300"></div>
+
+            {/*formulario*/}
+            <div className="w-full flex justify-around">
+              
+              {/* Dirección de envío */}
+              <div className="flex flex-col gap-2">
+
+                {/* Address */}
+                <label htmlFor="password">Address</label>
+                <input
+                    className={`w-full py-2 px-4 border ${
+                      errors.address ? "border-red-500" : "border-gray-300"
+                    } rounded-xl flex gap-4 justify-center items-center`}
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={form.address}
+                    onChange={handleChange}
+                />
+                {errors.address && (
+                  <span className="text-red-500">{errors.address}</span>
+                )}
+
+                <label htmlFor="state">City</label>
+                <input
+                    className={`w-full py-2 px-4 border ${
+                      errors.city ? "border-red-500" : "border-gray-300"
+                    } rounded-xl flex gap-4 justify-center items-center`}
+                    type="text"
+                    id="city"
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                />
+                    {errors.city && (
+                      <span className="text-red-500">{errors.city}</span>
+                )}
+
+                <label htmlFor="state">State</label>
+                <input
+                    className={`w-full py-2 px-4 border ${
+                      errors.state ? "border-red-500" : "border-gray-300"
+                    } rounded-xl flex gap-4 justify-center items-center`}
+                    type="text"
+                    id="state"
+                    name="state"
+                    value={form.state}
+                    onChange={handleChange}
+                />
+                    {errors.state && (
+                      <span className="text-red-500">{errors.state}</span>
+                )}
+
+                <label htmlFor="street">Country</label>
+                <input
+                    className={`w-full py-2 px-4 border ${
+                      errors.country ? "border-red-500" : "border-gray-300"
+                    } rounded-xl flex gap-4 justify-center items-center`}
+                    type="text"
+                    id="country"
+                    name="country"
+                    value={form.country}
+                    onChange={handleChange}
+                />
+                    {errors.country && (
+                      <span className="text-red-500">{errors.country}</span>
+                )}
+
+                <label htmlFor="state">Zip Code</label>
+                <input
+                    className={`w-full py-2 px-4 border ${
+                      errors.zipcode ? "border-red-500" : "border-gray-300"
+                    } rounded-xl flex gap-4 justify-center items-center`}
+                    type="text"
+                    id="zipcode"
+                    name="zipcode"
+                    value={form.zipcode}
+                    onChange={handleChange}
+                />
+                    {errors.zipcode && (
+                      <span className="text-red-500">{errors.zipcode}</span>
+                )}    
+                
+
+              </div>
+              
+              {/* Información de pago */}
+              <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
+
+                <label>Payment options</label>
+                <button className=" w-full py-2 border border-gray-300 bg-[#fae8e6] rounded-xl flex justify-center items-center cursor-not-allowed" disabled="true"><FontAwesomeIcon icon={faCcPaypal} size="2xl"/></button>
+
+                <button onClick={editPayment} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
+                    
+              </div>
+
+            </div>
+          </div>
+
         </div>
     )
 }
