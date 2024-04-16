@@ -35,12 +35,12 @@ const AccountData = () => {
 
     return (
 
-        <div className="w-full h-auto pt-40 flex justify-center items-center">
+        <div className="w-full h-auto pt-32 flex justify-center items-center">
 
-            <div className="w-5/6 flex gap-8 ">
+            <div className="w-full flex gap-8 px-8">
 
                 {/* Div Menú */}
-                <div className="w-3/12 flex flex-col gap-8">
+                <div className="w-2/12 px-4 flex flex-col gap-4">
 
                     <button className={`w-full  py-4 ${ section === 'settings' ? "bg-[#ae5e48] text-white" : "bg-[#f4e8e0] border-[#e7d0c1]"} rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white`} ref={settingsRef} 
                         onClick={() => handleClick('settings')}>
@@ -55,7 +55,7 @@ const AccountData = () => {
                 </div>
 
                 {/* Div componentes */}
-                <div className="w-9/12">
+                <div className="w-10/12 p-16 bg-primary/10 rounded-xl">
                     {
                         section == 'settings' ? <Settings /> : <Orders/> 
                     }
