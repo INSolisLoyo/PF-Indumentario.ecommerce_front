@@ -3,6 +3,8 @@ import userStore from "../GlobalStoreZustand/UserStore";
 import axios from "../../axios/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCcPaypal } from "@fortawesome/free-brands-svg-icons";
+import validateData from "./validateData";
+import Swal from "sweetalert2";
 
 const Settings = () => {
 
@@ -13,7 +15,7 @@ const Settings = () => {
         lastname: '',
         birthdate: '',
         email: '',
-        password: '',
+        password: false,
         phone: '',
         address: '',
         city: '',
@@ -37,40 +39,137 @@ const Settings = () => {
         zipcode: ''
     });
 
-    const handleChange = () => {
+    const [enabledUserData, setEnabledUserData] = useState(true);
+    const [enabledDataContact, setEnabledDataContact] = useState(true);
+    const [enabledPaymentInfo, setEnabledPaymentInfo] = useState(true);
+
+    const handleChange = (event) => {
+
+      const value = event.target.value;
+      const property = event.target.name;
+
+      setForm({
+        ...form,
+        [property]: value
+      })
+
+      validateData(property, value, errors, setErrors)
+
+    }
+
+    const editUserData = async () => {
+
+      if(enabledUserData){
+        setEnabledUserData(false)
+      } else {
+
+        const errorExists = anErrorExist();
+
+        if(!errorExists){
+
+          setEnabledUserData(true)
+
+          sendUser();
+        }
+
+      }
 
     }
 
     const editDataContact = () => {
 
-    }
+      if(enabledDataContact){
+        setEnabledDataContact(false)
+      } else {
 
-    const editUserData = () => {
+        const errorExists = anErrorExist();
+
+        if(!errorExists){
+
+          setEnabledDataContact(true)
+
+          sendUser();
+        }
+
+      }
 
     }
 
     const editPayment = () => {
 
+      if(enabledPaymentInfo){
+        setEnabledPaymentInfo(false)
+      } else {
+
+        const errorExists = anErrorExist();
+
+        if(!errorExists){
+          setEnabledPaymentInfo(true)
+          sendUser()
+        }
+
+      }
+
     }
 
     const fetchUser = async () => {
 
-      const { data } = await axios.get(`/user/${user.id}`);
+      try {
 
-      setForm({
-        name: data.name,
-        lastname: data.lastname,
-        birthdate: data.birthdate,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        country: data.country,
-        zipcode: data.zipcode,
-        createdAt: data.createdAt
-      })
+        const { data } = await axios.get(`/user/${user.id}`);
+  
+        setForm({
+
+          name: data.name,
+          lastname: data.lastname,
+          birthdate: data.birthdate,
+          email: data.email,
+          password: data.password,
+          isAdmin: data.isAdmin,
+          isActive: data.isActive,
+          phone: data.phone,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          country: data.country,
+          zipcode: data.zipcode,
+          provider: data.provider,
+          newsLetter: data.newsLetter,
+          profilePicture: data.profilePicture,
+          
+        })
+        
+      } catch (error) {
+
+        console.log('Error to get user data');
+
+      }
+
+    }
+
+    const sendUser = async () => {
+      try {
+
+        const response = await axios.put(`/user/${user.id}`, form);
+        
+        if(response)
+          Swal.fire('Data saved')
+
+      } catch (error) {
+        console.log('Error to update data');
+        Swal.fire('Cannot update data');
+      }
+    }
+
+    const anErrorExist = () => {
+
+      let errorsExist = false
+        
+      for (let prop in errors){
+          if ( errors[prop] !== '') errorsExist = true;
+      }
+
+      return errorsExist;
 
     }
 
@@ -106,12 +205,13 @@ const Settings = () => {
                       <input
                           className={`w-full py-2 px-4 border ${
                             errors.name ? "border-red-500" : "border-gray-300"
-                          } rounded-xl flex gap-4 justify-center items-center`}
+                          } rounded-xl flex gap-4 justify-center items-center ${ enabledUserData ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                           type="text"
                           id="name"
                           name="name"
                           value={form.name}
                           onChange={handleChange}
+                          disabled={enabledUserData}
                       />
                       {errors.name && (
                         <span className="text-red-500">{errors.name}</span>
@@ -121,12 +221,13 @@ const Settings = () => {
                       <input
                           className={`w-full py-2 px-4 border ${
                             errors.lastname ? "border-red-500" : "border-gray-300"
-                          } rounded-xl flex gap-4 justify-center items-center`}
+                          } rounded-xl flex gap-4 justify-center items-center ${ enabledUserData ?  "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
                           type="text"
                           id="name"
                           name="name"
                           value={form.lastname}
                           onChange={handleChange}
+                          disabled={enabledUserData}
                       />
                           {errors.lastname && (
                             <span className="text-red-500">{errors.lastname}</span>
@@ -139,9 +240,9 @@ const Settings = () => {
                         
                         <label htmlFor="">Date of birthdate</label>
                         <input name="birthdate" id="birthdate" type="date" value={form.birthdate}
-                          className="cursor-pointer p-2 rounded-lg border-gray-300"/>
+                          className={`cursor-pointer p-2 rounded-lg border-gray-300" disabled={enabledUserData} ${ enabledUserData ? "text-gray-500 bg-gray-100 cursor-not-allowed" : "cursor-pointer"}`}/>
                         
-                        <button onClick={editUserData} className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
+                        <button onClick={editUserData} className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledUserData ?"Edit" : "Save" }</button>
 
                     </div>
 
@@ -159,12 +260,13 @@ const Settings = () => {
                         <input
                             className={`w-full py-2 px-4 border ${
                               errors.email ? "border-red-500" : "border-gray-300"
-                            } rounded-xl flex gap-4 justify-center items-center`}
+                            } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                             type="email"
                             id="email"
                             name="email"
                             value={form.email}
                             onChange={handleChange}
+                            disabled={enabledDataContact}
                         />
                         {errors.email && (
                           <span className="text-red-500">{errors.email}</span>
@@ -174,16 +276,26 @@ const Settings = () => {
                         <input
                             className={`w-full py-2 px-4 border ${
                               errors.password ? "border-red-500" : "border-gray-300"
-                            } rounded-xl flex gap-4 justify-center items-center`}
+                            } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
                             type="password"
                             id="password"
                             name="password"
                             value={form.password}
                             onChange={handleChange}
+                            disabled={enabledDataContact}
+                            placeholder="Click to change"
                         />
-                            {errors.password && (
-                              <span className="text-red-500">{errors.password}</span>
-                            )}
+                        {
+                            errors.password && <div className="w-full h-auto border-2  p-2 rounded-xl border-primary bg-primary/50">
+                                <ul>
+                                    <li>It must contain at least one lowercase letter.</li>
+                                    <li>It must contain at least one uppercase letter.</li>
+                                    <li>It must include at least one of the following special characters: !, ?, #, or $.</li>
+                                    <li>It should have a total length between 10 and 30 characters.</li>
+                                    <li className="font-semibold">Your password will be encrypted for security reasons.</li>
+                                </ul>
+                            </div>
+                        }
                     </div>
 
                     {/* Teléfono */}
@@ -191,12 +303,15 @@ const Settings = () => {
 
                         <label htmlFor="phone">Phone</label>
                         <input type="text" id="phone" name="phone" value={form.phone} className={`w-full py-2 px-4 border ${
-                            errors.name ? "border-red-500" : "border-gray-300"
-                          } rounded-xl flex gap-4 justify-center items-center`}/>
-                        <button onClick={editDataContact} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
+                            errors.phone ? "border-red-500" : "border-gray-300"
+                          } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ?  "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
+                          onChange={handleChange}
+                          />
                         {errors.phone && (
                           <span className="text-red-500">{errors.phone}</span>
                         )}
+                        <button onClick={editDataContact} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledDataContact ? "Edit" : "Save" }</button>
+                        
 
                     </div>
 
@@ -223,12 +338,13 @@ const Settings = () => {
                 <input
                     className={`w-full py-2 px-4 border ${
                       errors.address ? "border-red-500" : "border-gray-300"
-                    } rounded-xl flex gap-4 justify-center items-center`}
+                    } rounded-xl flex gap-4 justify-center items-center ${ enabledPaymentInfo ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                     type="text"
                     id="address"
                     name="address"
                     value={form.address}
                     onChange={handleChange}
+                    disabled={enabledPaymentInfo}
                 />
                 {errors.address && (
                   <span className="text-red-500">{errors.address}</span>
@@ -238,12 +354,13 @@ const Settings = () => {
                 <input
                     className={`w-full py-2 px-4 border ${
                       errors.city ? "border-red-500" : "border-gray-300"
-                    } rounded-xl flex gap-4 justify-center items-center`}
+                    } rounded-xl flex gap-4 justify-center items-center ${ enabledPaymentInfo ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                     type="text"
                     id="city"
                     name="city"
                     value={form.city}
                     onChange={handleChange}
+                    disabled={enabledPaymentInfo}
                 />
                     {errors.city && (
                       <span className="text-red-500">{errors.city}</span>
@@ -253,12 +370,13 @@ const Settings = () => {
                 <input
                     className={`w-full py-2 px-4 border ${
                       errors.state ? "border-red-500" : "border-gray-300"
-                    } rounded-xl flex gap-4 justify-center items-center`}
+                    } rounded-xl flex gap-4 justify-center items-center ${ enabledPaymentInfo ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                     type="text"
                     id="state"
                     name="state"
                     value={form.state}
                     onChange={handleChange}
+                    disabled={enabledPaymentInfo}
                 />
                     {errors.state && (
                       <span className="text-red-500">{errors.state}</span>
@@ -268,12 +386,13 @@ const Settings = () => {
                 <input
                     className={`w-full py-2 px-4 border ${
                       errors.country ? "border-red-500" : "border-gray-300"
-                    } rounded-xl flex gap-4 justify-center items-center`}
+                    } rounded-xl flex gap-4 justify-center items-center ${ enabledPaymentInfo ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                     type="text"
                     id="country"
                     name="country"
                     value={form.country}
                     onChange={handleChange}
+                    disabled={enabledPaymentInfo}
                 />
                     {errors.country && (
                       <span className="text-red-500">{errors.country}</span>
@@ -283,12 +402,13 @@ const Settings = () => {
                 <input
                     className={`w-full py-2 px-4 border ${
                       errors.zipcode ? "border-red-500" : "border-gray-300"
-                    } rounded-xl flex gap-4 justify-center items-center`}
+                    } rounded-xl flex gap-4 justify-center items-center ${ enabledPaymentInfo ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer" }`}
                     type="text"
                     id="zipcode"
                     name="zipcode"
                     value={form.zipcode}
                     onChange={handleChange}
+                    disabled={enabledPaymentInfo}
                 />
                     {errors.zipcode && (
                       <span className="text-red-500">{errors.zipcode}</span>
@@ -303,7 +423,7 @@ const Settings = () => {
                 <label>Payment options</label>
                 <button className=" w-full py-2 border border-gray-300 bg-[#fae8e6] rounded-xl flex justify-center items-center cursor-not-allowed" disabled="true"><FontAwesomeIcon icon={faCcPaypal} size="2xl"/></button>
 
-                <button onClick={editPayment} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">Edit</button>
+                <button onClick={editPayment} className="mt-8 w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledPaymentInfo ? "Edit" : "Save" }</button>
                     
               </div>
 
