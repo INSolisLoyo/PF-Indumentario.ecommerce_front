@@ -3,6 +3,7 @@ import userStore from "../GlobalStoreZustand/UserStore";
 import axios from "../../axios/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCcPaypal } from "@fortawesome/free-brands-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import validateData from "./validateData";
 import Swal from "sweetalert2";
 
@@ -42,6 +43,12 @@ const Settings = () => {
     const [enabledUserData, setEnabledUserData] = useState(true);
     const [enabledDataContact, setEnabledDataContact] = useState(true);
     const [enabledPaymentInfo, setEnabledPaymentInfo] = useState(true);
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleChange = (event) => {
 
@@ -223,8 +230,8 @@ const Settings = () => {
                             errors.lastname ? "border-red-500" : "border-gray-300"
                           } rounded-xl flex gap-4 justify-center items-center ${ enabledUserData ?  "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
                           type="text"
-                          id="name"
-                          name="name"
+                          id="lastname"
+                          name="lastname"
                           value={form.lastname}
                           onChange={handleChange}
                           disabled={enabledUserData}
@@ -239,7 +246,7 @@ const Settings = () => {
                     <div className="flex flex-col gap-2 justify-center items-center w-1/4 h-1/4 ">
                         
                         <label htmlFor="">Date of birthdate</label>
-                        <input name="birthdate" id="birthdate" type="date" value={form.birthdate}
+                        <input name="birthdate" id="birthdate" type="date" value={form.birthdate} onChange={handleChange}
                           className={`cursor-pointer p-2 rounded-lg border-gray-300" disabled={enabledUserData} ${ enabledUserData ? "text-gray-500 bg-gray-100 cursor-not-allowed" : "cursor-pointer"}`}/>
                         
                         <button onClick={editUserData} className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledUserData ?"Edit" : "Save" }</button>
@@ -273,20 +280,29 @@ const Settings = () => {
                         )}
 
                         <label htmlFor="password">Password</label>
-                        <input
-                            className={`w-full py-2 px-4 border ${
-                              errors.password ? "border-red-500" : "border-gray-300"
-                            } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={form.password}
-                            onChange={handleChange}
-                            disabled={enabledDataContact}
-                            placeholder="Click to change"
-                        />
+                        <div className="relative">
+
+                          <input
+                              className={`w-full py-2 px-4 border ${
+                                errors.password ? "border-red-500" : "border-gray-300"
+                              } rounded-xl flex gap-4 justify-center items-center ${ enabledDataContact ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}
+                              type={showPassword ? 'text' : 'password'}
+                              id="password"
+                              name="password"
+                              value={form.password}
+                              onChange={handleChange}
+                              disabled={enabledDataContact}
+                              placeholder="Click to change"
+                          />
+
+                          <div className="absolute inset-y-0 -right-12 flex items-center pr-4 cursor-pointer">
+                              {showPassword ? <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility} className="text-gray-300 z-10"/> : <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} className="text-gray-300 z-10"/>}
+                          </div>
+
+                        </div>
+                        
                         {
-                            errors.password && <div className="w-full h-auto border-2  p-2 rounded-xl border-primary bg-primary/50">
+                            errors.password.length > 1 && <div className="w-full h-auto border-2  p-2 rounded-xl border-primary bg-primary/50">
                                 <ul>
                                     <li>It must contain at least one lowercase letter.</li>
                                     <li>It must contain at least one uppercase letter.</li>

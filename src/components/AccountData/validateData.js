@@ -64,9 +64,9 @@ const validateData = (data, value, errors, setErrors) => {
                     newErrors.password = 'The length can\'t be longer than 20'
                 } else {
                     if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/.test(value)){
-                        newErrors.password = true
+                        newErrors.password = 'true'
                     } else {
-                        newErrors.password = false
+                        newErrors.password = ''
                     }
                 }
             }       
@@ -75,7 +75,7 @@ const validateData = (data, value, errors, setErrors) => {
             if(value.length === 0){
                 newErrors.phone = 'Can\'t be empty'
             } else {
-                if(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(value)){
+                if(/ ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$ /.test(value)){
                     newErrors.phone = 'Enver a phone number valid'
                 } else {
                     newErrors.phone = ''
