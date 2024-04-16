@@ -3,11 +3,31 @@ import useFormStore from "../GlobalStoreZustand/useFormStore";
 import submitForm from "../GlobalStoreZustand/submitForm";
 import Swal from "sweetalert2";
 
+
 const Create = () => {
-  
   const { resetForm } = useFormStore();
 
   const [imageUrls, setImageUrls] = useState([""]);
+
+  const [picture, setPicture] = useState(null);
+
+  const widgetCloudinary = cloudinary.createUploadWidget(
+    {
+      cloudName: "dm7llqul3",
+      uploadPreset: "yw28ignp",
+      folder: "uploads",
+    },
+    (error, result) => {
+      if (!error && result && result.event === "success") {
+        console.log(result.info);
+        setPicture(result.info.secure_url);
+      }
+    }
+  );
+
+  const uploadPicture = async () => {
+    await widgetCloudinary.open();
+  };
 
   const succesAlert = () => {
     return Swal.fire({
@@ -21,7 +41,6 @@ const Create = () => {
       title: "Error to create product!",
       icon: "error",
     });
-
   };
 
   const handleImageChange = (index, e) => {
@@ -34,7 +53,6 @@ const Create = () => {
     setImageUrls([...imageUrls, ""]);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +64,7 @@ const Create = () => {
       colour: e.target.colour.value.split(",").map((item) => item.trim()),
       material: e.target.material.value.split(",").map((item) => item.trim()),
       category: e.target.category.value,
-      description: e.target.description.value
+      description: e.target.description.value,
     };
 
     try {
@@ -163,6 +181,11 @@ const Create = () => {
               >
                 Images
               </label>
+              
+              <img className="mt-2 w-56 h-56 border-solid border-black" src={picture} id="pictureClou" />
+              <button className="px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}>Upload Image</button>
+
+              {/* CON URL SIN CLOUDINARY 
               {imageUrls.map((url, index) => (
                 <input
                   key={index}
@@ -179,7 +202,7 @@ const Create = () => {
                 className="mt-2 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
               >
                 Add Image
-              </button>
+              </button> */}
             </div>
 
             <div>
@@ -211,7 +234,6 @@ const Create = () => {
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
             </div>
-
           </div>
 
           <div className="flex justify-end mt-6">
