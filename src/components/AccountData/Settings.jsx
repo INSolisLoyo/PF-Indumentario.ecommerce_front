@@ -1,9 +1,12 @@
 import React, { useState, useEffect} from "react";
 import userStore from "../GlobalStoreZustand/UserStore";
+import axios from "../../axios/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCcPaypal } from "@fortawesome/free-brands-svg-icons";
 
 const Settings = () => {
+
+  const user = userStore((state) => state.user);
 
     const [form, setForm] = useState({
         name: '',
@@ -16,7 +19,8 @@ const Settings = () => {
         city: '',
         state: '',
         country: '',
-        zipcode: ''
+        zipcode: '',
+        createdAt: ''
     });
 
     const [errors, setErrors] = useState({
@@ -48,6 +52,37 @@ const Settings = () => {
     const editPayment = () => {
 
     }
+
+    const fetchUser = async () => {
+
+      const { data } = await axios.get(`/user/${user.id}`);
+
+      setForm({
+        name: data.name,
+        lastname: data.lastname,
+        birthdate: data.birthdate,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        zipcode: data.zipcode,
+        createdAt: data.createdAt
+      })
+
+    }
+
+    useEffect(() => {
+
+      if(user.id){
+
+        fetchUser() 
+
+      }
+
+    }, [])
 
     return (
         <div className="w-full p-16 rounded-xl flex flex-col gap-4 items-center justify-center">
