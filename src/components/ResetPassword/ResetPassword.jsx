@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../axios/axios";
 import { useParams, useNavigate } from "react-router-dom";
-import validate from "../Register/validation";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -36,8 +35,8 @@ const ResetPassword = () => {
         if(!errors.password && !errors.confirmPassword ){
 
             try {
-
-                const { userChange } = await axios.post(`/reset-password/${token}`, {
+                console.log('token: ', token);
+                const { userChange } = await axios.post(`user/reset-password/${token}`, {
                     password: form.password 
                 })
                 
