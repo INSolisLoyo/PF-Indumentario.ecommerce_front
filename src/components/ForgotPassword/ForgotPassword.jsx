@@ -5,7 +5,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const URL = '/forgotPassword'
+const URL = 'user/forgot-password'
 
 const ForgotPassword = ({handleClickPassword}) => {
 
@@ -35,13 +35,13 @@ const ForgotPassword = ({handleClickPassword}) => {
                     };
 
                    const response = await axios.post(URL, newEmail)                  
-                    Swal.fire(response);
+                   Swal.fire(response);
                       
                }
             } 
 
         } catch (error) {
-            Swal.fire('Error with send de email')
+            Swal.fire('Error sending de email')
         }
     }
 
