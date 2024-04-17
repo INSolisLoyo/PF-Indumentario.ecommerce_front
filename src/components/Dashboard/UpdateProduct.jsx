@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
+import { validateProductData } from "./validateProductData";
 
 const UpdateProduct = () => {
 
@@ -21,10 +22,17 @@ const UpdateProduct = () => {
     
   })
 
+  const [ errors, setErrors ] = useState({
+    name: '',
+    price: '',
+    images: '',
+    colour: '',
+    material: '',
+    description: '',
+  })
+
   const [ materials, setMaterials] = useState([]);
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [ colors, setColors ] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
 
   const [imageUrls, setImageUrls] = useState([""]);
 
@@ -53,6 +61,80 @@ const UpdateProduct = () => {
     setImageUrls([...imageUrls, ""]);
   };
 
+  const handleClick = (event) => {
+    if(event.target.value)
+      event.target.value = '';
+  }
+
+  const handleMaterialChange = (event) => {
+
+    const material = event.target.value;
+    
+    if(!form.material.includes(material)){
+        setForm({
+            ...form,
+            material: [ ...form.material, material ]
+        })
+        setErrors({
+          ...errors,
+          material: ''
+        })   
+    }
+  
+  }
+
+  const handleClickMaterial = (material) => {
+
+    const newMaterials =  form.material.filter( item => item !== material)
+
+    setForm({
+        ...form,
+        material: newMaterials
+    })
+
+    if(newMaterials.length === 0 ){
+      setErrors({
+        ...errors,
+        material: 'Choose at least one'
+      })
+    }
+
+  }
+
+  const handleColorChange = (event) => {
+
+    const color = event.target.value;
+    
+    if(!form.colour.includes(color)){
+        setForm({
+            ...form,
+            colour: [ ...form.colour, color ]
+        })    
+        setErrors({
+          ...errors,
+          colour: ''
+        })      
+    }
+
+  }
+
+  const handleClickColor = (color) => {
+
+    const newColors =  form.colour.filter( item => item !== color)
+
+    setForm({
+        ...form,
+        colour: newColors
+    })
+
+    if(newColors.length === 0 ){
+      setErrors({
+        ...errors,
+        colour: 'Choose at least one'
+      })
+    }
+    
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,7 +168,17 @@ const UpdateProduct = () => {
     }
   };
 
-  const handleChange = () => {
+  const handleChange = (event) => {
+
+    const property = event.target.name;
+    const value = event.target.value;
+
+    setForm({
+        ...form,
+        [property]: value
+    })   
+
+    validateProductData(property, value, errors, setErrors)
 
   }
 
@@ -109,9 +201,6 @@ const UpdateProduct = () => {
         isActive: data.isActive,
       })
 
-      setSelectedMaterials(data.material);
-      setSelectedColors(data.colour);
-
       const materialData = (await axios.get('/materials')).data;
       setMaterials(materialData);
       const colorData = (await axios.get('/colours')).data;
@@ -129,11 +218,9 @@ const UpdateProduct = () => {
 
   }, [])
 
-
-
   return (
     <div className="pt-20">
-      <section className="max-w-4xl p-6 mx-auto bg-primary/40 rounded-md shadow-md mt-20 font-RedHat">
+      <section className="max-w-4xl p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat">
         <h1 className="text-xl font-bold text-black capitalize dark:text-white">
           Update Product
         </h1>
@@ -143,7 +230,7 @@ const UpdateProduct = () => {
             {/* Nombre del producto */}
             <div>
               <label
-                className="text-white dark:text-gray-200"
+                className="text-black dark:text-gray-200"
                 htmlFor="name"
               >
                 Name of Product
@@ -156,12 +243,15 @@ const UpdateProduct = () => {
                 type="text"
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
+              {errors.name && (
+                        <span className="text-red-500">{errors.name}</span>
+              )}
             </div>
 
             {/* Precio del producto */}
             <div>
               <label
-                className="text-white dark:text-gray-200"
+                className="text-black dark:text-gray-200"
                 htmlFor="price"
               >
                 Price
@@ -174,12 +264,15 @@ const UpdateProduct = () => {
                 onChange={handleChange}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
+              {errors.price && (
+                        <span className="text-red-500">{errors.price}</span>
+              )}
             </div>
 
             {/* Género */}
             <div>
               <label
-                className="text-white dark:text-gray-200"
+                className="text-black dark:text-gray-200"
                 htmlFor="productGender"
               >
                 Gender
@@ -202,34 +295,57 @@ const UpdateProduct = () => {
 
             {/* Material */}
             <div>
-              <label
-                className="text-white dark:text-gray-200"
-                htmlFor="productMaterial"
-              >
-                Material
-              </label>
+              <label className="text-black dark:text-gray-200" htmlFor="productMaterial">Material</label>
               <input
-                name="material"
-                id="material"
-                type="text"
+                list="material"
+                onChange={handleMaterialChange}
+                onClick={handleClick}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
+              <datalist name="material" id="material">
+                {
+                  materials?.map((material) => {
+                    return <option key={material} value={material}>{material}</option>
+                })
+                }
+              </datalist>
+              {errors.material && (
+                        <span className="text-red-500">{errors.material}</span>
+              )}
+              <div className="flex flex-wrap gap-1 mt-4">
+                    { form.material.length > 0 && form.material.map( (material) => {
+                        return <p key={material + "sm"} className="bg-primary/30 px-1 rounded-xl">{material} <span className="text-sm cursor-pointer text-red-500" onClick={() => handleClickMaterial(material)}>x</span></p>
+                    }
+                    )} 
+              </div>
             </div>
 
             {/* Color */}
             <div>
-              <label
-                className="text-white dark:text-gray-200"
-                htmlFor="color"
-              >
-                Color
-              </label>
+              <label className="text-white dark:text-gray-200" htmlFor="productMaterial">Colors</label>
               <input
-                name="color"
-                id="color"
-                type="text"
+                list="color"
+                onChange={handleColorChange}
+                onClick={handleClick}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
+              <datalist name="color" id="color">
+                {
+                  colors?.map((color) => {
+                    return <option key={color} value={color}>{color}</option>
+                })
+                }
+              </datalist>
+              {errors.colour && (
+                        <span className="text-red-500">{errors.colour}</span>
+              )}
+              <div className="flex flex-wrap gap-1 mt-4">
+                    { form.colour.length > 0 && form.colour.map( (color) => {
+                        return <p key={color + "sm"} className="bg-primary/30 px-1 rounded-xl">{color} <span className="text-sm cursor-pointer text-red-500" onClick={() => handleClickColor(color)}>x</span></p>
+                    }
+                    )} 
+              </div>
+              
             </div>
 
             {/* Imágenes */}
@@ -289,6 +405,9 @@ const UpdateProduct = () => {
                 type="text"
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
+              {errors.description && (
+                        <span className="text-red-500">{errors.description}</span>
+              )}
             </div>
 
           </div>
