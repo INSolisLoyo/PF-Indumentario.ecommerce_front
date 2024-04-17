@@ -6,10 +6,8 @@ const SearchbarProduct = ({ setProducts }) => {
     const [searchTerm, setSearchTerm] = useState([]);
 
     const handleInputChange = (event) => {
-        setSearchTerm(event.target.value);
-        if(searchTerm.length > 2){
-            fetchProducts();
-        }
+        setSearchTerm(event.target.value);     
+            fetchProducts();      
     }
 
     const fetchProducts = async () => {
