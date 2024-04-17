@@ -257,8 +257,8 @@ const Settings = () => {
                     <div className="flex flex-col gap-2 justify-center items-center w-full md:w-1/4 md:h-1/4 ">
                         
                         <label htmlFor="">Date of birthdate</label>
-                        <input name="birthdate" id="birthdate" type="date" value={form.birthdate} onChange={handleChange}
-                          className={`cursor-pointer p-2 rounded-lg border-gray-300" disabled={enabledUserData} ${ enabledUserData ? "text-gray-500 bg-gray-100 cursor-not-allowed" : "cursor-pointer"}`}/>
+                        <input name="birthdate" id="birthdate" type="date" value={form.birthdate} onChange={handleChange} disabled={enabledUserData}
+                          className={`cursor-pointer p-2 rounded-lg border-gray-300" ${ enabledUserData ? "cursor-not-allowed text-gray-500 bg-gray-100" : "cursor-pointer"}`}/>
                         
                         <button onClick={editUserData} className="w-full mt-8 py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center">{enabledUserData ?"Edit" : "Save" }</button>
 
