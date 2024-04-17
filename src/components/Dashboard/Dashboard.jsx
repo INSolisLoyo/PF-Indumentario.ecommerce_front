@@ -24,7 +24,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="flex pt-16 min-h-screen ">
+    <div className="flex pt-40 min-h-screen ">
       <Sidebar
         handleUsuariosClick={handleUsuariosClick}
         handleProductsClick={handleProductsClick}
