@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import axios from '../../axios/axios';
 import SearchbarProduct from './SearchbarProduct';
@@ -7,9 +8,13 @@ import Swal from 'sweetalert2';
 
 export default function Products() {
 
+  const navigate = useNavigate();
+
   const [ products, setProducts ] = useState([]);
 
-  const handleUpdate = () => {
+  const handleUpdate = (id) => {
+
+    navigate(`/update-product/${id}`);
 
   }
 
@@ -180,7 +185,7 @@ export default function Products() {
 
                       <td className="px-6 py-4 whitespace-nowrap border-b border-slate-300">
                         
-                        <button className="bg-green-600 w-[90px] flex justify-center text-center gap-1 items-center text-white p-2 rounded-md" onClick={handleUpdate}>Update</button>
+                        <button className="bg-green-600 w-[90px] flex justify-center text-center gap-1 items-center text-white p-2 rounded-md" onClick={() => handleUpdate(product.id)}>Update</button>
 
                       </td>
 
