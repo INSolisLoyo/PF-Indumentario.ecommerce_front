@@ -9,6 +9,9 @@ import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
 import Dashboard from "./components/Dashboard/Dashboard";
 import About from "./components/About/About";
+import AboutUs from "./components/About/AboutUs";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
+import UpdateProduct from "./components/Dashboard/UpdateProduct";
 
 function App() {
   const location = useLocation();
@@ -31,6 +34,8 @@ function App() {
         <Route path="/create" element={<Create />} />
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/about/:section" element={<About />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/update-product/:id" element={<UpdateProduct />} />
         
 
 

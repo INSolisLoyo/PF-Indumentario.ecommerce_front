@@ -94,7 +94,7 @@ const FavoritesMenu = () => {
                   <li className="flex justify-center col-span-1">
                     <img
                       className="w-16 h-20 object-cover"
-                      src={favorite.images[0]}
+                      src={favorite.images}
                       alt={favorite.name}
                     />
                   </li>

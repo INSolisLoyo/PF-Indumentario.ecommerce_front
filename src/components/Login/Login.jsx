@@ -1,7 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import useCartStore from "../GlobalStoreZustand/useCartStore";
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../axios/axios";
@@ -9,12 +8,16 @@ import AuthTerceros from "../AuthTerceros/AuthTerceros";
 import SesionSwitch from "./Switch";
 import PopoverInfo from "./PopoverInfo";
 import validationData from "./validationData";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import useCartStore from "../GlobalStoreZustand/useCartStore";
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 
 const LOGIN_URL = "/login";
 
 export default function Login({ onClose }) {
   const setCurrentUser = userStore((state) => state.setCurrentUser);
   const setRegisteredUser = userStore((state) => state.setRegisteredUser);
+  const addToFavorites = useFavoriteStore((state) => state.addToFavorites);
 
   const [form, setForm] = useState({
     email: "",
@@ -31,25 +34,27 @@ export default function Login({ onClose }) {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const handleChange = (event) => {
-    const value = event.target.value;
-    const property = event.target.name;
-
+    const { name, value } = event.target;
     setForm({
       ...form,
-      [property]: value,
+      [name]: value,
     });
   };
 
   const submitHandler = async (event) => {
     event.preventDefault();
 
+    // Validar los datos del formulario
     await validationData(form, setErrors, setValidation);
 
+    // Verificar si hay errores de validación
     if (validation.email && validation.password) {
       try {
         const { data } = await axios.post(
@@ -65,9 +70,12 @@ export default function Login({ onClose }) {
           }
         );
 
+        // Actualizar el token de autenticación en las cookies
         document.cookie = `token=${data.token}; max-age=${
           60 * 60
         }; path=/; samesite=strict`;
+
+        // Decodificar el token JWT para obtener la información del usuario
         const {
           userId,
           userName,
@@ -80,6 +88,7 @@ export default function Login({ onClose }) {
           userMobile,
         } = jwtDecode(data.token);
 
+        // Crear un objeto de usuario con la información decodificada
         const newUser = {
           id: userId,
           name: userName,
@@ -91,6 +100,7 @@ export default function Login({ onClose }) {
           isActive: isActive,
         };
 
+        // Actualizar el estado global del usuario
         setCurrentUser(newUser);
         setRegisteredUser(true);
 
@@ -121,9 +131,37 @@ export default function Login({ onClose }) {
           useCartStore.getState().addToCart(selectedProduct);
         });
 
+        // Obtener los favoritos del usuario al iniciar sesión
+        const responseFav = await axios.get(`/favorite`);
+        const favoriteProducts = responseFav.data;
+
+        // Iterar sobre cada favorito y obtener sus detalles
+        const favoritesWithDetails = await Promise.all(
+          favoriteProducts.map(async (favorite) => {
+            // Obtener los detalles del producto favorito desde la ruta /product
+            const productResponse = await axios.get(
+              `/product/${favorite.productId}`
+            );
+            const productDetails = productResponse.data;
+            
+            // Devolver un objeto con las propiedades requeridas para el estado de favoritos
+  
+            return {
+              
+              name: productDetails.name,
+              price: productDetails.price,
+              images: productDetails.images[0],
+            };
+          })
+        );
+        // Agregar los favoritos al estado global
+        addToFavorites(favoritesWithDetails);
+        console.log(productDetails);
+
+        // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
-        console.error("There is a problem");
+        console.error("There is a problem:", error);
       }
     }
   };
@@ -131,9 +169,16 @@ export default function Login({ onClose }) {
   const handleRegister = () => {
     navigate("/register");
     onClose();
-  };
+  }
+
+  const handleClickPassword = () => {
+
+    setShowForgotPassword(!showForgotPassword)
+
+  }
 
   useEffect(() => {
+    // Restablecer la validación cada vez que cambia el formulario
     setValidation({
       email: false,
       password: false,
@@ -142,7 +187,13 @@ export default function Login({ onClose }) {
 
   return (
     <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
+
+      {
+        showForgotPassword && <ForgotPassword handleClickPassword={handleClickPassword} />  
+      }
+
       <div className="w-full p-2 md:p-4 flex flex-col gap-2 md:gap-4">
+        
         {/* Ícono de x */}
         <div className="w-10/12 mx-auto flex justify-end">
           <FontAwesomeIcon
@@ -161,7 +212,6 @@ export default function Login({ onClose }) {
           </p>
 
           {/* Autenticación de terceros */}
-
           <AuthTerceros onClose={onClose} />
 
           {/* OR */}
@@ -238,12 +288,8 @@ export default function Login({ onClose }) {
             </button>
           </div>
 
-          {/* Forget password */}
-          <p className="text-center">
-            <a href="#" className="underline">
-              Forgot your password?
-            </a>
-          </p>
+          { /* Forget password */}
+          <p className="underline text-center cursor-pointer" onClick={handleClickPassword}>Forgot your password?</p>
 
           {/* Create an account*/}
           <button
@@ -257,3 +303,5 @@ export default function Login({ onClose }) {
     </div>
   );
 }
+
+
