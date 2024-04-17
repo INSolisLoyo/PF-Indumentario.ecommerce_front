@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../axios/axios";
 import Select from "react-select";
+import Swal from "sweetalert2";
 
 export default function Usuarios() {
   const [users, setUsers] = useState([]);
 
-  
+  const [searchUser, setSearchUser] = useState("");
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/user", {
+        params: { name: { $regex: searchUser, $options: "i" } },
+      });
+      setUsers(response.data);
+    } catch (error) {
+      console.log("Error al obtener usuarios", error);
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    const { value } = event.target;
+    setSearchUser(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      fetchUsers();
+    }
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,35 +43,54 @@ export default function Usuarios() {
     fetchUsers();
   }, []);
 
+  const deleteUserChange = (userId) => {
+    // Marca el usuario para eliminar
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, toDelete: true } : user
+      )
+    );
+  };
+
   useEffect(() => {
     const deleteUser = async (userId) => {
-      try {
-        const response = await axios.delete(`/user/${userId}`);
-        if (response.data.success) {
-          console.log("User deleted:", response.data.user);
-        } else {
-          console.error("Error al eliminar el usuario:", response.data.message);
+      const confirmDelete = await Swal.fire({
+        title: "Do you want to delete this user?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Delete",
+        denyButtonText: `Cancel`,
+      });
+
+      if (confirmDelete.isConfirmed) {
+        try {
+          const response = await axios.delete(`/user/${userId}`);
+          if (response.data.success) {
+            console.log("User deleted:", response.data.user);
+            setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+            Swal.fire("User deleted!", "", "success");
+          } else {
+            console.error(
+              "Error al eliminar el usuario:",
+              response.data.message
+            );
+          }
+        } catch (error) {
+          console.error("Error al intentar eliminar el usuario", error);
         }
-      } catch (error) {
-        console.error("Error al intentar eliminar el usuario", error);
+      } else if (confirmDelete.isDenied) {
+        Swal.fire("Action canceled", "", "info");
       }
     };
 
-    // Aquí recorres todos los usuarios y eliminas los que tengan un flag "toDelete"
+    // AquÃ­ recorres todos los usuarios y eliminas los que tengan un flag "toDelete"
     users.forEach(async (user) => {
       if (user.toDelete) {
         await deleteUser(user.id);
-        setUsers(prevUsers => prevUsers.filter(u => u.id !== user.id));
       }
     });
   }, [users]);
 
-  const deleteUserChange = (userId) => {
-    // Marca el usuario para eliminar
-    setUsers(prevUsers =>
-      prevUsers.map(user => (user.id === userId ? { ...user, toDelete: true } : user))
-    );
-  };
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
@@ -66,7 +108,6 @@ export default function Usuarios() {
           return user;
         });
         setUsers(updatedUsers);
-        
       } else {
         // Si hay un error en la solicitud, mostrar un mensaje de error
         console.error(
@@ -98,9 +139,6 @@ export default function Usuarios() {
       console.error("Error al intentar actualizar el usuario:", error);
     }
   };
-
-
-  
 
   const customStyles = {
     control: (provided, state) => ({
@@ -162,6 +200,9 @@ export default function Usuarios() {
           className="m-auto text-center w-full outline-none "
           type="text"
           placeholder="Search users..."
+          value={searchUser}
+          onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
         />
       </div>
       <div className="mx-auto">
