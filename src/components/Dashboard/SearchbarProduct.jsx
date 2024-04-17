@@ -36,9 +36,6 @@ const SearchbarProduct = ({ setProducts }) => {
             console.log('Error to get products');
         }
 
-    
-        setProducts(data);
-    
       }
 
     

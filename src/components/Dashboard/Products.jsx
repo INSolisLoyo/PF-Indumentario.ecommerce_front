@@ -15,10 +15,19 @@ export default function Products() {
   const handleUpdate = (id) => {
 
     navigate(`/update-product/${id}`);
-
+   
   }
 
-  const handleDelete = () => {
+  const handleDelete = async (id) => {
+
+    try {
+      const response = await axios.delete(`/product/${id}`)
+      if(response){
+        Swal.fire('Product deleted')
+      }
+    } catch (error) {
+      Swal.fire('Cannot delete product')
+    }
 
   }
 
@@ -191,7 +200,7 @@ export default function Products() {
 
                       <td className="px-6 py-4 whitespace-nowrap border-b border-slate-300">
                         
-                        <button className="bg-red-600 w-[90px] flex justify-center text-center gap-1 items-center text-white p-2 rounded-md" onClick={handleDelete}>
+                        <button className="bg-red-600 w-[90px] flex justify-center text-center gap-1 items-center text-white p-2 rounded-md" onClick={() => handleDelete(product.id)}>
 
                           Delete
                           <svg
