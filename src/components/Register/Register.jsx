@@ -20,7 +20,7 @@ export default function Register() {
     email: "",
     password: "",
     phone: "",
-    adress: "",
+    address: "",
     city: "",
     country: "",
     state: "",
@@ -30,11 +30,11 @@ export default function Register() {
   const [errors, setErrors] = useState({
     name: "",
     lastname: "",
-    dob: "",
+    birthdate: "",
     email: "",
     password: "",
     phone: "",
-    adress: "",
+    address: "",
     city: "",
     country: "",
     state: "",
@@ -71,7 +71,7 @@ export default function Register() {
     validate(name, value, errors, setErrors)
 
 
-    /* setErrors(validationSignUp({ ...formData, [name]: value })); */
+    
   };
 
 
@@ -89,13 +89,13 @@ export default function Register() {
           URL,
           formData,
           
-        );        
+        );       
 
         if (response.status === 200) {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "The user successfully registered",
+            html: "<p><b>The user successfully registered.</b></p> <p>We have sent a welcome email to your email!</p> ",
           });
         } else {
           Swal.fire({
@@ -164,14 +164,14 @@ export default function Register() {
 
 
                   <div className="md:col-span-5">
-                    <label className="text-xl" htmlFor="dob">Date of Birth</label>
-                    <input type="date"  name="dob" id="dob" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
+                    <label className="text-xl" htmlFor="birthdate">Date of Birth</label>
+                    <input type="date"  name="birthdate" id="birthdate" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
                     value={formData.birthdate}
                     onChange={handleChange}
 
                     />
-                    {errors.dob && (
-                        <p className="text-red-500">{errors.dob}</p>
+                    {errors.birthdate && (
+                        <p className="text-red-500">{errors.birthdate}</p>
                       )}
 
                   </div>
@@ -222,12 +222,12 @@ export default function Register() {
 
 
                   <div className="md:col-span-3">
-                    <label className="text-xl" htmlFor="adress">Address / Street</label>
-                    <input type="text" name="adress" id="adress" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder=""
+                    <label className="text-xl" htmlFor="address">Address / Street</label>
+                    <input type="text" name="address" id="address" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder=""
                     value={formData.address}
                     onChange={handleChange} />
-                    {errors.adress && (
-                        <p className="text-red-500">{errors.adress}</p>
+                    {errors.address && (
+                        <p className="text-red-500">{errors.address}</p>
                       )}
                   </div>
 
