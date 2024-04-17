@@ -16,7 +16,7 @@ const UpdateProduct = () => {
     images: [],
     colour: [],
     material: [],
-    category: [],
+    category: '',
     description: [],
     isActive: true,
     
@@ -33,6 +33,7 @@ const UpdateProduct = () => {
 
   const [ materials, setMaterials] = useState([]);
   const [ colors, setColors ] = useState([]);
+  const [ categories, setCategories ] = useState([]);
 
   const [imageUrls, setImageUrls] = useState([""]);
 
@@ -139,32 +140,16 @@ const UpdateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      name: e.target.name.value,
-      price: parseFloat(e.target.price.value),
-      gender: e.target.gender.value,
-      images: imageUrls.filter((url) => url.trim() !== ""),
-      colour: e.target.colour.value.split(",").map((item) => item.trim()),
-      material: e.target.material.value.split(",").map((item) => item.trim()),
-      category: e.target.category.value,
-      description: e.target.description.value
-    };
-
     try {
-      await submitForm(formData);
-      succesAlert();
-      resetForm();
-      e.target.name.value = "";
-      e.target.price.value = "";
-      e.target.gender.value = "";
-      e.target.material.value = "";
-      e.target.colour.value = "";
-      e.target.category.value = "";
-      e.target.description.value = "";
-      setImageUrls([""]);
+
+      const response = await axios.put(`/product/${id}`, form)
+      if(response){
+        Swal.fire('Product Update')
+      }
+     
     } catch (error) {
       console.error("Error creating product:", error);
-      errorAlert();
+      
     }
   };
 
@@ -188,6 +173,8 @@ const UpdateProduct = () => {
 
       const { data } = await axios.get(`product/${id}`);
 
+      console.log(data);
+
       setForm({
         id: data.id,
         name: data.name,
@@ -205,6 +192,8 @@ const UpdateProduct = () => {
       setMaterials(materialData);
       const colorData = (await axios.get('/colours')).data;
       setColors(colorData);
+      const categoriesData = (await axios.get('/categories')).data;
+      setCategories(categoriesData);
       
       
     } catch (error) {
@@ -322,7 +311,7 @@ const UpdateProduct = () => {
 
             {/* Color */}
             <div>
-              <label className="text-white dark:text-gray-200" htmlFor="productMaterial">Colors</label>
+              <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Colors</label>
               <input
                 list="color"
                 onChange={handleColorChange}
@@ -351,7 +340,7 @@ const UpdateProduct = () => {
             {/* Imágenes */}
             <div>
               <label
-                className="text-white dark:text-gray-200"
+                className="text-black dark:text-gray-200"
                 htmlFor="productImages"
               >
                 Images
@@ -376,25 +365,23 @@ const UpdateProduct = () => {
             </div>
 
             {/* Categoría */}
-            <div>
-              <label
-                className="text-white dark:text-gray-200"
-                htmlFor="productCategory"
-              >
-                Category
-              </label>
-              <input
-                name="category"
-                id="productCategory"
-                type="text"
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-              />
+            <div className="flex flex-col gap-4">
+              <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Categories</label>          
+              <select name="category" id="category"  className="py-2 bg-white rounded-xl" defaultValue={form.category} onChange={handleChange}>
+                {
+                  categories?.map((category) => {
+                    return <option key={category} value={category}>{category}</option>
+                })
+                }
+              </select>
+              
+              
             </div>
 
             {/* Descripción */}
             <div>
               <label
-                className="text-white dark:text-gray-200"
+                className="text-black dark:text-gray-200"
                 htmlFor="productDescription"
               >
                 Description
@@ -403,6 +390,8 @@ const UpdateProduct = () => {
                 name="description"
                 id="productDescription"
                 type="text"
+                onChange={handleChange}
+                value={form.description}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               />
               {errors.description && (
