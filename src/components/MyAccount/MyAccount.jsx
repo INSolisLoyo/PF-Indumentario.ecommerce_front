@@ -4,7 +4,7 @@ const MyAccount = () => {
 
     return (
 
-        <section className="w-11/12 mt-20 mx-auto font-RedHat flex flex-col lg:w-4/6">
+        <section className="w-11/12 pt-40 mx-auto font-RedHat flex flex-col lg:w-4/6">
             
             <div>
 

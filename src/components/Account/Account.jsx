@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 
 export default function Account({ onClose, setShowSidebar }) {
+
   // Función para limpiar el carrito del estado global
   const clearCart = () => {
     useCartStore.getState().clearCart(); // Llama a la acción clearCart del store useCartStore
@@ -57,7 +58,7 @@ export default function Account({ onClose, setShowSidebar }) {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-primary">
+              <a href="/account/settings" className="hover:text-primary">
                 Account settings
               </a>
             </li>

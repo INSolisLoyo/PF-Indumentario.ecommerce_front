@@ -3,7 +3,7 @@ import Landing from "./components/Landing/Landing";
 import Register from "./components/Register/Register";
 import NavBar from "./components/Navbar/Navbar";
 import Detail from "./components/Detail/Detail";
-import MyAccount from "./components/MyAccount/MyAccount";
+import AccountData from "./components/AccountData/AccountData";
 import Footer from "./components/Footer/Footer";
 import Cards from "./components/Cards/Cards";
 import Create from "./components/Create/Create";
@@ -29,7 +29,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/myaccount" element={<MyAccount />} />
+        <Route path="/account/:section" element={<AccountData />} />
         <Route path="/cards" element={<Cards />} />
         <Route path="/create" element={<Create />} />
         <Route path="/admin" element={<Dashboard />} />
