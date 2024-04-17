@@ -5,13 +5,15 @@ import axios from "../../axios/axios";
 import DetailGallery from "../DetailGallery/DetailGallery";
 import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
-import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore"; 
-import userStore from "../GlobalStoreZustand/UserStore"; 
+import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
+import userStore from "../GlobalStoreZustand/UserStore";
+
 
 const Detail = () => {
-  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); 
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore();
   const [isFavorite, setIsFavorite] = useState(false);
-  const {user} = userStore();
+  
+  const { user } = userStore();
 
   const { id } = useParams();
   const STOCK = `/stock/${id}`;
@@ -79,12 +81,17 @@ const Detail = () => {
       grupos[colour].push({ amount, size });
     });
 
-    setStock(grupos);
+    //*BUG DISORDERED SIZES
+    // Sort the sizes within each color
 
-    if (!selectedColor) {
-      const firstProperty = Object.keys(grupos)[0];
-      setSelectedColor(firstProperty);
-    }
+    Object.keys(grupos).forEach((color) => {
+      grupos[color].sort((a, b) => {
+        const order = { XS: 1, S: 2, M: 3, L: 4, XL: 5 };
+        return order[a.size] - order[b.size];
+      });
+    });
+
+    setStock(grupos);
   };
 
   const handleCounter = (op) => {
@@ -162,7 +169,8 @@ const Detail = () => {
         userId: user.id, // ID del usuario actual
       };
 
-      axios.post("/cart", productData)
+      axios
+        .post("/cart", productData)
         .then(() => {
           Swal.fire({
             icon: "success",
@@ -224,6 +232,7 @@ const Detail = () => {
     }
   };
 
+  
   return (
     <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
       <DetailGallery images={item.images} />
@@ -320,13 +329,12 @@ const Detail = () => {
             </div>
           </div>
         </div>
+        
         <div className="flex justify-center items-center pt-4 md:h-1/6">
           <button
             className="w-full h-8 bg-primary/70 hover:bg-primary rounded-2xl py-2 text-black md:w-2/4 lg:w-1/4"
             onClick={handleClickButton}
-
             disabled={disabledButton}
-
           >
             Add to cart
           </button>
