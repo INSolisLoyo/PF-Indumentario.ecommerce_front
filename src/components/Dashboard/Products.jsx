@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Select from "react-select";
 import axios from '../../axios/axios';
+import SearchbarProduct from './SearchbarProduct';
 
 
 export default function Products() {
 
   const [ products, setProducts ] = useState([]);
-  const [ rederProducts, setRenderProducst ] = useState([]);
 
   const handleUpdate = () => {
 
@@ -46,6 +46,10 @@ export default function Products() {
 
   }, [])
 
+  useEffect(() => {
+
+  }, [products])
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -84,13 +88,7 @@ export default function Products() {
    
         <button className='shadow border border-slate-300 rounded-xl shadow-slate-300 mb-3 py-2 w-2/6 bg-primary/10 hover:bg-primary/40'>New</button>
 
-        <div className="shadow border border-slate-300 shadow-slate-300 mb-3 py-2 w-4/6  ">
-          <input
-            className="m-auto text-center w-full outline-none "
-            type="text"
-            placeholder="Search one product by ID..."
-          />
-        </div>
+        <SearchbarProduct setProducts={setProducts}/>
 
       </div>
 
