@@ -25,6 +25,7 @@ export default function Products() {
       if(response){
         Swal.fire('Product deleted')
       }
+      fetchProducts();
     } catch (error) {
       Swal.fire('Cannot delete product')
     }
