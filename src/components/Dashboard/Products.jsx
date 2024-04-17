@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Select from "react-select";
 import axios from '../../axios/axios';
 import SearchbarProduct from './SearchbarProduct';
+import Swal from 'sweetalert2';
 
 
 export default function Products() {
@@ -16,7 +17,24 @@ export default function Products() {
 
   }
 
-  const handleStatusChange = () => {
+  const handleStatusChange = async (product, option) => {
+
+    try {
+
+      const newObject = {
+        ...product,
+        isActive: option
+      }
+
+      console.log(newObject);
+
+      const response = await axios.put(`/product/${product.id}`, newObject)
+      if(response){
+        Swal.fire('Product update')
+      }
+    } catch (error) {
+      Swal.fire('Error to update the product');
+    }
 
   }
 
@@ -136,11 +154,11 @@ export default function Products() {
                     <tr className="bg-white shadow-md border-b border-slate-300">
 
                       <td className="px-2 py-4 whitespace-nowrap border-b border-slate-300">
-                        {product.name}
+                        {product.id}
                       </td>
 
                       <td className="px-2 py-4 whitespace-nowrap border-b border-slate-300">
-                        {product.id}
+                        {product.name}
                       </td>
 
                       <td className="px-2 py-4 whitespace-nowrap border-b border-slate-300 ">
@@ -154,7 +172,7 @@ export default function Products() {
                               { value: false, label: "Inactive" },
                             ]}
                             onChange={(selectedOption) =>
-                              handleStatusChange(product.id, selectedOption.value)
+                              handleStatusChange(product, selectedOption.value)
                             }
                             styles={customStyles}
                           />
