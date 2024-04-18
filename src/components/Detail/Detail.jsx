@@ -132,7 +132,7 @@ const Detail = () => {
     setErrors({ ...errors, noSizeSelected: "" });
   };
 
-  const handleClickButton = () => {
+  const handleClickButton = async () => {
     if (!selectedSize) {
       setErrors({
         ...errors,
@@ -169,24 +169,25 @@ const Detail = () => {
         userId: user.id, // ID del usuario actual
       };
 
-      axios
-        .post("/cart", productData)
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Product added to cart!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        })
-        .catch((error) => {
-          console.error("Error adding product to cart:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong. Please try again later.",
-          });
+      try {
+        const response = await axios.post("/cart", productData);
+        Swal.fire({
+          icon: "success",
+          title: "Product added to cart!",
+          showConfirmButton: false,
+          timer: 1500,
         });
+        console.log(await response);
+      } catch (error) {
+        console.error("Error adding product to cart:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong. Please try again later.",
+        });
+      }
+      
+        
     }
   };
 

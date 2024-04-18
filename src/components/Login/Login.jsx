@@ -156,7 +156,7 @@ export default function Login({ onClose }) {
         );
         // Agregar los favoritos al estado global
         addToFavorites(favoritesWithDetails);
-        console.log(productDetails);
+        
 
         // Cerrar el formulario de inicio de sesión
         onClose();
