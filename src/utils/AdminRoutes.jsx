@@ -4,6 +4,7 @@ const AdminRoutes = ({
     isAdmin,
     redirectPath = '/'
 }) => {
+  
     if (!isAdmin) {
         return <Navigate to={redirectPath} replace />
     }
