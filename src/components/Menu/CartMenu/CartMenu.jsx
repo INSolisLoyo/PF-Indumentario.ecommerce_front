@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useCartStore from "../../GlobalStoreZustand/useCartStore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
-import Swal from "sweetalert2";
+import userStore from "../../GlobalStoreZustand/UserStore";
+import axios from "../../../axios/axios";
+import useStoreEmail from "../../GlobalStoreZustand/useEmail";
 
 const CartMenu = () => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
@@ -16,32 +17,71 @@ const CartMenu = () => {
   const cart = useCartStore((state) => state.cart);
   const { cartMenuOpen, toggleCartMenu } = useMenuStore();
 
-  const { user } = useStore();
+  const user = userStore((state) => state.user);
+
+  // if "state": "Paid" -> clearCart else === "Cancel" -> alert("Pay Cancelled")
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000); // Ocultar la alerta después de 3 segundos
+  };
+
+  const dataAuth = async () => {
+    try {
+      // Obtener el email del usuario actual
+      const userEmail = user
+        ? user.email
+        : await useStoreEmail.getState().email;
+
+      // Hacer la solicitud GET al servidor con el email obtenido
+      const res = await axios.get(`/user/google/${userEmail}`);
+
+      // Retornar el id obtenido del servidor
+      return res.data.id;
+    } catch (error) {
+      console.log("Error al obtener el usuario de Google:", error);
+      return undefined;
+    }
+  };
 
   const handlePayPalPayment = async () => {
     try {
       const totalPriceNum = parseFloat(totalPrice);
-      const payload = {
-        userId: user.id, // Utilizar el userId del usuario actual
-        finalPrice: totalPriceNum.toFixed(2),
-      };
+      const googleUserId = await dataAuth();
+      console.log(googleUserId);
+      let payload = { finalPrice: totalPriceNum.toFixed(2).toString() };
+      if (googleUserId === undefined) {
+        payload.userId = user.id;
+      } else {
+        payload.googleUserId = googleUserId;
+      }
 
-      const response = await axios.post("https://ecommerce-becomfree.onrender.com/order", payload);
+      const response = await axios.post("/order", payload);
 
       const { href } = response.data;
-      window.location.href = href; // Redirigir al usuario a la pÃ¡gina de PayPal
+      window.location.href = href;
     } catch (error) {
       console.error("Error al crear orden de PayPal:", error);
     }
   };
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const state = urlParams.get("state");
+
+    if (state === "Paid") {
+      handleAlert(); // Mostrar la alerta
+      clearCart(); // Vaciar el carrito
+    } else if (state === "Cancel") {
+      alert("Payment Cancelled");
+    }
+  }, [clearCart]);
+
   const handleClick = () => {
     toggleCartMenu();
-    swal.fire({
-      icon: "success",
-      title: "Cart Cleared",
-      text: "Your cart has been cleared successfully!",
-    });
   };
 
   const totalProducts = cart.reduce((total, product) => {
@@ -98,11 +138,10 @@ const CartMenu = () => {
     intent: "capture",
   };
 
-  
+  //getGoogleUser get params:email
 
   return (
     <PayPalScriptProvider options={initialOptions}>
-      
       <div className="cart-menu">
         <div className="relative flex items-center" onClick={handleClick}>
           <ShoppingCartIcon
@@ -236,10 +275,19 @@ const CartMenu = () => {
                   >
                     Clear all cart
                   </button>
-                  <PayPalButtons onClick={handlePayPalPayment} className="flex mt-2 mb-2 mx-auto py-2" style={{ layout: "horizontal" }} />
+                  <PayPalButtons
+                    onClick={handlePayPalPayment}
+                    className="flex mt-2 mb-2 mx-auto py-2"
+                    style={{ layout: "horizontal" }}
+                  />
                 </div>
               </>
             )}
+          </div>
+        )}
+        {showAlert && (
+          <div className="alert alert-success" role="alert">
+            Payment successful!
           </div>
         )}
       </div>
