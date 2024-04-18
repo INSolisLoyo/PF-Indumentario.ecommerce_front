@@ -172,7 +172,7 @@ export default function Login({ onClose }) {
         icon: 'success',
         title: 'Success',
         text: 'Login with Google successful!'
-      }); */
+      }); 
         // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
