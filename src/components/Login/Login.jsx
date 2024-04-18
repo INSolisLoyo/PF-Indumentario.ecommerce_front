@@ -239,7 +239,7 @@ export default function Login({ onClose }) {
           </div>
 
           {/* Inputs */}
-          <div className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={submitHandler}>
             <input
               className={`w-full py-2 px-4 border ${
                 errors.email ? "border-red-500" : "border-gray-300"
@@ -298,17 +298,17 @@ export default function Login({ onClose }) {
 
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"
-              onClick={submitHandler}
+              type="onSubmit"
             >
               Log in
             </button>
-          </div>
+          </form>
 
           { /* Forget password */}
           <p className="underline text-center cursor-pointer" onClick={handleClickPassword}>Forgot your password?</p>
 
           {/* Create an account*/}
-          <button
+          <button 
             className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center"
             onClick={handleRegister}
           >
