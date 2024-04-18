@@ -1,12 +1,10 @@
-
 //! finishhhhhhhhhhhhhhh
 
 
 const validate = (data, value, errors, setErrors) => {
-
   const newErrors = { ...errors };
 
-  const patternName = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/;
+  const patternName = /^[a-zA-Z\s]+$/;
   const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
   const patternBirthdate = /\d{4}-\d{2}-\d{2}/;
@@ -50,17 +48,17 @@ const validate = (data, value, errors, setErrors) => {
             }
           }
         }
-        break;
-  
-      case "birthdate":
-        if (value.length === 0) {
-          newErrors.birthdate = "Date of Birth is required";
+      }
+      break;
+
+    case "birthdate":
+      if (value.length === 0) {
+        newErrors.birthdate = "Date of Birth is required";
+      } else {
+        if (!patternBirthdate.test(value)) {
+          newErrors.birthdate = "Invalid date of birth format";
         } else {
-          if (!patternBirthdate.test(value)) {
-            newErrors.birthdate = "Invalid date of birth format";
-          } else {
-            newErrors.birthdate = "";
-          }
+          newErrors.birthdate = "";
         }
       }
       break;
@@ -86,8 +84,9 @@ const validate = (data, value, errors, setErrors) => {
       break;
 
     case "password":
-      if(value.length === 0) {
-                  newErrors.password = "Password is required";
+      if (value.length < 10 || value.length > 30) {
+        newErrors.password =
+          "Password length should be between 10 and 30 characters";
       } else {
         if (!patternPassword.test(value)) {
           newErrors.password =
@@ -96,9 +95,8 @@ const validate = (data, value, errors, setErrors) => {
           if (typeof value !== "string") {
             newErrors.password = "Password invalid";
           } else{
-              if (value.length < 10 || value.length > 30) {
-        newErrors.password =
-          "Password length should be between 10 and 30 characters";
+              if(value.length === 0) {
+                  newErrors.password = "Password is required";
 
           } else {
             newErrors.password = "";
@@ -125,27 +123,14 @@ const validate = (data, value, errors, setErrors) => {
         if (value.length === 0) {
           newErrors.address = "Address is required";
         } else {
-          if (typeof value !== "string") {
-              newErrors.phone = "Phone invalid";
-            } else {
-              newErrors.phone = "";
-            }
-          }
-        break;
-  
-        case "address":
-          if (value.length === 0) {
-            newErrors.address = "Address is required";
+          if (value.length > 30) {
+            newErrors.address = "Address should not exceed 30 characters";
           } else {
-            if (value.length > 30) {
-              newErrors.address = "Address should not exceed 30 characters";
-            } else {
-              if (typeof value !== "string") {
-                  newErrors.address = "Address must be a string";
-                } else {
-                  newErrors.address = "";
-                }            
-            }
+            if (typeof value !== "string") {
+                newErrors.address = "Address must be a string";
+              } else {
+                newErrors.address = "";
+              }            
           }
         }
         break;
