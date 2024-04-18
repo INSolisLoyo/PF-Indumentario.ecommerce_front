@@ -54,11 +54,13 @@ export default function Account({ onClose, setShowSidebar }) {
           </div>
 
           <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
+
             <li>
               <a href="/account/settings" className="hover:text-primary">
                 Account settings
               </a>
-            </li>
+            </li> 
+
             <li>
               {
                 user.isAdmin && <a href="/admin" className="hover:text-primary">
