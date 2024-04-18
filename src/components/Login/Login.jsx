@@ -1,7 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import React, { useState, useEffect  } from "react";
-import {useNavigate} from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../axios/axios";
@@ -12,7 +11,6 @@ import validationData from "./validationData";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
-import Swal from 'sweetalert2';
 
 const LOGIN_URL = "/login";
 
@@ -20,6 +18,7 @@ export default function Login({ onClose }) {
   const setCurrentUser = userStore((state) => state.setCurrentUser);
   const setRegisteredUser = userStore((state) => state.setRegisteredUser);
   const addToFavorites = useFavoriteStore((state) => state.addToFavorites);
+  const clearFavorites = useFavoriteStore((state) => state.clearFavorites);
 
   const [form, setForm] = useState({
     email: "",
@@ -34,10 +33,7 @@ export default function Login({ onClose }) {
     password: false,
   });
 
-  /*  */
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -53,20 +49,14 @@ export default function Login({ onClose }) {
   };
 
   const submitHandler = async (event) => {
-
     event.preventDefault();
 
     // Validar los datos del formulario
-    validationData(form, setErrors, setValidation);
-
-    
+    await validationData(form, setErrors, setValidation);
 
     // Verificar si hay errores de validación
     if (validation.email && validation.password) {
       try {
-
-        console.log(form);
-
         const { data } = await axios.post(
           LOGIN_URL,
           {
@@ -114,65 +104,46 @@ export default function Login({ onClose }) {
         setCurrentUser(newUser);
         setRegisteredUser(true);
 
-        // Obtener el carrito del usuario al iniciar sesión
-        const response = await axios.get(`/cart/${userId}`);
-
-        // Iterar sobre cada elemento del carrito y agregarlo al estado global del carrito
-        response.data.forEach(async (cartItem) => {
-          // Obtener el producto del carrito
-          const productRescue = await axios.get(
-            `/product/${cartItem.productId}`
-          );
-          const productLimpio = productRescue.data;
-
-          // Combinar los datos del producto y el stock real
-          const selectedProduct = {
-            id: cartItem.id,
-            images: productLimpio.images[0],
-            name: productLimpio.name,
-            price: productLimpio.price,
-            quantity: cartItem.amount,
-            color: cartItem.colour,
-            size: cartItem.size,
-            stock: cartItem.stock,
-          };
-
-          // Actualizar el estado global del carrito con los datos recibidos
-          useCartStore.getState().addToCart(selectedProduct);
-        });
+        // Limpiar los favoritos actuales
+        clearFavorites();
 
         // Obtener los favoritos del usuario al iniciar sesión
         const responseFav = await axios.get(`/favorite`);
         const favoriteProducts = responseFav.data;
 
-        // Iterar sobre cada favorito y obtener sus detalles
-        const favoritesWithDetails = await Promise.all(
-          favoriteProducts.map(async (favorite) => {
-            // Obtener los detalles del producto favorito desde la ruta /product
-            const productResponse = await axios.get(
-              `/product/${favorite.productId}`
-            );
-            const productDetails = productResponse.data;
-            
-            // Devolver un objeto con las propiedades requeridas para el estado de favoritos
-  
-            return {
-              
-              name: productDetails.name,
-              price: productDetails.price,
-              images: productDetails.images[0],
-            };
-          })
-        );
-        // Agregar los favoritos al estado global
-        addToFavorites(favoritesWithDetails);
 
-      // Mostrar una alerta de éxito
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Login with Google successful!'
-      }); 
+        // Verificar si la respuesta del servidor es un array
+        if (Array.isArray(favoriteProducts)) {
+          // Iterar sobre cada favorito y agregarlo al estado de favoritos
+          favoriteProducts.forEach(async (favorite) => {
+            try {
+              // Obtener los detalles del producto favorito desde la ruta /product
+              const productResponse = await axios.get(
+                `/product/${favorite.productId}`
+              );
+              const productDetails = productResponse.data;
+
+              // Obtener solo la primera imagen del array de imágenes
+              const firstImage = productDetails.images[0];
+
+              // Crear el objeto de favorito combinando los datos del producto y el stock real
+              const selectedFav = {
+                id: favorite.id, // Suponiendo que cada favorito tiene un ID único
+                images: firstImage,
+                name: productDetails.name,
+                price: productDetails.price,
+              };
+
+              // Agregar el favorito al estado de favoritos
+              addToFavorites(selectedFav);
+            } catch (error) {
+              console.error("Error fetching product details:", error);
+            }
+          });
+        } else {
+          console.error("Favorite products response is not an array");
+        }
+
         // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
@@ -181,14 +152,15 @@ export default function Login({ onClose }) {
     }
   };
 
-  const navigate = useNavigate();
-
   const handleRegister = () => {
     navigate("/register");
     onClose();
-  }
+  };
 
   const handleClickPassword = () => {
+    setShowForgotPassword(!showForgotPassword);
+  };
+
 
     setShowForgotPassword(!showForgotPassword)
 
@@ -200,17 +172,16 @@ export default function Login({ onClose }) {
      email: false,
        password: false,
      });
+
   }, [form]);
 
   return (
     <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
-
-      {
-        showForgotPassword && <ForgotPassword handleClickPassword={handleClickPassword} />  
-      }
+      {showForgotPassword && (
+        <ForgotPassword handleClickPassword={handleClickPassword} />
+      )}
 
       <div className="w-full p-2 md:p-4 flex flex-col gap-2 md:gap-4">
-        
         {/* Ícono de x */}
         <div className="w-10/12 mx-auto flex justify-end">
           <FontAwesomeIcon
@@ -240,7 +211,7 @@ export default function Login({ onClose }) {
           </div>
 
           {/* Inputs */}
-          <form className="flex flex-col gap-4" onSubmit={submitHandler}>
+          <div className="flex flex-col gap-4">
             <input
               className={`w-full py-2 px-4 border ${
                 errors.email ? "border-red-500" : "border-gray-300"
@@ -290,19 +261,31 @@ export default function Login({ onClose }) {
               <span className="text-red-500">{errors.password}</span>
             )}
 
+            {/* Keep sesion open? */}
+            <div className="flex gap-2 items-center">
+              <SesionSwitch />
+              <p>Keep the session open</p>
+              <PopoverInfo />
+            </div>
+
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"
-              type="onSubmit"
+              onClick={submitHandler}
             >
               Log in
             </button>
-          </form>
+          </div>
 
-          { /* Forget password */}
-          <p className="underline text-center cursor-pointer" onClick={handleClickPassword}>Forgot your password?</p>
+          {/* Forget password */}
+          <p
+            className="underline text-center cursor-pointer"
+            onClick={handleClickPassword}
+          >
+            Forgot your password?
+          </p>
 
           {/* Create an account*/}
-          <button 
+          <button
             className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center"
             onClick={handleRegister}
           >
@@ -313,5 +296,3 @@ export default function Login({ onClose }) {
     </div>
   );
 }
-
-

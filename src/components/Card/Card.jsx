@@ -24,6 +24,23 @@ const Card = ({ res }) => {
   const handleToggleFavorite = async () => {
     if (isFavorite) {
       removeFromFavorites(res.id); // Elimina el producto de favoritos
+      try {
+        // Obtener todos los favoritos del usuario
+        const response = await axios.get(`/favorite`);
+        const favoriteProducts = response.data;
+  
+        // Buscar el favoriteId correspondiente al producto que estamos tratando de eliminar
+        const favoriteToDelete = favoriteProducts.find(favorite => favorite.productId === res.id);
+        if (favoriteToDelete) {
+          const favoriteId = favoriteToDelete.id;
+          // Elimina el favorito de la base de datos
+          await axios.delete(`/favorite/${favoriteId}`);
+        } else {
+          console.error("Favorite not found in the database");
+        }
+      } catch (error) {
+        console.error("Error al eliminar favorito de la base de datos:", error);
+      }
     } else {
       addToFavorites(res); // Agrega el producto a favoritos
       try {

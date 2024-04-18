@@ -48,24 +48,10 @@ const Footer = () => {
                 </picture>
 
                 <div className='flex justify-center gap-4'>
-                  <a href="https://x.com/BrendaBaumann13?t=GMlVtRA9Bz6_7VaLP3qKrg&s=08" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faSquareXTwitter} size="2xl" className="text-primary/80 hover:text-primary cursor-pointer transform transition-transform duration-300 hover:scale-110" />
-
-                  </a>
-                  <a href="https://www.facebook.com/oswaldo.palaciosperez?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faSquareFacebook} size="2xl" className="text-primary/80  hover:text-primary cursor-pointer transform transition-transform duration-300 hover:scale-110"/>
-
-                  </a>
-
-                  <a href="https://www.instagram.com/ezesarru/" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faSquareInstagram} size="2xl" className="text-primary/80  hover:text-primary cursor-pointer transform transition-transform duration-300 hover:scale-110"/>
-
-                  </a>
-
-                  <a href="https://www.linkedin.com/in/irma-nohemi-solis-loyo?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faLinkedin} size="2xl" className="text-primary/80 hover:text-primary cursor-pointer transform transition-transform duration-300 hover:scale-110"/>
-
-                  </a>
                 </div>       
 
               </div>

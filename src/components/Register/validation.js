@@ -1,9 +1,10 @@
+
 //! finishhhhhhhhhhhhhhh
 
 const validate = (data, value, errors, setErrors) => {
   const newErrors = { ...errors };
 
-  const patternName = /^[a-zA-Z\s]+$/;
+  const patternName = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/;
   const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
   const patternBirthdate = /\d{4}-\d{2}-\d{2}/;
@@ -83,6 +84,7 @@ const validate = (data, value, errors, setErrors) => {
       break;
 
     case "password":
+
       if (typeof value !== "string") {
         newErrors.password = "Password invalid";
       } else if (value.length === 0) {
@@ -95,6 +97,7 @@ const validate = (data, value, errors, setErrors) => {
           "Password must contain at least one lowercase letter, one uppercase letter, and one of the special characters";
       } else {
         newErrors.password = "";
+
       }
       break;   
 

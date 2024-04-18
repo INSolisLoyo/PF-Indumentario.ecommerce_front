@@ -29,9 +29,7 @@ const AccountData = () => {
   }, [section]);
 
   return (
-    <div className="w-full h-auto pt-32 flex flex-col md:flex-row justify-center items-center"> 
-
-      
+    <div className="w-full h-auto pt-32 flex flex-col md:flex-row justify-center items-center">      
 
       <div className="w-full flex gap-8 px-8">
         {/* Div Menú */}
@@ -47,7 +45,6 @@ const AccountData = () => {
           >
             Account settings
           </button>
-
 
         </div>
 
