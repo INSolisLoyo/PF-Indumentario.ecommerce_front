@@ -161,11 +161,6 @@ export default function Login({ onClose }) {
     setShowForgotPassword(!showForgotPassword);
   };
 
-
-    setShowForgotPassword(!showForgotPassword)
-
-  }
-
   useEffect(() => {
   //Restablecer la validación cada vez que cambia el formulario
    setValidation({
