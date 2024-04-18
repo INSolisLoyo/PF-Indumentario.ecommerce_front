@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
 import { validateProductData } from "./validateProductData";
-import { color } from "@mui/system";
 
 const UpdateProduct = () => {
 
@@ -40,34 +39,27 @@ const UpdateProduct = () => {
   const [ colors, setColors ] = useState([]);
   const [ categories, setCategories ] = useState([]);
 
-  const [imageUrls, setImageUrls] = useState([""]);
+  const widgetCloudinary = cloudinary.createUploadWidget(
+    {
+      cloudName: "dm7llqul3",
+      uploadPreset: "yw28ignp",
+      folder: "uploads",
+    },
+    (error, result) => {
+      if (!error && result && result.event === "success") {
+        console.log(result.info);
+        setForm({
+          ...form,
+          images: [...form, result.info.secure_url]
+          });
+      }
+    }
+  );
 
-  const succesAlert = () => {
-    return Swal.fire({
-      title: "The Product Create Sucessfull!",
-      icon: "success",
-    });
+  const uploadPicture = async () => {
+    await widgetCloudinary.open();
   };
 
-  const errorAlert = () => {
-    return Swal.fire({
-      title: "Error to create product!",
-      icon: "error",
-    });
-
-  };
-
-  const handleImageChange = (index, e) => {
-    const urls = [...imageUrls];
-    urls[index] = e.target.value;
-    setImageUrls(urls);
-  };
-
-  const handleAddImageField = () => {
-    setImageUrls([...imageUrls, ""]);
-  };
-
-  
   const handleMaterialChange = (material) => {
    
     setForm({
@@ -310,30 +302,24 @@ const UpdateProduct = () => {
             </div>
 
             {/* Imágenes */}
-            <div>
+            <div className="w-full flex flex-col justify-center">
               <label
                 className="text-black dark:text-gray-200"
                 htmlFor="productImages"
               >
                 Images
               </label>
-              {imageUrls.map((url, index) => (
-                <input
-                  key={index}
-                  name={`image-${index}`}
-                  type="text"
-                  value={url}
-                  onChange={(e) => handleImageChange(index, e)}
-                  className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              ))}
-              <button
-                type="button"
-                onClick={handleAddImageField}
-                className="mt-2 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
-              >
-                Add Image
-              </button>
+              <picture className="w-full flex justify-center items-center">
+                
+                <img className="mt-2 w-56 h-56 border-solid border-black" src={form?.images[0]} id="pictureClou" />
+
+              </picture>
+              
+              <div className="w-full flex justify-around gap-4">
+                
+                <button className="w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}>Upload Image</button>
+
+              </div>
             </div>
 
             {/* Categoría */}
