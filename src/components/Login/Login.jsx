@@ -58,6 +58,8 @@ export default function Login({ onClose }) {
     // Validar los datos del formulario
     await validationData(form, setErrors, setValidation);
 
+    console.log(form);
+
     // Verificar si hay errores de validación
     if (validation.email && validation.password) {
       try {
