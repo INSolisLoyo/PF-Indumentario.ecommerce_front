@@ -12,6 +12,7 @@ import About from "./components/About/About";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import UpdateProduct from "./components/Dashboard/UpdateProduct";
 import UnsubscribeConfirmation from "./components/NewsLetter/unsubscribe";
+import Missing from './components/Missing/Missing'
 import UserRoutes from "./utils/UserRoutes";
 import userStore from "./components/GlobalStoreZustand/UserStore";
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/about/:section" element={<About />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/unsubscribe" element={<UnsubscribeConfirmation />} />
+        <Route path="*" element={<Missing />} />
 
         <Route element={<UserRoutes isRegister={user.id ? true : false} redirectPath='/'/>} >
           <Route path="/account/:section" element={<AccountData />} />
