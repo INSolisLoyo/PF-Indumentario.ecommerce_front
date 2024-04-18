@@ -37,9 +37,10 @@ const CartMenu = () => {
 
       // Hacer la solicitud GET al servidor con el email obtenido
       const res = await axios.get(`/user/google/${userEmail}`);
-      console.log(await res)
+
       // Retornar el id obtenido del servidor
       return await res.data.id;
+
     } catch (error) {
       console.log("Error al obtener el usuario de Google:", error);
       return undefined;
@@ -51,7 +52,9 @@ const CartMenu = () => {
       const totalPriceNum = parseFloat(totalPrice);
       const googleUserId = await dataAuth();
       console.log(googleUserId);
+
       console.log(user.id)
+
       let payload = { finalPrice: totalPriceNum.toFixed(2).toString() };
       if (googleUserId === undefined) {
         payload.userId = user.id;

@@ -1,14 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const AdminRoutes = ({
-    isAdmin,
+const UserRoutes = ({
+    isRegister,
     redirectPath = '/'
 }) => {
-  
-    if (!isAdmin) {
+    if (!isRegister) {
         return <Navigate to={redirectPath} replace />
     }
     return <Outlet />;
 }
 
-export default AdminRoutes;
+export default UserRoutes;

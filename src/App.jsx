@@ -12,9 +12,13 @@ import About from "./components/About/About";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import UpdateProduct from "./components/Dashboard/UpdateProduct";
 import UnsubscribeConfirmation from "./components/NewsLetter/unsubscribe";
+import UserRoutes from "./utils/UserRoutes";
+import userStore from "./components/GlobalStoreZustand/UserStore";
 
 function App() {
   const location = useLocation();
+
+  const user = userStore((state) => state.user);
 
   // Verifica si la ruta actual es /admin
   const isAdminRoute = location.pathname === "/admin";
@@ -26,17 +30,26 @@ function App() {
        <NavBar />
 
       <Routes>
+
         <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/account/:section" element={<AccountData />} />
         <Route path="/cards" element={<Cards />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/admin" element={<Dashboard />} />
         <Route path="/about/:section" element={<About />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/update-product/:id" element={<UpdateProduct />} />
         <Route path="/unsubscribe" element={<UnsubscribeConfirmation />} />
+
+        <Route element={<UserRoutes isRegister={user.id ? true : false} redirectPath='/'/>} >
+          <Route path="/account/:section" element={<AccountData />} />
+        </Route>
+
+        <Route element={<UserRoutes isRegister={user.isAdmin} redirectPath='/'/>}>
+
+          <Route path="/create" element={<Create />} />
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/update-product/:id" element={<UpdateProduct />} />
+
+        </Route>
 
       </Routes>
 
