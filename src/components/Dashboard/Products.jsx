@@ -23,14 +23,28 @@ export default function Products() {
 
   const handleDelete = async (id) => {
 
-    try {
-      const response = await axios.delete(`/product/${id}`)
-      if(response){
-        Swal.fire('Product deleted')
-      }
-      fetchProducts();
-    } catch (error) {
-      Swal.fire('Cannot delete product')
+    const confirmDelete = await Swal.fire({
+      title: "Do you want to delete this product?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Delete",
+      denyButtonText: `Cancel`,
+    });
+
+    if(confirmDelete.isConfirmed){
+
+      try {
+        const response = await axios.delete(`/product/${id}`)
+        if(response){
+          Swal.fire('Product deleted')
+        }
+        fetchProducts();
+      } catch (error) {
+        Swal.fire('Cannot delete product')
+      } 
+
+    } else if (confirmDelete.isDenied) {
+      Swal.fire("Action canceled", "", "info");
     }
 
   }
