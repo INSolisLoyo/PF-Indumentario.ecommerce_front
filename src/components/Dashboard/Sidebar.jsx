@@ -8,7 +8,6 @@ function Sidebar({ handleUsuariosClick, handleProductsClick, handleEstadisticsCl
         {/* Llama a handleUsuariosClick cuando hagas clic en el enlace de Usuarios */}
         <li className='border-b-slate-900 shadow-sm shadow-slate-500 border-t-[.5px] border-t-slate-400'><button onClick={handleUsuariosClick} className="block p-4">Users</button></li>
         <li className='border-b shadow-sm shadow-slate-500'><button onClick={handleProductsClick } className="block p-4">Products</button></li>
-        <li className='border-b shadow-sm shadow-slate-500'><button onClick={handleEstadisticsClick } className="block p-4">Stadistics</button></li>
         {/* Agrega más enlaces según sea necesario */}
       </ul>
     </div>
