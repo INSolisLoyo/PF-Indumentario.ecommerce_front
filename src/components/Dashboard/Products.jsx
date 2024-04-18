@@ -5,12 +5,15 @@ import axios from '../../axios/axios';
 import SearchbarProduct from './SearchbarProduct';
 import Swal from 'sweetalert2';
 
-
 export default function Products() {
 
   const navigate = useNavigate();
 
   const [ products, setProducts ] = useState([]);
+
+  const handleNew = () => {
+    navigate('/create')
+  }
 
   const handleUpdate = (id) => {
 
@@ -20,33 +23,40 @@ export default function Products() {
 
   const handleDelete = async (id) => {
 
-    try {
-      const response = await axios.delete(`/product/${id}`)
-      if(response){
-        Swal.fire('Product deleted')
-      }
-      fetchProducts();
-    } catch (error) {
-      Swal.fire('Cannot delete product')
+    const confirmDelete = await Swal.fire({
+      title: "Do you want to delete this product?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Delete",
+      denyButtonText: `Cancel`,
+    });
+
+    if(confirmDelete.isConfirmed){
+
+      try {
+        const response = await axios.delete(`/product/${id}`)
+        if(response){
+          Swal.fire('Product deleted')
+        }
+        fetchProducts();
+      } catch (error) {
+        Swal.fire('Cannot delete product')
+      } 
+
+    } else if (confirmDelete.isDenied) {
+      Swal.fire("Action canceled", "", "info");
     }
 
   }
 
   const handleStatusChange = async (product, option) => {
 
-    let isActive;
-
-    if(option){
-      isActive = "true"
-    } else {
-      isActive = "false"
-    }
 
     try {
 
       const newObject = {
         ...product,
-        isActive: isActive
+        isActive: option
       }
 
       console.log(newObject);
@@ -127,7 +137,7 @@ export default function Products() {
       {/* div de searchbar y button new */}
       <div className='w-full flex justify-start gap-8'>
    
-        <button className='shadow border border-slate-300 rounded-xl shadow-slate-300 mb-3 py-2 w-2/6 bg-primary/10 hover:bg-primary/40'>New</button>
+        <button className='shadow border border-slate-300 rounded-xl shadow-slate-300 mb-3 py-2 w-2/6 bg-primary/10 hover:bg-primary/40' onClick={handleNew}>New</button>
 
         <SearchbarProduct setProducts={setProducts}/>
 
