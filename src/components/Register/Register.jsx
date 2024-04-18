@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../Navbar/Navbar";
 import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,6 +13,8 @@ const URL = "/user";
 export default function Register() {
 
   const [ desabledButton, setDesabledButton ] = useState(true);
+
+  
 
   const [formData, setFormData] = useState({
     name: "",
@@ -74,6 +77,12 @@ export default function Register() {
     
   };
 
+  const navigate = useNavigate();
+  const handleGoBackClick = () => {
+    navigate(-1); // retroceder a la página anterior
+    window.scrollTo(0, 0); // Mover la ventana al principio de la página
+  }
+
 
 
   const handleSubmit = async (event) => {
@@ -121,6 +130,15 @@ export default function Register() {
     <div className="min-h-screen p-6 pt-[80px] flex items-center justify-center font-RedHat">
       <div className="container max-w-screen-lg mx-auto">
         <div>
+
+        <div className="absolute inset-x-6 top-[100px]">
+      <button
+        className=" px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-secondary/35 rounded-md hover:bg-primary hover:text-white italic font-bold focus:outline-none focus:bg-gray-600 "
+        onClick={handleGoBackClick}
+      >
+        ⬅ Go Back
+      </button>
+    </div>
           
 
           <div className="bg-primary/30 rounded shadow-lg p-4 px-4 md:p-8 mb-6">

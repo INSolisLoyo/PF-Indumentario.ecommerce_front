@@ -57,11 +57,13 @@ export default function Account({ onClose, setShowSidebar }) {
           </div>
 
           <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
+
             <li>
               <a href="#" className="hover:text-primary">
                 Shopping History
               </a>
-            </li>
+            </li> 
+
             <li>
               <a href="/account/settings" className="hover:text-primary">
                 Account settings
