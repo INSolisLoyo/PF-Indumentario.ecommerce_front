@@ -4,6 +4,8 @@ import useCartStore from "../GlobalStoreZustand/useCartStore";
 
 export default function Account({ onClose, setShowSidebar }) {
 
+  const user = userStore((state) => state.user);
+
   // Función para limpiar el carrito del estado global
   const clearCart = () => {
     useCartStore.getState().clearCart(); // Llama a la acción clearCart del store useCartStore
@@ -53,14 +55,17 @@ export default function Account({ onClose, setShowSidebar }) {
 
           <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
             <li>
-              <a href="#" className="hover:text-primary">
-                Shopping History
-              </a>
-            </li>
-            <li>
               <a href="/account/settings" className="hover:text-primary">
                 Account settings
               </a>
+            </li>
+            <li>
+              {
+                user.isAdmin && <a href="/admin" className="hover:text-primary">
+                Dashboard
+              </a>
+              }
+              
             </li>
           </ul>
 

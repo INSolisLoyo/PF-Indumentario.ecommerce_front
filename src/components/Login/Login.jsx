@@ -53,16 +53,20 @@ export default function Login({ onClose }) {
   };
 
   const submitHandler = async (event) => {
+
     event.preventDefault();
 
     // Validar los datos del formulario
-    await validationData(form, setErrors, setValidation);
+    validationData(form, setErrors, setValidation);
 
-    console.log(form);
+    
 
     // Verificar si hay errores de validación
     if (validation.email && validation.password) {
       try {
+
+        console.log(form);
+
         const { data } = await axios.post(
           LOGIN_URL,
           {
@@ -162,9 +166,6 @@ export default function Login({ onClose }) {
         );
         // Agregar los favoritos al estado global
         addToFavorites(favoritesWithDetails);
-        console.log(productDetails);
-
-        console.log();
 
       // Mostrar una alerta de éxito
       Swal.fire({
@@ -288,13 +289,6 @@ export default function Login({ onClose }) {
             {errors.password && (
               <span className="text-red-500">{errors.password}</span>
             )}
-
-            {/* Keep sesion open? */}
-            <div className="flex gap-2 items-center">
-              <SesionSwitch />
-              <p>Keep the session open</p>
-              <PopoverInfo />
-            </div>
 
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"
