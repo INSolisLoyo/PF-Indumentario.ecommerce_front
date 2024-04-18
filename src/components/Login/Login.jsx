@@ -1,5 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
+import {useNavigate} from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +32,8 @@ export default function Login({ onClose }) {
     email: false,
     password: false,
   });
+
+  /*  */
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -165,6 +168,8 @@ export default function Login({ onClose }) {
       }
     }
   };
+
+  const navigate = useNavigate();
 
   const handleRegister = () => {
     navigate("/register");

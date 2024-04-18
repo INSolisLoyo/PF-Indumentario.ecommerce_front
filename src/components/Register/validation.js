@@ -8,7 +8,7 @@ const validate = (data, value, errors, setErrors) => {
     const patternName = /^[a-zA-Z\s]+$/;
     const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
-    const patternDob = /\d{4}-\d{2}-\d{2}/;
+    const patternBirthdate = /\d{4}-\d{2}-\d{2}/;
   
     switch (data) {
       case "name":
@@ -52,14 +52,14 @@ const validate = (data, value, errors, setErrors) => {
         }
         break;
   
-      case "dob":
+      case "birthdate":
         if (value.length === 0) {
-          newErrors.dob = "Date of Birth is required";
+          newErrors.birthdate = "Date of Birth is required";
         } else {
-          if (!patternDob.test(value)) {
-            newErrors.dob = "Invalid date of birth format";
+          if (!patternBirthdate.test(value)) {
+            newErrors.birthdate = "Invalid date of birth format";
           } else {
-            newErrors.dob = "";
+            newErrors.birthdate = "";
           }
         }
         break;
@@ -120,17 +120,17 @@ const validate = (data, value, errors, setErrors) => {
           }
         break;
   
-        case "adress":
+        case "address":
           if (value.length === 0) {
-            newErrors.adress = "Address is required";
+            newErrors.address = "Address is required";
           } else {
             if (value.length > 30) {
-              newErrors.adress = "Address should not exceed 30 characters";
+              newErrors.address = "Address should not exceed 30 characters";
             } else {
               if (typeof value !== "string") {
-                  newErrors.adress = "Address must be a string";
+                  newErrors.address = "Address must be a string";
                 } else {
-                  newErrors.adress = "";
+                  newErrors.address = "";
                 }            
             }
           }
