@@ -53,14 +53,20 @@ export default function Login({ onClose }) {
   };
 
   const submitHandler = async (event) => {
+
     event.preventDefault();
 
     // Validar los datos del formulario
-    await validationData(form, setErrors, setValidation);
+    validationData(form, setErrors, setValidation);
+
+    
 
     // Verificar si hay errores de validación
     if (validation.email && validation.password) {
       try {
+
+        console.log(form);
+
         const { data } = await axios.post(
           LOGIN_URL,
           {
@@ -160,9 +166,6 @@ export default function Login({ onClose }) {
         );
         // Agregar los favoritos al estado global
         addToFavorites(favoritesWithDetails);
-        console.log(productDetails);
-
-        console.log();
 
       // Mostrar una alerta de éxito
       Swal.fire({
@@ -191,13 +194,13 @@ export default function Login({ onClose }) {
 
   }
 
-  useEffect(() => {
-    // Restablecer la validación cada vez que cambia el formulario
-    setValidation({
-      email: false,
-      password: false,
-    });
-  }, [form]);
+  // useEffect(() => {
+  //   // Restablecer la validación cada vez que cambia el formulario
+  //   setValidation({
+  //     email: false,
+  //     password: false,
+  //   });
+  // }, [form]);
 
   return (
     <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
@@ -237,7 +240,7 @@ export default function Login({ onClose }) {
           </div>
 
           {/* Inputs */}
-          <div className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={submitHandler}>
             <input
               className={`w-full py-2 px-4 border ${
                 errors.email ? "border-red-500" : "border-gray-300"
@@ -287,26 +290,19 @@ export default function Login({ onClose }) {
               <span className="text-red-500">{errors.password}</span>
             )}
 
-            {/* Keep sesion open? */}
-            <div className="flex gap-2 items-center">
-              <SesionSwitch />
-              <p>Keep the session open</p>
-              <PopoverInfo />
-            </div>
-
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"
-              onClick={submitHandler}
+              type="onSubmit"
             >
               Log in
             </button>
-          </div>
+          </form>
 
           { /* Forget password */}
           <p className="underline text-center cursor-pointer" onClick={handleClickPassword}>Forgot your password?</p>
 
           {/* Create an account*/}
-          <button
+          <button 
             className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex justify-center items-center"
             onClick={handleRegister}
           >
