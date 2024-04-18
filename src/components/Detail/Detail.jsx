@@ -100,6 +100,7 @@ const Detail = () => {
 
   const handleGoBackClick = () => {
     navigate(-1); // retroceder a la página anterior
+    window.scrollTo(0, 0);
   };
 
   const handleCounter = (op) => {
