@@ -16,9 +16,8 @@ import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 const LOGIN_URL = "/login";
 
 export default function Login({ onClose }) {
-
   const navigate = useNavigate();
-  
+
   const setCurrentUser = userStore((state) => state.setCurrentUser);
   const setRegisteredUser = userStore((state) => state.setRegisteredUser);
   const addToFavorites = useFavoriteStore((state) => state.addToFavorites);
@@ -115,7 +114,6 @@ export default function Login({ onClose }) {
         const responseFav = await axios.get(`/favorite`);
         const favoriteProducts = responseFav.data;
 
-
         // Verificar si la respuesta del servidor es un array
         if (Array.isArray(favoriteProducts)) {
           // Iterar sobre cada favorito y agregarlo al estado de favoritos
@@ -166,12 +164,11 @@ export default function Login({ onClose }) {
   };
 
   useEffect(() => {
-  //Restablecer la validación cada vez que cambia el formulario
-   setValidation({
-     email: false,
-       password: false,
-     });
-
+    //Restablecer la validación cada vez que cambia el formulario
+    setValidation({
+      email: false,
+      password: false,
+    });
   }, [form]);
 
   return (
