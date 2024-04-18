@@ -48,17 +48,6 @@ const AccountData = () => {
             Account settings
           </button>
 
-          <button
-            className={`w-full  py-4 ${
-              section === "orders"
-                ? "bg-[#ae5e48] text-white"
-                : "bg-[#f4e8e0] border-[#e7d0c1]"
-            } rounded-xl text-center font-light cursor-pointer hover:bg-[#ae5e48] hover:text-white focus:bg-[#ae5e48] focus:text-white active:bg-[#ae5e48] active:text-white`}
-            ref={ordersRef}
-            onClick={() => handleClick("orders")}
-          >
-            Orders
-          </button>
 
         </div>
 
