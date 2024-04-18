@@ -3,6 +3,7 @@
 
 
 const validate = (data, value, errors, setErrors) => {
+
   const newErrors = { ...errors };
 
   const patternName = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/;
@@ -49,17 +50,17 @@ const validate = (data, value, errors, setErrors) => {
             }
           }
         }
-      }
-      break;
-
-    case "birthdate":
-      if (value.length === 0) {
-        newErrors.birthdate = "Date of Birth is required";
-      } else {
-        if (!patternBirthdate.test(value)) {
-          newErrors.birthdate = "Invalid date of birth format";
+        break;
+  
+      case "birthdate":
+        if (value.length === 0) {
+          newErrors.birthdate = "Date of Birth is required";
         } else {
-          newErrors.birthdate = "";
+          if (!patternBirthdate.test(value)) {
+            newErrors.birthdate = "Invalid date of birth format";
+          } else {
+            newErrors.birthdate = "";
+          }
         }
       }
       break;
@@ -124,14 +125,27 @@ const validate = (data, value, errors, setErrors) => {
         if (value.length === 0) {
           newErrors.address = "Address is required";
         } else {
-          if (value.length > 30) {
-            newErrors.address = "Address should not exceed 30 characters";
+          if (typeof value !== "string") {
+              newErrors.phone = "Phone invalid";
+            } else {
+              newErrors.phone = "";
+            }
+          }
+        break;
+  
+        case "address":
+          if (value.length === 0) {
+            newErrors.address = "Address is required";
           } else {
-            if (typeof value !== "string") {
-                newErrors.address = "Address must be a string";
-              } else {
-                newErrors.address = "";
-              }            
+            if (value.length > 30) {
+              newErrors.address = "Address should not exceed 30 characters";
+            } else {
+              if (typeof value !== "string") {
+                  newErrors.address = "Address must be a string";
+                } else {
+                  newErrors.address = "";
+                }            
+            }
           }
         }
         break;

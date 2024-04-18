@@ -1,5 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
+import {useNavigate} from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +12,7 @@ import validationData from "./validationData";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
+import Swal from 'sweetalert2';
 
 const LOGIN_URL = "/login";
 
@@ -31,6 +33,8 @@ export default function Login({ onClose }) {
     email: false,
     password: false,
   });
+
+  /*  */
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -158,6 +162,14 @@ export default function Login({ onClose }) {
         addToFavorites(favoritesWithDetails);
         console.log(productDetails);
 
+        console.log();
+
+      // Mostrar una alerta de éxito
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Login with Google successful!'
+      });
         // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
@@ -165,6 +177,8 @@ export default function Login({ onClose }) {
       }
     }
   };
+
+  const navigate = useNavigate();
 
   const handleRegister = () => {
     navigate("/register");

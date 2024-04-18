@@ -1,4 +1,5 @@
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
 
 const validationData = (form, setErrors, setValidation) => {
 
@@ -24,14 +25,14 @@ const validationData = (form, setErrors, setValidation) => {
 
     }
  
-    if(form.password.length === 0){
-          
+    if (form.password.length === 0) {
       passwordError = 'Enter your password';
-      
     } else {
-
-      validationPassword = true;
-
+      if (PASSWORD_REGEX.test(form.password)) {
+        validationPassword = true;
+      } else {
+        passwordError = 'Enter a correct password';
+      }
     }
 
     setErrors({

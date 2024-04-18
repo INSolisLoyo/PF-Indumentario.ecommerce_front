@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Card from "../Card/Card";
 import Filters from "../Filters/Filters";
 import SearchBar from "../Navbar/SearchBar";
@@ -50,7 +50,7 @@ const Cards = () => {
         productLimit: PRODUCTS_PER_PAGE,
         pageNumber: currentPage,
         orderType,
-        order
+        order,
       });
       setItems(response.data);
       setTotalItems(response.data.length);
@@ -72,7 +72,7 @@ const Cards = () => {
     gender,
     category,
     orderType,
-    order
+    order,
   ]);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const Cards = () => {
     setAppliedFilters(filters);
   }, [material, colour, gender, category]);
 
-  const handlePageChange = page => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
@@ -109,6 +109,13 @@ const Cards = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleGoBackClick = () => {
+    navigate(-1); // retroceder a la página anterior
+    window.scrollTo(0, 0); // Mover la ventana al principio de la página
+  };
+
   return (
     <div className="flex-col pt-[120px] justify-center font-RedHat">
       <div className="flex justify-around relative">
@@ -116,6 +123,16 @@ const Cards = () => {
           <div className=" w-full h-12 flex justify-center lg:hidden">
             {location.pathname === "/cards" && <SearchBar />}
           </div>
+
+          <div className="absolute inset-x-6 top-[0px]">
+            <button
+              className=" px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-secondary/35 rounded-md hover:bg-primary hover:text-white italic font-bold focus:outline-none focus:bg-gray-600 "
+              onClick={handleGoBackClick}
+            >
+              ⬅ Go Back
+            </button>
+          </div>
+
           <div
             className="border-solid px-4 py-2  bg-primary/20 hover:bg-primary hover:text-white hover:shadow-lg hover:cursor-pointer rounded-[6px] float-right"
             onClick={() => setShowFilters(!showFilters)}
@@ -129,11 +146,11 @@ const Cards = () => {
         <div className="flex justify-around">
           <div>
             <div className="flex gap-5">
-            {appliedFilters.map((filter, index) => (
-              <p key={index} className="text-xl font-bold">
-                {filter}
-              </p>
-            ))}
+              {appliedFilters.map((filter, index) => (
+                <p key={index} className="text-xl font-bold">
+                  {filter}
+                </p>
+              ))}
             </div>
           </div>
           <p className="text-xl font-bold">
@@ -146,7 +163,6 @@ const Cards = () => {
           className="flex flex-wrap gap-10 justify-center"
           style={{ maxWidth: "90vw" }}
         >
-
           {displayedItems.length > 0 ? (
             displayedItems.map((res) => (
               <div key={res.id} className="relative">
@@ -154,9 +170,10 @@ const Cards = () => {
               </div>
             ))
           ) : (
-            <p className="text-xl text-gray-400">There are no items available with the selected filters.</p>
+            <p className="text-xl text-gray-400">
+              There are no items available with the selected filters.
+            </p>
           )}
-
         </div>
       </div>
 

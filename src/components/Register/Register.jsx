@@ -25,6 +25,7 @@ export default function Register() {
     country: "",
     state: "",
     zipcode: "",
+    /* picture: null */
   });
 
   const [errors, setErrors] = useState({
