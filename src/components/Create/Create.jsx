@@ -29,6 +29,7 @@ const Create = () => {
     colour: '',
     material: '',
     description: '',
+    empty: '',
   })
 
   const [ materials, setMaterials] = useState([]);
@@ -121,7 +122,10 @@ const Create = () => {
 
       }else {
 
-        return;
+        setErrors({
+          ...errors,
+          empty: 'Please, fill all fields'
+        })
 
       }
          
@@ -170,6 +174,15 @@ const Create = () => {
         if ( errors[prop] !== '') errorsExist = true;
     }
 
+    for (const key in form) {
+      if (typeof form[key] === 'string' && form[key].trim() === '') {
+        errorsExist = true;
+      }
+      if (Array.isArray(form[key]) && form[key].length === 0) {
+        errorsExist = true;
+      }
+    }
+
     return errorsExist;
 
   }
@@ -193,6 +206,15 @@ const Create = () => {
     fetchData();
 
   }, [])
+
+  useEffect(() => {
+
+    setErrors({
+      ...errors,
+      empty: ''
+    })
+
+  }, [form])
 
   return (
     <div className="pt-8 md:pt-16 w-full">
@@ -310,7 +332,7 @@ const Create = () => {
             {/* Categoría */}
             <div className="flex flex-col gap-4">
               <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Categories</label>          
-              <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} onChange={handleChange}>
+              <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} value={form.category} onChange={handleChange}>
                 {
                   categories?.map((category) => {
                     return <option key={category} value={category}>{category}</option>
@@ -356,8 +378,8 @@ const Create = () => {
 
               </picture>
               
-              <div className="w-full flex justify-around gap-4">
-                
+              <div className="w-full flex flex-col justify-center items-center gap-4">
+
                 <button className="bg-white w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}
                 type="button"
                 >Upload Image</button>
@@ -367,8 +389,12 @@ const Create = () => {
 
           </div>
 
-          <div className="flex justify-end mt-6">
+          <div className="flex flex-col justify-center items-center mt-6">
 
+            {
+              errors.empty && <span className="text-red-400">{errors.empty}</span>
+            }
+                
             <button
               type="submit"
               className="px-8 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
