@@ -12,6 +12,7 @@ import About from "./components/About/About";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import UpdateProduct from "./components/Dashboard/UpdateProduct";
 import UnsubscribeConfirmation from "./components/NewsLetter/unsubscribe";
+import Missing from './components/Missing/Missing'
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/update-product/:id" element={<UpdateProduct />} />
         <Route path="/unsubscribe" element={<UnsubscribeConfirmation />} />
+        <Route path="*" element={<Missing />} />
 
       </Routes>
 
