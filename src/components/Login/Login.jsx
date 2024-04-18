@@ -193,13 +193,13 @@ export default function Login({ onClose }) {
 
   }
 
-  useEffect(() => {
-    // Restablecer la validación cada vez que cambia el formulario
-    setValidation({
-      email: false,
-      password: false,
-    });
-  }, [form]);
+  // useEffect(() => {
+  //   // Restablecer la validación cada vez que cambia el formulario
+  //   setValidation({
+  //     email: false,
+  //     password: false,
+  //   });
+  // }, [form]);
 
   return (
     <div className="absolute right-0 top-0 w-11/12 h-screen border-none rounded-lg shadow shadow-slate-500 font-RedHat bg-white md:w-1/3 ">
