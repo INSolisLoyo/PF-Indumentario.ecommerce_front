@@ -5,12 +5,15 @@ import axios from '../../axios/axios';
 import SearchbarProduct from './SearchbarProduct';
 import Swal from 'sweetalert2';
 
-
 export default function Products() {
 
   const navigate = useNavigate();
 
   const [ products, setProducts ] = useState([]);
+
+  const handleNew = () => {
+    navigate('/create')
+  }
 
   const handleUpdate = (id) => {
 
@@ -127,7 +130,7 @@ export default function Products() {
       {/* div de searchbar y button new */}
       <div className='w-full flex justify-start gap-8'>
    
-        <button className='shadow border border-slate-300 rounded-xl shadow-slate-300 mb-3 py-2 w-2/6 bg-primary/10 hover:bg-primary/40'>New</button>
+        <button className='shadow border border-slate-300 rounded-xl shadow-slate-300 mb-3 py-2 w-2/6 bg-primary/10 hover:bg-primary/40' onClick={handleNew}>New</button>
 
         <SearchbarProduct setProducts={setProducts}/>
 

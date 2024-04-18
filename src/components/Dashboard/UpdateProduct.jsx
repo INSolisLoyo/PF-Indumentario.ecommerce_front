@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
 import { validateProductData } from "./validateProductData";
 
 const UpdateProduct = () => {
+
+  const animatedComponents = makeAnimated();
 
   const { id } = useParams();
   
@@ -62,79 +66,39 @@ const UpdateProduct = () => {
     setImageUrls([...imageUrls, ""]);
   };
 
-  const handleClick = (event) => {
-    if(event.target.value)
-      event.target.value = '';
-  }
-
-  const handleMaterialChange = (event) => {
-
-    const material = event.target.value;
-    
-    if(!form.material.includes(material)){
-        setForm({
-            ...form,
-            material: [ ...form.material, material ]
-        })
-        setErrors({
-          ...errors,
-          material: ''
-        })   
-    }
   
-  }
+  const handleMaterialChange = (material) => {
 
-  const handleClickMaterial = (material) => {
-
-    const newMaterials =  form.material.filter( item => item !== material)
-
+    
     setForm({
         ...form,
-        material: newMaterials
+        material: material
     })
-
-    if(newMaterials.length === 0 ){
-      setErrors({
-        ...errors,
-        material: 'Choose at least one'
-      })
-    }
-
-  }
-
-  const handleColorChange = (event) => {
-
-    const color = event.target.value;
+    setErrors({
+      ...errors,
+      material: ''
+    })   
     
-    if(!form.colour.includes(color)){
-        setForm({
-            ...form,
-            colour: [ ...form.colour, color ]
-        })    
-        setErrors({
-          ...errors,
-          colour: ''
-        })      
-    }
-
   }
 
-  const handleClickColor = (color) => {
+  const handleColorChange = (color) => {
 
-    const newColors =  form.colour.filter( item => item !== color)
-
+  
     setForm({
         ...form,
-        colour: newColors
-    })
-
-    if(newColors.length === 0 ){
-      setErrors({
-        ...errors,
-        colour: 'Choose at least one'
-      })
-    }
+        colour: color
+    })    
+    setErrors({
+      ...errors,
+      colour: ''
+    })      
     
+  }
+
+  const setSelectValues = (items) => {
+
+    return items.map(item => ({ label: item, value: item}))
+      
   }
 
   const handleSubmit = async (e) => {
@@ -175,19 +139,23 @@ const UpdateProduct = () => {
 
       console.log(data);
 
+      const productMaterials = setSelectValues(data.material);
+      const productColors = setSelectValues(data.colour);
+
       setForm({
         id: data.id,
         name: data.name,
         price: data.price,
         gender: data.gender,
         images: data.images,
-        colour: data.colour,
-        material: data.material,
+        colour: productColors,
+        material: productMaterials,
         category: data.category,
         description: data.description,
         isActive: data.isActive,
       })
 
+    
       const materialData = (await axios.get('/materials')).data;
       setMaterials(materialData);
       const colorData = (await axios.get('/colours')).data;
@@ -200,6 +168,20 @@ const UpdateProduct = () => {
       console.log('Error to get the data product.');
     }
   }
+
+  const optionsColour = colors
+    ? colors.map((color) => ({
+        value: color,
+        label: color,
+      }))
+    : [];
+
+  const optionsMaterial = materials
+    ? materials.map((material) => ({
+        value: material,
+        label: material,
+      }))
+    : [];
 
   useEffect(() => {
 
@@ -285,55 +267,34 @@ const UpdateProduct = () => {
             {/* Material */}
             <div>
               <label className="text-black dark:text-gray-200" htmlFor="productMaterial">Material</label>
-              <input
-                list="material"
-                onChange={handleMaterialChange}
-                onClick={handleClick}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+              <Select
+              closeMenuOnSelect={false}
+              isMulti
+              components={animatedComponents}
+              options={optionsMaterial}
+              value={form.material} // Asignar el valor seleccionado al componente Select de material
+              onChange={handleMaterialChange}
               />
-              <datalist name="material" id="material">
-                {
-                  materials?.map((material) => {
-                    return <option key={material} value={material}>{material}</option>
-                })
-                }
-              </datalist>
               {errors.material && (
                         <span className="text-red-500">{errors.material}</span>
               )}
-              <div className="flex flex-wrap gap-1 mt-4">
-                    { form.material.length > 0 && form.material.map( (material) => {
-                        return <p key={material + "sm"} className="bg-primary/30 px-1 rounded-xl">{material} <span className="text-sm cursor-pointer text-red-500" onClick={() => handleClickMaterial(material)}>x</span></p>
-                    }
-                    )} 
-              </div>
+             
             </div>
 
             {/* Color */}
             <div>
               <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Colors</label>
-              <input
-                list="color"
-                onChange={handleColorChange}
-                onClick={handleClick}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-              />
-              <datalist name="color" id="color">
-                {
-                  colors?.map((color) => {
-                    return <option key={color} value={color}>{color}</option>
-                })
-                }
-              </datalist>
-              {errors.colour && (
-                        <span className="text-red-500">{errors.colour}</span>
-              )}
-              <div className="flex flex-wrap gap-1 mt-4">
-                    { form.colour.length > 0 && form.colour.map( (color) => {
-                        return <p key={color + "sm"} className="bg-primary/30 px-1 rounded-xl">{color} <span className="text-sm cursor-pointer text-red-500" onClick={() => handleClickColor(color)}>x</span></p>
-                    }
-                    )} 
-              </div>
+              <Select
+              closeMenuOnSelect={false}
+              isMulti
+              components={animatedComponents}
+              options={optionsColour}
+              value={form.colour} // Asignar el valor seleccionado al componente Select de color
+              onChange={handleColorChange}
+            />
+            {errors.colour && (
+                      <span className="text-red-500">{errors.colour}</span>
+            )}
               
             </div>
 
