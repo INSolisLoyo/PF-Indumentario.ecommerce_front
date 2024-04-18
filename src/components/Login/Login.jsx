@@ -12,6 +12,7 @@ import validationData from "./validationData";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
+import Swal from 'sweetalert2';
 
 const LOGIN_URL = "/login";
 
@@ -161,6 +162,14 @@ export default function Login({ onClose }) {
         addToFavorites(favoritesWithDetails);
         console.log(productDetails);
 
+        console.log();
+
+      // Mostrar una alerta de éxito
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Login with Google successful!'
+      });
         // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
