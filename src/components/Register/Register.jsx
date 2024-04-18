@@ -72,7 +72,7 @@ export default function Register() {
     validate(name, value, errors, setErrors)
 
 
-    /* setErrors(validationSignUp({ ...formData, [name]: value })); */
+    
   };
 
 
@@ -90,13 +90,13 @@ export default function Register() {
           URL,
           formData,
           
-        );        
+        );       
 
         if (response.status === 200) {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "The user successfully registered",
+            html: "<p><b>The user successfully registered.</b></p> <p>We have sent a welcome email to your email!</p> ",
           });
         } else {
           Swal.fire({

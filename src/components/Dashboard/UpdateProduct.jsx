@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
-import { validateProductData } from "../Dashboard/validateProductData";
+import { validateProductData } from "./validateProductData";
 
-const Create = () => {
+const UpdateProduct = () => {
 
   const animatedComponents = makeAnimated();
+
+  const { id } = useParams();
+
+  const [ disabledData, setDisabledData ] = useState(true);
   
   const [ form, setForm ] = useState({
+    id: '',
     name: '',
     price: '',
     gender: '',
@@ -29,7 +35,6 @@ const Create = () => {
     colour: '',
     material: '',
     description: '',
-    empty: '',
   })
 
   const [ materials, setMaterials] = useState([]);
@@ -44,30 +49,17 @@ const Create = () => {
     },
     (error, result) => {
       if (!error && result && result.event === "success") {
+        console.log(result.info);
         setForm({
           ...form,
           images: [...form.images, result.info.secure_url]
-        })
+        });
       }
     }
   );
 
   const uploadPicture = async () => {
     await widgetCloudinary.open();
-  };
-
-  const succesAlert = () => {
-    return Swal.fire({
-      title: "The product was created Sucessfully!",
-      icon: "success",
-    });
-  };
-
-  const errorAlert = () => {
-    return Swal.fire({
-      title: "Error to create the product!",
-      icon: "error",
-    });
   };
 
   const handleMaterialChange = (material) => {
@@ -92,60 +84,41 @@ const Create = () => {
     
   }
 
+  const setSelectValues = (items) => {
+
+    return items.map(item => ({ label: item, value: item}))
+      
+  }
+
   const handleSubmit = async (e) => {
 
-    e.preventDefault();
+    console.log('Entramos al handle submit');
 
     const materialData = form.material.map( material => material.value);
     const colorData = form.colour.map( color => color.value);
 
-    const errorExist = anErrorExist();
-
     try {
 
-      if(!errorExist){
+      const response = await axios.put(`/product/${id}`, {
+        id: form.id,
+        name: form.name,
+        price: form.price,
+        gender: form.gender,
+        images: form.images,
+        colour: colorData,
+        material: materialData,
+        category: form.category,
+        description: form.description,
+        isActive: form.isActive,
+      })
+      
+      if(response)
+        Swal.fire('Product Update')
 
-        const response = await axios.post('/product/create', {
-          name: form.name,
-          price: form.price,
-          gender: form.gender,
-          images: form.images,
-          colour: colorData,
-          material: materialData,
-          category: form.category,
-          description: form.description,
-          isActive: form.isActive,
-        });
-
-        if(response){
-          
-          succesAlert();
-          setForm({
-            name: '',
-            price: '',
-            gender: '',
-            images: [],
-            colour: [],
-            material: [],
-            category: '',
-            description: '',
-            isActive: true,        
-          })
-
-        }
-
-      }else {
-
-        setErrors({
-          ...errors,
-          empty: 'Please, fill all fields'
-        })
-
-      }
-         
+     
     } catch (error) {
       console.error("Error creating product:", error);
-      errorAlert();
+      Swal.fire('Cannot update data');
     }
   };
 
@@ -166,6 +139,27 @@ const Create = () => {
   const fetchData = async () => {
 
     try {
+
+      const { data } = await axios.get(`product/${id}`);
+
+      console.log(data);
+
+      const productMaterials = setSelectValues(data.material);
+      const productColors = setSelectValues(data.colour);
+
+      setForm({
+        id: data.id,
+        name: data.name,
+        price: data.price,
+        gender: data.gender,
+        images: data.images,
+        colour: productColors,
+        material: productMaterials,
+        category: data.category,
+        description: data.description,
+        isActive: data.isActive,
+      })
+
     
       const materialData = (await axios.get('/materials')).data;
       setMaterials(materialData);
@@ -180,21 +174,29 @@ const Create = () => {
     }
   }
 
+  const handleEdit = () => {
+
+    if(disabledData){
+      setDisabledData(false);
+    } else {
+      
+      const errorExists = anErrorExist();
+      console.log(errorExists);
+
+        if(!errorExists){
+          handleSubmit();
+          setDisabledData(true)
+        }
+    }
+
+  }
+
   const anErrorExist = () => {
 
     let errorsExist = false
       
     for (let prop in errors){
         if ( errors[prop] !== '') errorsExist = true;
-    }
-
-    for (const key in form) {
-      if (typeof form[key] === 'string' && form[key].trim() === '') {
-        errorsExist = true;
-      }
-      if (Array.isArray(form[key]) && form[key].length === 0) {
-        errorsExist = true;
-      }
     }
 
     return errorsExist;
@@ -221,25 +223,16 @@ const Create = () => {
 
   }, [])
 
-  useEffect(() => {
-
-    setErrors({
-      ...errors,
-      empty: ''
-    })
-
-  }, [form])
-
   return (
     <div className="pt-8 md:pt-16 w-full">
 
       <section className="w-11/12 p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat flex flex-col gap-4 items-center">
 
         <h1 className="text-2xl text-gray-600 capitalize dark:text-white">
-          Create New Product
+          Update Product
         </h1>
 
-        <form onSubmit={handleSubmit} className="w-full">
+        <div className="w-full">
 
           <div className="grid grid-cols-1 gap-6 p-8 rounded-xl sm:grid-cols-2 bg-white">
 
@@ -257,7 +250,8 @@ const Create = () => {
                 value={form.name}
                 onChange={handleChange}
                 type="text"
-                className="block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.name && (
                         <span className="text-red-500">{errors.name}</span>
@@ -278,7 +272,8 @@ const Create = () => {
                 type="number"
                 value={form.price}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.price && (
                         <span className="text-red-500">{errors.price}</span>
@@ -299,7 +294,8 @@ const Create = () => {
                 defaultValue={form.gender}
                 value={form.gender}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               >
                 <option value="" disabled>
                   Choose gender
@@ -319,6 +315,7 @@ const Create = () => {
               options={optionsMaterial}
               value={form.material} // Asignar el valor seleccionado al componente Select de material
               onChange={handleMaterialChange}
+              isDisabled={disabledData}
               />
               {errors.material && (
                         <span className="text-red-500">{errors.material}</span>
@@ -336,6 +333,7 @@ const Create = () => {
               options={optionsColour}
               value={form.colour} // Asignar el valor seleccionado al componente Select de color
               onChange={handleColorChange}
+              isDisabled={disabledData}
             />
             {errors.colour && (
                       <span className="text-red-500">{errors.colour}</span>
@@ -346,7 +344,7 @@ const Create = () => {
             {/* Categoría */}
             <div className="flex flex-col gap-4">
               <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Categories</label>          
-              <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} value={form.category} onChange={handleChange}>
+              <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} onChange={handleChange} disabled={disabledData}>
                 {
                   categories?.map((category) => {
                     return <option key={category} value={category}>{category}</option>
@@ -371,7 +369,8 @@ const Create = () => {
                 type="text"
                 onChange={handleChange}
                 value={form.description}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.description && (
                         <span className="text-red-500">{errors.description}</span>
@@ -388,41 +387,34 @@ const Create = () => {
               </label>
               <picture className="w-full flex justify-center items-center">
                 
-                <img className="mt-2 w-56 h-56 border-solid border-black" src={form.images[0]} id="pictureClou" />
+                <img className="mt-2 w-56 h-56 border-solid border-black" src={form?.images[0]} id="pictureClou" />
 
               </picture>
               
-              <div className="w-full flex flex-col justify-center items-center gap-4">
-
-                <button className="bg-white w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}
-                type="button"
-                >Upload Image</button>
+              <div className="w-full flex justify-around gap-4">
+                
+                <button className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600`} onClick={uploadPicture} disabled={disabledData}>Upload Image</button>
 
               </div>
             </div>
 
           </div>
 
-          <div className="flex flex-col justify-center items-center mt-6">
+          <div className="flex justify-end mt-6">
 
-            {
-              errors.empty && <span className="text-red-400">{errors.empty}</span>
-            }
-                
             <button
-              type="submit"
               className="px-8 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
-              onClick={handleSubmit}
+              onClick={handleEdit}
             >
-              Create
+              { disabledData ? "Edit" : "Save"}
             </button>
           </div>
 
-        </form>
+        </div>
 
       </section>
     </div>
   );
 };
 
-export default Create;
+export default UpdateProduct;
