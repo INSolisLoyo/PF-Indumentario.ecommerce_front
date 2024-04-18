@@ -66,7 +66,7 @@ const CartMenu = () => {
       const response = await axios.post("/order", payload);
 
       const { href } = response.data;
-  
+
       window.location.href = href;
     } catch (error) {
       console.error("Error al crear orden de PayPal:", error);
@@ -83,7 +83,7 @@ const CartMenu = () => {
     } else if (state === "Cancel") {
       alert("Payment Cancelled");
     }
-    navigate("/")
+    navigate("/");
   }, [clearCart]);
 
   const handleClick = () => {

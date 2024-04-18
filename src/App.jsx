@@ -12,6 +12,7 @@ import About from "./components/About/About";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import UpdateProduct from "./components/Dashboard/UpdateProduct";
 import UnsubscribeConfirmation from "./components/NewsLetter/unsubscribe";
+import Missing from "./components/Missing/Missing";
 
 function App() {
   const location = useLocation();
@@ -20,12 +21,12 @@ function App() {
   const isAdminRoute = location.pathname === "/admin";
 
   return (
-
     <div className="m-0 p-0 w-full h-auto">
       {/* Renderiza el NavBar solo si no estás en la ruta /admin */}
-       <NavBar />
+      <NavBar />
 
       <Routes>
+        <Route path="*" element={<Missing />} />;
         <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/detail/:id" element={<Detail />} />
@@ -37,7 +38,6 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/update-product/:id" element={<UpdateProduct />} />
         <Route path="/unsubscribe" element={<UnsubscribeConfirmation />} />
-
       </Routes>
 
       {/* Renderiza el Footer solo si no estás en la ruta /admin */}

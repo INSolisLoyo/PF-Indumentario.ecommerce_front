@@ -257,12 +257,12 @@ export default function Login({ onClose }) {
               <span className="text-red-500">{errors.password}</span>
             )}
 
-            {/* Keep sesion open? */}
+            {/* Keep sesion open?
             <div className="flex gap-2 items-center">
               <SesionSwitch />
               <p>Keep the session open</p>
               <PopoverInfo />
-            </div>
+            </div> */}
 
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"
