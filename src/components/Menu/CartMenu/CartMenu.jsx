@@ -7,7 +7,6 @@ import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import userStore from "../../GlobalStoreZustand/UserStore";
 import axios from "../../../axios/axios";
-import useStoreEmail from "../../GlobalStoreZustand/useEmail";
 
 const CartMenu = () => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
