@@ -51,19 +51,12 @@ export default function Products() {
 
   const handleStatusChange = async (product, option) => {
 
-    let isActive;
-
-    if(option){
-      isActive = "true"
-    } else {
-      isActive = "false"
-    }
 
     try {
 
       const newObject = {
         ...product,
-        isActive: isActive
+        isActive: option
       }
 
       console.log(newObject);
