@@ -160,7 +160,7 @@ export default function Login({ onClose }) {
         );
         // Agregar los favoritos al estado global
         addToFavorites(favoritesWithDetails);
-        console.log(productDetails);
+        /* console.log(productDetails);
 
         console.log();
 
@@ -169,7 +169,7 @@ export default function Login({ onClose }) {
         icon: 'success',
         title: 'Success',
         text: 'Login with Google successful!'
-      });
+      }); */
         // Cerrar el formulario de inicio de sesión
         onClose();
       } catch (error) {
@@ -288,11 +288,11 @@ export default function Login({ onClose }) {
             )}
 
             {/* Keep sesion open? */}
-            <div className="flex gap-2 items-center">
+            {/* <div className="flex gap-2 items-center">
               <SesionSwitch />
               <p>Keep the session open</p>
               <PopoverInfo />
-            </div>
+            </div> */}
 
             <button
               className="w-full py-2 border border-gray-300 bg-[#fae8e6] hover:bg-primary rounded-xl flex gap-4 justify-center items-center"

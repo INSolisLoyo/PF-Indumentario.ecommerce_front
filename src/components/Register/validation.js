@@ -1,6 +1,5 @@
 //! finishhhhhhhhhhhhhhh
 
-
 const validate = (data, value, errors, setErrors) => {
   const newErrors = { ...errors };
 
@@ -84,121 +83,114 @@ const validate = (data, value, errors, setErrors) => {
       break;
 
     case "password":
-      if (value.length < 10 || value.length > 30) {
+      if (typeof value !== "string") {
+        newErrors.password = "Password invalid";
+      } else if (value.length === 0) {
+        newErrors.password = "Password is required";
+      } else if (value.length < 10 || value.length > 30) {
         newErrors.password =
           "Password length should be between 10 and 30 characters";
+      } else if (!patternPassword.test(value)) {
+        newErrors.password =
+          "Password must contain at least one lowercase letter, one uppercase letter, and one of the special characters";
       } else {
-        if (!patternPassword.test(value)) {
-          newErrors.password =
-            "Password must contain at least one lowercase letter, one uppercase letter, and one of the special characters";
-        } else {
-          if (typeof value !== "string") {
-            newErrors.password = "Password invalid";
-          } else{
-              if(value.length === 0) {
-                  newErrors.password = "Password is required";
-
-          } else {
-            newErrors.password = "";
-          }
+        newErrors.password = "";
       }
-        }
-      }
-      break;
+      break;   
 
     case "phone":
       if (value.length < 6 || value.length > 15) {
-        newErrors.phone =
-          "Phone length should be between 6 and 15 characters";
+        newErrors.phone = "Phone length should be between 6 and 15 characters";
       } else {
         if (typeof value !== "string") {
-            newErrors.phone = "Phone invalid";
-          } else {
-            newErrors.phone = "";
-          }
+          newErrors.phone = "Phone invalid";
+        } else {
+          newErrors.phone = "";
         }
+      }
       break;
 
-      case "address":
-        if (value.length === 0) {
-          newErrors.address = "Address is required";
+    case "address":
+      if (value.length === 0) {
+        newErrors.address = "Address is required";
+      } else {
+        if (value.length > 30) {
+          newErrors.address = "Address should not exceed 30 characters";
         } else {
-          if (value.length > 30) {
-            newErrors.address = "Address should not exceed 30 characters";
+          if (typeof value !== "string") {
+            newErrors.address = "Address must be a string";
           } else {
-            if (typeof value !== "string") {
-                newErrors.address = "Address must be a string";
-              } else {
-                newErrors.address = "";
-              }            
+            newErrors.address = "";
           }
         }
-        break;
+      }
+      break;
 
-        case "city":
-        if (value.length === 0) {
-          newErrors.city = "City is required";
+    case "city":
+      if (value.length === 0) {
+        newErrors.city = "City is required";
+      } else {
+        if (value.length > 30) {
+          newErrors.city = "City should not exceed 30 characters";
         } else {
-          if (value.length > 30) {
-            newErrors.city = "City should not exceed 30 characters";
+          if (typeof value !== "string") {
+            newErrors.city = "City must be a string";
           } else {
-            if (typeof value !== "string") {
-                newErrors.city = "City must be a string";
-              } else {
-                newErrors.city = "";
-              }            
+            newErrors.city = "";
           }
         }
-        break;
+      }
+      break;
 
-        case "country":
-        if (value.length === 0) {
-          newErrors.country = "Country is required";
+    case "country":
+      if (value.length === 0) {
+        newErrors.country = "Country is required";
+      } else {
+        if (value.length > 30) {
+          newErrors.country = "Country should not exceed 30 characters";
         } else {
-          if (value.length > 30) {
-            newErrors.country = "Country should not exceed 30 characters";
+          if (typeof value !== "string") {
+            newErrors.country = "Country must be a string";
           } else {
-            if (typeof value !== "string") {
-                newErrors.country = "Country must be a string";
-              } else {
-                newErrors.country = "";
-              }            
+            newErrors.country = "";
           }
         }
-        break;
+      }
+      break;
 
-        case "state":
-        if (value.length === 0) {
-          newErrors.state = "State is required";
+    case "state":
+      if (value.length === 0) {
+        newErrors.state = "State is required";
+      } else {
+        if (value.length > 30) {
+          newErrors.state = "State should not exceed 30 characters";
         } else {
-          if (value.length > 30) {
-            newErrors.state = "State should not exceed 30 characters";
+          if (typeof value !== "string") {
+            newErrors.state = "State must be a string";
           } else {
-            if (typeof value !== "string") {
-                newErrors.state = "State must be a string";
-              } else {
-                newErrors.state = "";
-              }            
+            newErrors.state = "";
           }
         }
-        break;
+      }
+      break;
 
-
-        case "zipcode":
-            const zipcode = value.toString();
-        if (!/^\d+$/.test(zipcode)) {
-          newErrors.zipcode = "Zipcode must be an integer";
+    case "zipcode":
+      const zipcode = value.toString();
+      if (!/^\d+$/.test(zipcode)) {
+        newErrors.zipcode = "Zipcode must be an integer";
+      } else {
+        if (
+          value.length === 0 ||
+          value.length > 10 ||
+          parseInt(zipcode) < 0 ||
+          parseInt(zipcode) > 9999999999
+        ) {
+          newErrors.zipcode = "Zipcode invalid";
         } else {
-          if (value.length === 0 || value.length > 10 || parseInt(zipcode) < 0 || parseInt(zipcode) > 9999999999) {
-            newErrors.zipcode = "Zipcode invalid";
-          } else {
-                newErrors.zipcode = "";
-              }            
-          
+          newErrors.zipcode = "";
         }
-        break;
-
-
+      }
+      break;
 
     default:
       break;
