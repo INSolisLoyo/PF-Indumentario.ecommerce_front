@@ -117,8 +117,22 @@ const Create = () => {
           isActive: form.isActive,
         });
 
-        if(response)
+        if(response){
+          
           succesAlert();
+          setForm({
+            name: '',
+            price: '',
+            gender: '',
+            images: [],
+            colour: [],
+            material: [],
+            category: '',
+            description: '',
+            isActive: true,        
+          })
+
+        }
 
       }else {
 

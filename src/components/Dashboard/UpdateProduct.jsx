@@ -92,7 +92,7 @@ const UpdateProduct = () => {
 
   const handleSubmit = async (e) => {
 
-    e.preventDefault();
+    console.log('Entramos al handle submit');
 
     const materialData = form.material.map( material => material.value);
     const colorData = form.colour.map( color => color.value);
@@ -112,9 +112,9 @@ const UpdateProduct = () => {
         isActive: form.isActive,
       })
       
-      // if(response)
-      //   Swal.fire('Product Update')
-      
+      if(response)
+        Swal.fire('Product Update')
+
      
     } catch (error) {
       console.error("Error creating product:", error);
@@ -181,10 +181,11 @@ const UpdateProduct = () => {
     } else {
       
       const errorExists = anErrorExist();
+      console.log(errorExists);
 
         if(!errorExists){
-          setDisabledData(true)
           handleSubmit();
+          setDisabledData(true)
         }
     }
 
@@ -231,7 +232,7 @@ const UpdateProduct = () => {
           Update Product
         </h1>
 
-        <form onSubmit={handleSubmit} className="w-full">
+        <div className="w-full">
 
           <div className="grid grid-cols-1 gap-6 p-8 rounded-xl sm:grid-cols-2 bg-white">
 
@@ -392,7 +393,7 @@ const UpdateProduct = () => {
               
               <div className="w-full flex justify-around gap-4">
                 
-                <button className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600`}onClick={uploadPicture} disabled={disabledData}>Upload Image</button>
+                <button className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600`} onClick={uploadPicture} disabled={disabledData}>Upload Image</button>
 
               </div>
             </div>
@@ -402,7 +403,6 @@ const UpdateProduct = () => {
           <div className="flex justify-end mt-6">
 
             <button
-              type="submit"
               className="px-8 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
               onClick={handleEdit}
             >
@@ -410,7 +410,7 @@ const UpdateProduct = () => {
             </button>
           </div>
 
-        </form>
+        </div>
 
       </section>
     </div>
