@@ -11,6 +11,8 @@ const UpdateProduct = () => {
   const animatedComponents = makeAnimated();
 
   const { id } = useParams();
+
+  const [ disabledData, setDisabledData ] = useState(true);
   
   const [ form, setForm ] = useState({
     id: '',
@@ -109,13 +111,14 @@ const UpdateProduct = () => {
         description: form.description,
         isActive: form.isActive,
       })
-      if(response){
-        Swal.fire('Product Update')
-      }
+      
+      // if(response)
+      //   Swal.fire('Product Update')
+      
      
     } catch (error) {
       console.error("Error creating product:", error);
-      
+      Swal.fire('Cannot update data');
     }
   };
 
@@ -171,6 +174,34 @@ const UpdateProduct = () => {
     }
   }
 
+  const handleEdit = () => {
+
+    if(disabledData){
+      setDisabledData(false);
+    } else {
+      
+      const errorExists = anErrorExist();
+
+        if(!errorExists){
+          setDisabledData(true)
+          handleSubmit();
+        }
+    }
+
+  }
+
+  const anErrorExist = () => {
+
+    let errorsExist = false
+      
+    for (let prop in errors){
+        if ( errors[prop] !== '') errorsExist = true;
+    }
+
+    return errorsExist;
+
+  }
+
   const optionsColour = colors
     ? colors.map((color) => ({
         value: color,
@@ -191,15 +222,18 @@ const UpdateProduct = () => {
 
   }, [])
 
- 
   return (
-    <div className="pt-20">
-      <section className="max-w-4xl p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat">
-        <h1 className="text-xl font-bold text-black capitalize dark:text-white">
+    <div className="pt-8 md:pt-16 w-full">
+
+      <section className="w-11/12 p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat flex flex-col gap-4 items-center">
+
+        <h1 className="text-2xl text-gray-600 capitalize dark:text-white">
           Update Product
         </h1>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+
+        <form onSubmit={handleSubmit} className="w-full">
+
+          <div className="grid grid-cols-1 gap-6 p-8 rounded-xl sm:grid-cols-2 bg-white">
 
             {/* Nombre del producto */}
             <div>
@@ -215,7 +249,8 @@ const UpdateProduct = () => {
                 value={form.name}
                 onChange={handleChange}
                 type="text"
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.name && (
                         <span className="text-red-500">{errors.name}</span>
@@ -236,7 +271,8 @@ const UpdateProduct = () => {
                 type="number"
                 value={form.price}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.price && (
                         <span className="text-red-500">{errors.price}</span>
@@ -257,7 +293,8 @@ const UpdateProduct = () => {
                 defaultValue={form.gender}
                 value={form.gender}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               >
                 <option value="" disabled>
                   Choose gender
@@ -277,6 +314,7 @@ const UpdateProduct = () => {
               options={optionsMaterial}
               value={form.material} // Asignar el valor seleccionado al componente Select de material
               onChange={handleMaterialChange}
+              isDisabled={disabledData}
               />
               {errors.material && (
                         <span className="text-red-500">{errors.material}</span>
@@ -294,6 +332,7 @@ const UpdateProduct = () => {
               options={optionsColour}
               value={form.colour} // Asignar el valor seleccionado al componente Select de color
               onChange={handleColorChange}
+              isDisabled={disabledData}
             />
             {errors.colour && (
                       <span className="text-red-500">{errors.colour}</span>
@@ -301,31 +340,10 @@ const UpdateProduct = () => {
               
             </div>
 
-            {/* Imágenes */}
-            <div className="w-full flex flex-col justify-center">
-              <label
-                className="text-black dark:text-gray-200"
-                htmlFor="productImages"
-              >
-                Images
-              </label>
-              <picture className="w-full flex justify-center items-center">
-                
-                <img className="mt-2 w-56 h-56 border-solid border-black" src={form?.images[0]} id="pictureClou" />
-
-              </picture>
-              
-              <div className="w-full flex justify-around gap-4">
-                
-                <button className="w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}>Upload Image</button>
-
-              </div>
-            </div>
-
             {/* Categoría */}
             <div className="flex flex-col gap-4">
               <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Categories</label>          
-              <select name="category" id="category"  className="py-2 bg-white rounded-xl" defaultValue={form.category} onChange={handleChange}>
+              <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} onChange={handleChange} disabled={disabledData}>
                 {
                   categories?.map((category) => {
                     return <option key={category} value={category}>{category}</option>
@@ -350,25 +368,50 @@ const UpdateProduct = () => {
                 type="text"
                 onChange={handleChange}
                 value={form.description}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                disabled={disabledData}
+                className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring`}
               />
               {errors.description && (
                         <span className="text-red-500">{errors.description}</span>
               )}
             </div>
 
+             {/* Imágenes */}
+             <div className="w-full flex flex-col justify-center">
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="productImages"
+              >
+                Images
+              </label>
+              <picture className="w-full flex justify-center items-center">
+                
+                <img className="mt-2 w-56 h-56 border-solid border-black" src={form?.images[0]} id="pictureClou" />
+
+              </picture>
+              
+              <div className="w-full flex justify-around gap-4">
+                
+                <button className={`${ disabledData ? "text-gray-500 cursor-not-allowed bg-gray-100" : "text-gray-700 cursor-pointer bg-white"} w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600`}onClick={uploadPicture} disabled={disabledData}>Upload Image</button>
+
+              </div>
+            </div>
+
           </div>
 
           <div className="flex justify-end mt-6">
+
             <button
               type="submit"
-              className="px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600"
-              onClick={handleSubmit}
+              className="px-8 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
+              onClick={handleEdit}
             >
-              Save
+              { disabledData ? "Edit" : "Save"}
             </button>
           </div>
+
         </form>
+
       </section>
     </div>
   );
