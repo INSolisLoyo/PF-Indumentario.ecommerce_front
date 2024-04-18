@@ -1,5 +1,6 @@
 import userStore from "../GlobalStoreZustand/UserStore";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +16,9 @@ import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 const LOGIN_URL = "/login";
 
 export default function Login({ onClose }) {
+
+  const navigate = useNavigate();
+  
   const setCurrentUser = userStore((state) => state.setCurrentUser);
   const setRegisteredUser = userStore((state) => state.setRegisteredUser);
   const addToFavorites = useFavoriteStore((state) => state.addToFavorites);

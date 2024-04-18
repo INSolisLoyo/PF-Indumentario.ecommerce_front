@@ -17,11 +17,13 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@headlessui/react": "^1.7.18",
+    "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.3",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@paypal/react-paypal-js": "^8.2.0",
+    "@remixicon/react": "^4.2.0",
+    "@tremor/react": "^3.16.0",
     "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "chroma-js": "^2.4.2",
@@ -41,6 +43,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
