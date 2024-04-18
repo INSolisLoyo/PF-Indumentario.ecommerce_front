@@ -50,8 +50,8 @@ const UpdateProduct = () => {
         console.log(result.info);
         setForm({
           ...form,
-          images: [...form, result.info.secure_url]
-          });
+          images: [...form.images, result.info.secure_url]
+        });
       }
     }
   );
