@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
 import { validateProductData } from "./validateProductData";
+import { color } from "@mui/system";
 
 const UpdateProduct = () => {
 
@@ -21,7 +22,7 @@ const UpdateProduct = () => {
     colour: [],
     material: [],
     category: '',
-    description: [],
+    description: '',
     isActive: true,
     
   })
@@ -68,30 +69,24 @@ const UpdateProduct = () => {
 
   
   const handleMaterialChange = (material) => {
-
-    
+   
     setForm({
         ...form,
         material: material
     })
-    setErrors({
-      ...errors,
-      material: ''
-    })   
-    
+
+    validateProductData('material', material, errors, setErrors);
+   
   }
 
   const handleColorChange = (color) => {
-
-  
+ 
     setForm({
         ...form,
         colour: color
-    })    
-    setErrors({
-      ...errors,
-      colour: ''
-    })      
+    }) 
+
+    validateProductData('colour', color, errors, setErrors);  
     
   }
 
@@ -102,11 +97,26 @@ const UpdateProduct = () => {
   }
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
+    const materialData = form.material.map( material => material.value);
+    const colorData = form.colour.map( color => color.value);
 
     try {
 
-      const response = await axios.put(`/product/${id}`, form)
+      const response = await axios.put(`/product/${id}`, {
+        id: form.id,
+        name: form.name,
+        price: form.price,
+        gender: form.gender,
+        images: form.images,
+        colour: colorData,
+        material: materialData,
+        category: form.category,
+        description: form.description,
+        isActive: form.isActive,
+      })
       if(response){
         Swal.fire('Product Update')
       }
@@ -189,6 +199,7 @@ const UpdateProduct = () => {
 
   }, [])
 
+ 
   return (
     <div className="pt-20">
       <section className="max-w-4xl p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat">
