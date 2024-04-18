@@ -1,10 +1,11 @@
+
 //! finishhhhhhhhhhhhhhh
 
 
 const validate = (data, value, errors, setErrors) => {
   const newErrors = { ...errors };
 
-  const patternName = /^[a-zA-Z\s]+$/;
+  const patternName = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/;
   const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!?#$]).{10,30}$/;
   const patternBirthdate = /\d{4}-\d{2}-\d{2}/;
@@ -84,9 +85,8 @@ const validate = (data, value, errors, setErrors) => {
       break;
 
     case "password":
-      if (value.length < 10 || value.length > 30) {
-        newErrors.password =
-          "Password length should be between 10 and 30 characters";
+      if(value.length === 0) {
+                  newErrors.password = "Password is required";
       } else {
         if (!patternPassword.test(value)) {
           newErrors.password =
@@ -95,8 +95,9 @@ const validate = (data, value, errors, setErrors) => {
           if (typeof value !== "string") {
             newErrors.password = "Password invalid";
           } else{
-              if(value.length === 0) {
-                  newErrors.password = "Password is required";
+              if (value.length < 10 || value.length > 30) {
+        newErrors.password =
+          "Password length should be between 10 and 30 characters";
 
           } else {
             newErrors.password = "";

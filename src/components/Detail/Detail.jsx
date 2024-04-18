@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "../../axios/axios";
@@ -7,7 +7,6 @@ import { getColors } from "./Colors";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 import userStore from "../GlobalStoreZustand/UserStore";
-
 
 
 const Detail = () => {
@@ -69,7 +68,6 @@ const Detail = () => {
     });
   };
 
-
   const cleanerStock = (stocks) => {
     const grupos = {};
 
@@ -96,15 +94,7 @@ const Detail = () => {
     setStock(grupos);
   };
 
-  const navigate = useNavigate();  
-
-  const handleGoBackClick = () => {
-    navigate(-1); // retroceder a la página anterior
-    window.scrollTo(0, 0);
-  };
-
   const handleCounter = (op) => {
-
     if (!selectedSize) return;
 
     if (op === "-") {
@@ -124,12 +114,8 @@ const Detail = () => {
           maxItems: `You can only buy ${maxItems} units of this product`,
         });
       }
-    }};
-
-    
-
-   
-  
+    }
+  };
 
   const handleClickColor = (color) => {
     setSelectedColor(color);
@@ -142,8 +128,8 @@ const Detail = () => {
     setDisabledButton(false);
     setSelectedSize(size);
     setCounter(1);
-    setErrors({ ...errors, maxItems: "", noSizeSelected: "" });
-    
+    setErrors({ ...errors, maxItems: "" });
+    setErrors({ ...errors, noSizeSelected: "" });
   };
 
   const handleClickButton = () => {
@@ -202,7 +188,6 @@ const Detail = () => {
           });
         });
     }
-    
   };
 
   useEffect(() => {
@@ -233,38 +218,52 @@ const Detail = () => {
       }
     };
     fetchData();
-  }, [])
-  
+  }, []);
 
   useEffect(() => {
     setIsFavorite(favorites.some((product) => product.id === item.id));
   }, [favorites, item.id]);
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = async () => {
     if (isFavorite) {
-      removeFromFavorites(itemFav.id);
+      removeFromFavorites(itemFav.id); // Elimina el producto de favoritos en el estado local
+      try {
+        // Obtener todos los favoritos del usuario
+        const response = await axios.get(`/favorite`);
+        const favoriteProducts = response.data;
+  
+        // Buscar el favoriteId correspondiente al producto que estamos tratando de eliminar
+        const favoriteToDelete = favoriteProducts.find(favorite => favorite.productId === itemFav.id);
+        if (favoriteToDelete) {
+          const favoriteId = favoriteToDelete.id;
+          // Elimina el favorito de la base de datos
+          await axios.delete(`/favorite/${favoriteId}`);
+        } else {
+          console.error("Favorite not found in the database");
+        }
+      } catch (error) {
+        console.error("Error al eliminar favorito de la base de datos:", error);
+      }
     } else {
-      addToFavorites(itemFav);
+      addToFavorites(itemFav); // Agrega el producto a favoritos en el estado local
+      try {
+        // Guarda el favorito en la base de datos
+        const userId = user.id; // Reemplaza con el ID del usuario actual
+        await axios.post("/favorite", { userId: userId, productId: itemFav.id });
+      } catch (error) {
+        console.error("Error al guardar favorito en la base de datos:", error);
+      }
     }
   };
 
   
   return (
-    <div className="w-11/12 h-auto pt-40 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
-      <div className="absolute inset-x-6 top-[100px]">
-        <button
-          className=" px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-secondary/35 rounded-md hover:bg-primary hover:text-white italic font-bold focus:outline-none focus:bg-gray-600 "
-          onClick={handleGoBackClick}
-        >
-          ⬅ Go Back
-        </button>
-        </div>
-      
-      <DetailGallery className="w-56 h-96" images={item.images} />
+    <div className="w-11/12 h-auto pt-20 mx-auto font-RedHat flex flex-col gap-4 lg:flex-row">
+      <DetailGallery images={item.images} />
       <div className="w-full md:h-full lg:w-2/5">
         <div className="bg-primary/10 rounded-2xl md:h-5/6 p-4 flex flex-col items-center md:p-8">
           <div className="w-full flex justify-between">
-            <h1 className="font-semibold text-3xl tracking-widest">
+            <h1 className="font-semibold text-xl tracking-widest">
               {item.name}
             </h1>
             <div className="cursor-pointer">
@@ -286,7 +285,7 @@ const Detail = () => {
           </div>
           <div className="md:w-full bg-primary/20 mt-4 rounded-2xl flex flex-col p-4">
             <div className="mt-5 flex justify-between">
-              <p className="font-bold text-4xl tracking-widest">
+              <p className="font-semibold text-2xl tracking-widest">
                 ${item.price}
               </p>
               <div className="flex gap-4 text-lg">

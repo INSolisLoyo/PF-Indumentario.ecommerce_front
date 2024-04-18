@@ -1,20 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useFavoriteStore from "../../GlobalStoreZustand/useFavoriteStore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
+import axios from "../../../axios/axios"
 
 const FavoritesMenu = () => {
-  const removeFromFavorites = useFavoriteStore(
-    (state) => state.removeFromFavorites
-  );
-  const clearFavorites = useFavoriteStore((state) => state.clearFavorites);
-  const favorites = useFavoriteStore((state) => state.favorites);
-  const { favoritesMenuOpen, toggleFavoritesMenu } = useMenuStore();
+  const clearFavorites = useFavoriteStore((state) => state.clearFavorites); // Función para limpiar los favoritos
+  const { favoritesMenuOpen, toggleFavoritesMenu } = useMenuStore(); // Utiliza el estado global para controlar si el menú de favoritos está abierto
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { addToFavorites, favorites, removeFromFavorites } = useFavoriteStore(); // Obtén los favoritos y las funciones para agregar/quitar de favoritos
 
-  const handleRemoveFromFavorites = (productId) => {
-    removeFromFavorites(productId);
+  const handleRemoveFromFavorites = async (productId) => {
+    try {
+      // Obtener todos los favoritos del usuario
+      const response = await axios.get(`/favorite`);
+      const favoriteProducts = response.data;
+  
+      // Buscar el favorito correspondiente al productId
+      const favoriteToDelete = favoriteProducts.find(
+        (favorite) => favorite.productId === productId
+      );
+  
+      if (favoriteToDelete) {
+        const favoriteId = favoriteToDelete.id;
+        // Eliminar el favorito de la base de datos
+        await axios.delete(`/favorite/${favoriteId}`);
+        // También elimina el favorito de la lista local
+        removeFromFavorites(productId);
+        
+
+      } else {
+        console.error("No se encontró el favorito en la base de datos");
+      }
+    } catch (error) {
+      console.error("Error al eliminar favorito de la base de datos:", error);
+    }
   };
 
   const handleClick = () => {
@@ -58,10 +80,10 @@ const FavoritesMenu = () => {
       </div>
 
       {favoritesMenuOpen && (
-        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[450px] max-h-[500px] overflow-y-auto rounded-lg">
+        <div className="divide-y divide-gray-400 bg-gradient-to-t from-[#dfb69f] to-white right-4 top-full shadow-lg absolute z-50 w-[500px] max-h-[450px] overflow-y-auto rounded-lg">
           <div className="flex justify-center items-center">
             <div className="w-[40px]"></div>
-            <h2 className="text-center text-xl font-bold py-4 w-[75%]">
+            <h2 className="text-center text-lg font-semibold py-4 w-[75%]">
               Favorites
             </h2>
             <div className="w-[40px]">
@@ -69,7 +91,7 @@ const FavoritesMenu = () => {
                 style={{ fontSize: 30, marginLeft: 10, cursor: "pointer" }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleFavoritesMenu();
+                  toggleFavoritesMenu(); // Cierra el menú de favoritos al hacer clic en el icono de cerrar
                 }}
               />
             </div>
@@ -89,26 +111,28 @@ const FavoritesMenu = () => {
               {favorites.map((favorite, index) => (
                 <ul
                   key={index}
-                  className="py-6 grid grid-cols-4 gap-2 items-center"
+                  className="py-6 grid grid-cols-3 gap-6 items-center"
                 >
-                  <li className="flex justify-center col-span-1">
-                    <img
-                      className="w-16 h-20 object-cover"
-                      src={favorite.images}
-                      alt={favorite.name}
-                    />
+                  <li className="flex justify-center">
+                    {favorite && favorite.images && (
+                      <img
+                        className="w-16 h-20 object-cover"
+                        src={favorite.images[0]}
+                        alt={favorite.name}
+                      />
+                    )}
                   </li>
-                  <li className="flex flex-col justify-between col-span-2">
-                    <div>
-                      <h3 className="text-lg font-bold">
+                  <li>
+                    <div className="flex-col justify-start items-start">
+                      <h3 className="text-base font-semibold">
                         {favorite.name}
                       </h3>
                       <h2 className="text-base font-semibold">
-                      <b>Price:</b> ${favorite.price}
+                        $ {favorite.price}
                       </h2>
                     </div>
                   </li>
-                  <li className="flex gap-2 items-center justify-center col-span-1">
+                  <li className="flex justify-center items-center">
                     <button
                       onClick={() => handleRemoveFromFavorites(favorite.id)}
                       className="font-semibold text-red-500 focus:outline-none"
@@ -119,7 +143,7 @@ const FavoritesMenu = () => {
                 </ul>
               ))}
               <div className="text-center py-4">
-                <p className="text-lg font-bold mt-2">
+                <p className="text-base mt-2">
                   Total Favorites: {totalFavorites}
                 </p>
                 <button
