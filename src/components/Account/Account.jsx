@@ -1,9 +1,14 @@
 import userStore from "../GlobalStoreZustand/UserStore";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
 
 export default function Account({ onClose, setShowSidebar }) {
+
+  const user = userStore((state) => state.user)
+
+  const navigate = useNavigate();
 
   // Función para limpiar el carrito del estado global
   const clearCart = () => {
@@ -59,16 +64,17 @@ export default function Account({ onClose, setShowSidebar }) {
           <ul className="w-full text-left md:mt-12 md:px-4 flex flex-col md:gap-4">
 
             <li>
-              <a href="#" className="hover:text-primary">
-                Shopping History
-              </a>
-            </li> 
-
-            <li>
-              <a href="/account/settings" className="hover:text-primary">
+              <button onClick={() => navigate('/account/settings')} className="hover:text-primary">
                 Account settings
-              </a>
+              </button>
             </li>
+
+            {
+
+              user.isAdmin && <li><button onClick={() => navigate('/admin')} className="hover:text-primary">Dashboard</button>
+              </li> 
+
+            }
           </ul>
 
           <div className="w-full flex justify-center md:mt-32 md:px-4">

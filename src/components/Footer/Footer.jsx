@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareXTwitter, faSquareFacebook, faSquareInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import logo from '../../img/logo.png';
@@ -9,6 +10,9 @@ import NewsLetter from '../NewsLetter/NewsLetter';
 
 
 const Footer = () => {
+
+  const navigate = useNavigate();
+
   const top = () => {
     window.scrollTo({
       top: 0,
@@ -67,9 +71,9 @@ const Footer = () => {
                     <p className="text-md text-center text-primary font-bold">Links</p>
                     <ul className='flex flex-col gap-.5 items-center justify-center'>
 
-                        <li><a href="/about/aboutUs" className='text-sm  text-primary font-semibold hover:text-primary/70'>About us</a></li>
-                        <li><a href="/about/termsAndConditions" className='text-sm  text-primary font-semibold hover:text-primary/70'>Terms and conditions</a></li>
-                        <li><a href="/about/privacy" className='text-sm text-primary font-semibold hover:text-primary/70'>Privacy and Policy</a></li>
+                        <li><button href="/about/aboutUs" className='text-sm  text-primary font-semibold hover:text-primary/70' onClick={() => navigate('/about/aboutUs')}>About us</button></li>
+                        <li><button href="/about/termsAndConditions" className='text-sm  text-primary font-semibold hover:text-primary/70' onClick={() => navigate('/about/termsAndConditions')}>Terms and conditions</button></li>
+                        <li><button href="/about/privacy" className='text-sm text-primary font-semibold hover:text-primary/70' onClick={() => navigate('/about/privacy')}>Privacy and Policy</button></li>
 
                     </ul>
             

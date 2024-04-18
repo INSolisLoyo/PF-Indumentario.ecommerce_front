@@ -1,5 +1,5 @@
 import React from "react";
-import TopUsers from "./TopUsers";
+import TopUsers from "./topUsers";
 import TopProducts from "./TopProducts";
 import TopColours from "./TopColours";
 
