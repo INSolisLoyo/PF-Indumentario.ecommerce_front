@@ -4,6 +4,7 @@ import Settings from "./Settings";
 import Orders from "./Orders";
 
 const AccountData = () => {
+
   const { section } = useParams();
 
   const settingsRef = useRef(null);
@@ -58,6 +59,7 @@ const AccountData = () => {
           >
             Orders
           </button>
+
         </div>
 
         {/* Div componentes */}
