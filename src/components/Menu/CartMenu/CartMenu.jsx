@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useMenuStore } from "../../UseMenuStore/UseMenuStore";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import useStore from "../../GlobalStoreZustand/GlobalStoreZustand";
+import Swal from "sweetalert2";
 
 const CartMenu = () => {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
@@ -36,6 +37,11 @@ const CartMenu = () => {
 
   const handleClick = () => {
     toggleCartMenu();
+    swal.fire({
+      icon: "success",
+      title: "Cart Cleared",
+      text: "Your cart has been cleared successfully!",
+    });
   };
 
   const totalProducts = cart.reduce((total, product) => {
