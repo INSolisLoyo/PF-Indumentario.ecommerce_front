@@ -42,6 +42,20 @@ export const validateProductData = (data, value, errors, setErrors) => {
                 newErrors.description = ''
             }
             break;
+        case 'material':
+            if(value.length === 0){
+                newErrors.material = 'Choose at least one'
+            } else {
+                newErrors.material = ''
+            }
+            break;
+        case 'colour':
+            if(value.length === 0){
+                newErrors.colour = 'Choose at least one'
+            } else {
+                newErrors.colour = ''
+            }
+            break;
         default:
             break;     
     } 
