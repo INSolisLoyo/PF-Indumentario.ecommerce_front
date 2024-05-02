@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
 import { validateProductData } from "./validateProductData";
+import { getToken } from "../../utils/data";
 
 const UpdateProduct = () => {
 
@@ -90,10 +91,18 @@ const UpdateProduct = () => {
       
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
 
     const materialData = form.material.map( material => material.value);
     const colorData = form.colour.map( color => color.value);
+
+    const token = getToken()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
 
     try {
 
@@ -107,7 +116,7 @@ const UpdateProduct = () => {
         category: form.category,
         description: form.description,
         isActive: form.isActive,
-      })
+      }, config)
       
       if(response)
         Swal.fire('Product Update')
@@ -138,8 +147,6 @@ const UpdateProduct = () => {
     try {
 
       const { data } = await axios.get(`product/${id}`);
-
-      console.log(data);
 
       const productMaterials = setSelectValues(data.material);
       const productColors = setSelectValues(data.colour);
