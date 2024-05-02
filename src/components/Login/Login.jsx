@@ -77,7 +77,7 @@ export default function Login({ onClose }) {
         // Actualizar el token de autenticación en las cookies
         document.cookie = `token=${data.token}; max-age=${
           60 * 60
-        }; path=/; samesite=strict`;
+        }; path=/; samesite=strict; SameSite=secure;`;
 
         // Decodificar el token JWT para obtener la información del usuario
         const {

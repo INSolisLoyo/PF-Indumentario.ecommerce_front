@@ -1,5 +1,4 @@
 import userStore from "../GlobalStoreZustand/UserStore";
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import useCartStore from "../GlobalStoreZustand/useCartStore";
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
@@ -44,6 +43,9 @@ export default function Account({ onClose, setShowSidebar }) {
     document.cookie = "token=; max-age=0; path=/";
 
     setShowSidebar(false);
+
+    navigate('/')
+
   };
 
   return (

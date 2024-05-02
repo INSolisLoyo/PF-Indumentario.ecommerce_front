@@ -4,6 +4,7 @@ import makeAnimated from "react-select/animated";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2";
 import { validateProductData } from "../Dashboard/validateProductData";
+import { getToken } from "../../utils/data";
 
 const Create = () => {
 
@@ -113,6 +114,14 @@ const Create = () => {
 
       if(!errorExist){
 
+        const token = getToken()
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+
         const response = await axios.post('/product/create', {
           name: form.name,
           price: form.price,
@@ -123,7 +132,7 @@ const Create = () => {
           category: form.category,
           description: form.description,
           isActive: form.isActive,
-        });
+        }, config);
 
         if(response){
           
@@ -243,7 +252,7 @@ const Create = () => {
 
       <section className="w-11/12 p-6 mx-auto bg-primary/10 rounded-md shadow-md mt-20 font-RedHat flex flex-col gap-4 items-center">
 
-        <h1 className="text-2xl text-gray-600 capitalize dark:text-white">
+        <h1 className="text-2xl text-gray-700 capitalize ">
           Create New Product
         </h1>
 
@@ -254,7 +263,7 @@ const Create = () => {
             {/* Nombre del producto */}
             <div>
               <label
-                className="text-black dark:text-gray-200"
+                className="text-gray-700"
                 htmlFor="name"
               >
                 Name of Product
@@ -265,7 +274,7 @@ const Create = () => {
                 value={form.name}
                 onChange={handleChange}
                 type="text"
-                className="block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 border text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring"
               />
               {errors.name && (
                         <span className="text-red-500">{errors.name}</span>
@@ -275,7 +284,7 @@ const Create = () => {
             {/* Precio del producto */}
             <div>
               <label
-                className="text-black dark:text-gray-200"
+                className="text-gray-700"
                 htmlFor="price"
               >
                 Price
@@ -286,7 +295,7 @@ const Create = () => {
                 type="number"
                 value={form.price}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring"
               />
               {errors.price && (
                         <span className="text-red-500">{errors.price}</span>
@@ -296,7 +305,7 @@ const Create = () => {
             {/* Género */}
             <div>
               <label
-                className="text-black dark:text-gray-200"
+                className="text-gray-700"
                 htmlFor="productGender"
               >
                 Gender
@@ -307,7 +316,7 @@ const Create = () => {
                 defaultValue={form.gender}
                 value={form.gender}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring"
               >
                 <option value="" disabled>
                   Choose gender
@@ -319,7 +328,7 @@ const Create = () => {
 
             {/* Material */}
             <div>
-              <label className="text-black dark:text-gray-200" htmlFor="productMaterial">Material</label>
+              <label className="text-gray-700" htmlFor="productMaterial">Material</label>
               <Select
               closeMenuOnSelect={false}
               isMulti
@@ -336,7 +345,7 @@ const Create = () => {
 
             {/* Color */}
             <div>
-              <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Colors</label>
+              <label className="text-gray-700" htmlFor="productMaterial">Colors</label>
               <Select
               closeMenuOnSelect={false}
               isMulti
@@ -353,7 +362,7 @@ const Create = () => {
 
             {/* Categoría */}
             <div className="flex flex-col gap-4">
-              <label className="text-dark dark:text-gray-200" htmlFor="productMaterial">Categories</label>          
+              <label className="text-gray-700" htmlFor="productMaterial">Categories</label>          
               <select name="category" id="category"  className="py-2 px-4 bg-primary/10 rounded-xl" defaultValue={form.category} value={form.category} onChange={handleChange}>
                 {
                   categories?.map((category) => {
@@ -368,7 +377,7 @@ const Create = () => {
             {/* Descripción */}
             <div>
               <label
-                className="text-black dark:text-gray-200"
+                className="text-gray-700"
                 htmlFor="productDescription"
               >
                 Description
@@ -379,7 +388,7 @@ const Create = () => {
                 type="text"
                 onChange={handleChange}
                 value={form.description}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring"
               />
               {errors.description && (
                         <span className="text-red-500">{errors.description}</span>
@@ -389,7 +398,7 @@ const Create = () => {
              {/* Imágenes */}
              <div className="w-full flex flex-col justify-center">
               <label
-                className="text-black dark:text-gray-200"
+                className="text-gray-700"
                 htmlFor="productImages"
               >
                 Images
@@ -402,7 +411,7 @@ const Create = () => {
               
               <div className="w-full flex flex-col justify-center items-center gap-4">
 
-                <button className="bg-white w-1/2 px-6 py-2 mt-2 leading-5 text-black transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}
+                <button className="bg-white w-1/2 px-6 py-2 mt-2 leading-5 text-gray-700 transition-colors duration-200 transform bg-primary/10 rounded-md hover:bg-primary hover:text-white focus:outline-none focus:bg-gray-600" onClick={uploadPicture}
                 type="button"
                 >Upload Image</button>
 
@@ -419,7 +428,7 @@ const Create = () => {
                 
             <button
               type="submit"
-              className="px-8 py-2 leading-5 text-black transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
+              className="px-8 py-2 leading-5 text-gray-700 transition-colors duration-200 transform bg-white rounded-xl hover:bg-primary/50 focus:outline-none focus:bg-gray-600 border-2 border-gray-300"
               onClick={handleSubmit}
             >
               Create
