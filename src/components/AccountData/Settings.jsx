@@ -9,6 +9,7 @@ import validateData from "./validateData";
 import Swal from "sweetalert2";
 
 const Settings = () => {
+
   const navigate = useNavigate();
 
   const user = userStore((state) => state.user);
@@ -70,81 +71,134 @@ const Settings = () => {
   };
 
   const editUserData = async () => {
-    if (enabledUserData) {
-      setEnabledUserData(false);
+
+    if(!user.id){
+      Swal.fire('Cannot update your data')
     } else {
-      const errorExists = anErrorExist();
 
-      if (!errorExists) {
-        setEnabledUserData(true);
-
-        sendUser();
+      if (enabledUserData) {
+        setEnabledUserData(false);
+      } else {
+        const errorExists = anErrorExist();
+  
+        if (!errorExists) {
+          setEnabledUserData(true);
+  
+          sendUser();
+        }
       }
+
     }
   };
 
   const editDataContact = () => {
-    if (enabledDataContact) {
-      setEnabledDataContact(false);
+
+    if(!user.id){
+      Swal.fire('Cannot update your data')
     } else {
-      const errorExists = anErrorExist();
 
-      if (!errorExists) {
-        setEnabledDataContact(true);
-
-        sendUser();
+      if (enabledDataContact) {
+        setEnabledDataContact(false);
+      } else {
+        const errorExists = anErrorExist();
+  
+        if (!errorExists) {
+          setEnabledDataContact(true);
+  
+          sendUser();
+        }
       }
+
     }
   };
 
   const editPayment = () => {
-    if (enabledPaymentInfo) {
-      setEnabledPaymentInfo(false);
-    } else {
-      const errorExists = anErrorExist();
 
-      if (!errorExists) {
-        setEnabledPaymentInfo(true);
-        sendUser();
+    if(!user.id){
+      Swal.fire('Cannot update your data')
+    } else {
+
+      if (enabledPaymentInfo) {
+        setEnabledPaymentInfo(false);
+      } else {
+        const errorExists = anErrorExist();
+  
+        if (!errorExists) {
+          setEnabledPaymentInfo(true);
+          sendUser();
+        }
       }
+      
     }
   };
 
   const fetchUser = async () => {
-    try {
-      const { data } = await axios.get(`/user/${user.id}`);
 
+    if(user.id){
+
+      try {
+        const { data } = await axios.get(`/user/${user.id}`);
+  
+        setForm({
+          name: data.name,
+          lastname: data.lastname,
+          birthdate: data.birthdate,
+          email: data.email,
+          password: data.password,
+          isAdmin: data.isAdmin,
+          isActive: data.isActive,
+          phone: data.phone,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          country: data.country,
+          zipcode: data.zipcode,
+          provider: data.provider,
+          newsLetter: data.newsLetter,
+          profilePicture: data.profilePicture,
+        });
+      } catch (error) {
+        console.log("Error to get user data");
+      }
+
+    } else {
       setForm({
-        name: data.name,
-        lastname: data.lastname,
-        birthdate: data.birthdate,
-        email: data.email,
-        password: data.password,
-        isAdmin: data.isAdmin,
-        isActive: data.isActive,
-        phone: data.phone,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        country: data.country,
-        zipcode: data.zipcode,
-        provider: data.provider,
-        newsLetter: data.newsLetter,
-        profilePicture: data.profilePicture,
+        name: user.name,
+        lastname: user.lastname ? user.lastname : '' ,
+        birthdate: 'data.birthdate',
+        email: user.email,
+        password: '' ,
+        isAdmin: false,
+        isActive: true,
+        phone: null,
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        zipcode: '',
+        provider: '',
+        newsLetter: '',
+        profilePicture: '',
       });
-    } catch (error) {
-      console.log("Error to get user data");
     }
   };
 
   const sendUser = async () => {
-    try {
-      const response = await axios.put(`/user/${user.id}`, form);
 
-      if (response) Swal.fire("Data saved");
-    } catch (error) {
-      console.log("Error to update data");
-      Swal.fire("Cannot update data");
+    if(!user.id){
+
+      Swal.fire('Cannot update your data')
+    } else {
+
+      try {
+        const response = await axios.put(`/user/${user.id}`, form);
+  
+        if (response) Swal.fire("Data saved");
+      } catch (error) {
+        console.log("Error to update data");
+        Swal.fire("Cannot update data");
+      }
+
     }
   };
 
@@ -159,13 +213,13 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    if (user.id) {
+    if (user.name) {
       fetchUser();
     }
   }, []);
 
   useEffect(() => {
-    if (!user.id) {
+    if (!user.name) {
       navigate("/");
     }
   }, [user]);
@@ -494,7 +548,7 @@ const Settings = () => {
             <label>Payment options</label>
             <button
               className=" w-full py-2 border border-gray-300 bg-[#fae8e6] rounded-xl flex justify-center items-center cursor-not-allowed"
-              disabled="true"
+              disabled= {true}
             >
               <FontAwesomeIcon icon={faCcPaypal} size="2xl" />
             </button>

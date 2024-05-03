@@ -4,6 +4,7 @@ const UserRoutes = ({
     isRegister,
     redirectPath = '/'
 }) => {
+    console.log(isRegister);
     if (!isRegister) {
         return <Navigate to={redirectPath} replace />
     }

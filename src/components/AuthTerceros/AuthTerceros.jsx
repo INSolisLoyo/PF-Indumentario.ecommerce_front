@@ -16,6 +16,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 const AuthTerceros = ({ onClose }) => {
 
   const setCurrentUser = userStore((state) => state.setCurrentUser )
+  const user = userStore((state) => state.user )
   const setRegisteredUser = userStore((state) => state.setRegisteredUser)
 
     const onClickGoogle = async () => {
@@ -49,7 +50,7 @@ const AuthTerceros = ({ onClose }) => {
             setRegisteredUser(true);
             
             onClose();
-          })
+          }).then( () => console.log(user.name))
       } catch (error) {
         console.log(error);
       }

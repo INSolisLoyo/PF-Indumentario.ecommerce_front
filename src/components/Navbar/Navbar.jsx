@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import userStore from "../GlobalStoreZustand/UserStore";
 import useCartStore from "../GlobalStoreZustand/useCartStore"; // Importa el hook del estado del carrito
 import useFavoriteStore from "../GlobalStoreZustand/useFavoriteStore";
@@ -52,6 +52,10 @@ export default function NavBar() {
   const handleCloseCartMenu = () => {
     setShowCartMenu(false); // Cerrar el menú del carrito cuando se hace clic fuera de él
   };
+
+  useEffect(() => {
+
+  }, [name])
 
   return (
     <div className="w-full mx-auto flex justify-around py-8 gap-4 h-[100px] items-center bg-white/70 fixed font-RedHat z-[100] ">
